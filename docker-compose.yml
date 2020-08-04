@@ -1,0 +1,14 @@
+version: '3.2'
+
+services:
+
+  web-angular:
+    container_name: web-angular
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    volumes:
+      - '.:/myapp'
+      - '/myapp/node_modules'
+    ports:
+      - '4201:4200'
