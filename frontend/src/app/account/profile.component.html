@@ -1,0 +1,18 @@
+<div class="col-md-6 offset-md-3 mt-5">
+    <h1>{{'profile.my_profile' | translate}}</h1>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th style="width: 30%">{{'profile.first_name' | translate}}</th>
+                <th style="width: 30%">{{'profile.last_name' | translate}}</th>
+                <th style="width: 30%">{{'profile.username' | translate}}</th>
+                <th style="width: 10%"></th>
+            </tr>
+        </thead>
+        <tbody>
+                <td>{{user.first_name}}</td>
+                <td>{{user.last_name}}</td>
+                <td>{{user.username}}</td>
+        </tbody>
+    </table>
+</div>

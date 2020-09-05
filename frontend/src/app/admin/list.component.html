@@ -1,0 +1,35 @@
+﻿<div class="p-4">
+    <div class="container">
+        <h1>{{'admin.users' | translate}}</h1>
+        <a routerLink="add" class="btn btn-sm btn-success mb-2">{{'admin.add' | translate}}</a>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th style="width: 30%">{{'profile.first_name' | translate}}</th>
+                    <th style="width: 30%">{{'profile.last_name' | translate}}</th>
+                    <th style="width: 30%">{{'profile.username' | translate}}</th>
+                    <th style="width: 10%"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let user of users">
+                    <td>{{user.first_name}}</td>
+                    <td>{{user.last_name}}</td>
+                    <td>{{user.username}}</td>
+                    <td style="white-space: nowrap">
+                        <a routerLink="edit/{{user.id}}" class="btn btn-sm btn-primary mr-1">{{'admin.edit' | translate}}</a>
+                        <button (click)="deleteUser(user.id)" class="btn btn-sm btn-danger btn-delete-user" [disabled]="user.isDeleting">
+                            <span *ngIf="user.isDeleting" class="spinner-border spinner-border-sm"></span>
+                            <span *ngIf="!user.isDeleting">{{'admin.delete' | translate}}</span>
+                        </button>
+                    </td>
+                </tr>
+                <tr *ngIf="!users">
+                    <td colspan="4" class="text-center">
+                        <span class="spinner-border spinner-border-lg align-center"></span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,8 +1,8 @@
 # base image
-FROM node:12.2.0
+FROM node
 
 # set working directory
-WORKDIR /frontend
+WORKDIR /myapp/frontend
 
 # install chrome for protractor tests
 RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
@@ -10,15 +10,16 @@ RUN sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable 
 RUN apt-get update && apt-get install -yq google-chrome-stable
 
 # add `/app/node_modules/.bin` to $PATH
-ENV PATH /frontend/node_modules/.bin:$PATH
+ENV PATH /myapp/frontend/node_modules/.bin:$PATH
 
 # install and cache app dependencies
-COPY package.json /frontend/package.json
+COPY package.json /myapp/frontend/package.json
 RUN npm install
-RUN npm install -g @angular/cli@7.3.9
+RUN npm install -g @angular/cli
+RUN npm install ngx-cookie-service --save
 
 # add app
-COPY . .
+#COPY . .
 
 # start app
 CMD ng serve --host 0.0.0.0

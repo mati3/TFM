@@ -1,4 +1,4 @@
-version: '3.2'
+version: '2'
 
 services:
 
@@ -8,7 +8,27 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
     volumes:
-      - '.:/myapp'
-      - '/myapp/node_modules'
+      - './frontend:/myapp/frontend'
+      - '/myapp/frontend/node_modules'
+    links: 
+      - backend
     ports:
       - '4201:4200'
+
+  backend: #name of the second service
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000" #specify ports forewarding
+    container_name: back-container
+    restart: always
+    links:
+      - database # link this service to the database service
+
+  database: # name of the third service
+    build: 
+      context: ./database
+      dockerfile: Dockerfile
+    container_name: database-container
+    restart: always

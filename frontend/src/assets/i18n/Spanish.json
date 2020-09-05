@@ -1,0 +1,55 @@
+{
+    "nav": {
+        "title": "Probador de filtro de pronóstico",
+        "home": "Hogar",
+        "workspace": "Mi espacio de trabajo",
+        "logout": "Desconectar",
+        "login": "Conectarse",
+        "admin": "Administración de Usuarios",
+        "selectl": "Seleccionar lenguaje",
+        "english": "Ingles",
+        "spanish": "Español",
+        "profile": "Mi perfil",
+        "register": "Registrarse",
+        "cancel": "Cancelar",
+        "save": "Guardar"
+    },
+    "profile": {
+        "first_name": "Nombre",
+        "last_name": "Apellidos",
+        "username": "Nombre de usuario",
+        "password": "Contraseña",
+        "my_profile": "Mi Perfil",
+        "email": "Dirección de correo electronico"
+    },
+    "home": {
+        "hi": "Hola",
+        "h1": "Proyecto de protocolo para el filtro de factor pronóstico",
+        "p1": "Elena Stallings, Jesús López Alcalde, Iván Sola, Laura XX, Noelia Álvarez-Diaz, Javier Zamora",
+        "h2": "Respaldo",
+        "p2": "La investigación de pronóstico es la investigación de la relación entre los resultados futuros (puntos finales) entre los individuos con un determinado estado de salud de referencia (punto de partida) (Riley et al. 2019). Esta investigación está adquiriendo una importancia significativa, ya que en todo el mundo la gente vive más tiempo, pero con más enfermedades y condiciones de salud crónicas. La investigación sobre el pronóstico puede clasificarse en cuatro temas o áreas de investigación diferentes: pronóstico fundamental, modelos de pronóstico, medicina estratificada y factores de pronóstico (Riley et al. 2019). La investigación fundamental sobre el pronóstico significa el curso de las afecciones relacionadas con la salud en el contexto del tipo y la calidad de la atención actual (Hemingway et al. 2013). La investigación de modelos de pronóstico se refiere al desarrollo, validación e impacto de los modelos estadísticos que predicen el riesgo de un individuo de un resultado futuro (Steyerberg et al. 2013). La medicina estratificada utiliza la información de pronóstico para ayudar a adaptar las decisiones de tratamiento a un individuo o a un grupo de individuos con características similares (Hingorani et al. 2013). La investigación de los factores de pronóstico estudia los factores específicos que se asocian con el pronóstico (Hemingway et al. 2013, Riley et al. 2013).",
+        "p3": "Un factor de pronóstico es una variable asociada con el riesgo de un resultado de salud posterior entre personas con una condición de salud específica. La investigación sobre el factor pronóstico es un campo de investigación relativamente nuevo. Por ejemplo, si se busca 'factor pronóstico' y 'revisión sistemática' en el título de PubMed sólo se recuperan 70 elementos. En comparación, si se buscan revisiones sistemáticas de intervenciones en PubMed, la búsqueda recuperará 998 registros (hasta septiembre de 2019).  Las revisiones sistemáticas son recursos valiosos ya que resumen todos los estudios relevantes sobre cuestiones clínicas específicas. Sin embargo, encontrar toda la información que se debe incluir en las revisiones sistemáticas puede ser un desafío con una cantidad abrumadora de información y estudios disponibles (Kastner et al. 2009).",
+        "p4": "La recuperación de información de bases de datos bibliográficas como PubMed o Embase puede llevar mucho tiempo y el proceso de selección en las revisiones sistemáticas puede ser bastante exhaustivo cuando se recuperan más de 30.000 referencias (Riley et al. 2019). Esto es especialmente cierto cuando se recuperan muchos artículos que son irrelevantes para la cuestión de la investigación. Para combatir esto, se han desarrollado filtros de búsqueda metodológica para encontrar artículos relacionados con diversos tipos de preguntas clínicas (Geersing y otros 2012, Beynon y otros 2013). Un filtro de búsqueda es una combinación predefinida de términos de búsqueda diseñados para recuperar información sobre un tema en particular. La función de un filtro de búsqueda es recuperar información relacionada con un concepto específico. Este concepto puede ser un tema, un diseño de estudio o una metodología (Harbour et al. 2014).",
+        "p5": "Los filtros de búsqueda intentan aumentar la precisión de las búsquedas y reducir los recursos que se requieren para filtrar los resultados. En la actualidad, hay varios filtros disponibles públicamente en bases de datos de investigación médica como PubMed en forma de 'consultas clínicas'. Los filtros de búsqueda metodológica pueden denominarse a menudo 'setos', estrategias óptimas de búsqueda, filtros de búsqueda óptimos, filtros de búsqueda o consultas clínicas (Jenkins 2004). La palabra filtro de búsqueda metodológica fue creada originalmente por Wilczynski y otros, que la definieron como 'un término o términos de búsqueda (como 'asignación aleatoria' para estudios sólidos de intervención médica) que seleccionan estudios que se encuentran en las etapas más avanzadas de prueba para su aplicación clínica' (Wilczynski y otros 1993). Los filtros de búsqueda suelen combinarse en una estrategia de búsqueda mediante el operador booleano 'Y'.",
+        "p6": "Los diversos métodos utilizados para desarrollar filtros de búsqueda se caracterizan por la generación (Jenkins 2004). Los filtros de primera generación utilizan métodos no objetivos, ya que son desarrollados por bibliotecarios basándose únicamente en su experiencia en búsquedas bibliográficas, pero sin ningún proceso de validación. Los filtros de segunda generación se desarrollan de manera similar, sin embargo en este proceso de desarrollo los filtros se validan utilizando un patrón de oro o un conjunto de referencias. Los filtros de tercera generación se desarrollan sobre la base de enfoques estadísticos y luego se validan con el patrón oro, lo que los convierte en el tipo de filtro más objetivo (Jenkins 2004).",
+        "p7": "Hay 4 elementos clave metodológicos comunes dentro del diseño del filtro de búsqueda que se discutirán en detalle en la sección de métodos: identificación de un 'patrón oro'; selección del término de búsqueda; evaluación del filtro de búsqueda y validación (Jenkins 2004). Beynon et al identificaron 3 fuentes de posible sesgo en el desarrollo del filtro. Estas fuentes son 1) Si se utilizaron revisiones sistemáticas para compilar el conjunto de referencia, estos SR no deben haber utilizado un filtro (por ejemplo, en nuestro caso un filtro de pronóstico); 2) La elección de los registros del patrón oro están sujetos a un alto sesgo si son específicos del tema y no generalizables; 3) La validación del filtro debe llevarse a cabo utilizando un conjunto de referencia separado (conjunto de validación) (Beynon et al. 2013).",
+        "h3": "Objectivos",
+        "p8": "Desarrollar, evaluar y validar un filtro de búsqueda para estudios de factores de pronóstico. El objetivo principal es lograr la máxima sensibilidad para no perder ningún estudio pertinente al utilizar el filtro, manteniendo la especificidad. Por lo general, la sensibilidad y la especificidad son espadas de doble filo, el aumento de la sensibilidad suele conducir a una disminución de la especificidad, es decir, a la identificación de estudios menos pertinentes.",
+        "p9": "Los detalles del filtro se afinarán para optimizar la sensibilidad /(amplitud) y/o la especificidad (estrechez)."
+    },
+    "error": {
+        "username": "Es necesario el nombre de usuario",
+        "password": "Es necesaria la contraseña",
+        "passwordlength": "La contraseña debe tener como mínimo 6 caracteres",
+        "first_name": "Es necesario el nombre",
+        "last_name": "Es necesario el apellido",
+        "email": "Es necesaria la dirección de correo electronico"
+    },
+    "admin": {
+        "users": "Usuarios",
+        "add": "Añadir nuevo usuario",
+        "edit": "Editar",
+        "delete": "Eliminar",
+        "passwordblanck": "(Dejar en blanco si es la misma contraseña)"
+    }
+}
