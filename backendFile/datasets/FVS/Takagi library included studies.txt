@@ -1,0 +1,373 @@
+﻿TY  - JOUR
+AB  - BACKGROUND: The Controlling Nutritional Status (CONUT) score is an objective tool that is widely used to assess the nutritional status in patients, including those with cancer. The relationship between the CONUT score and prognosis in patients who have undergone hepatic resection has not been evaluated in a multi-institutional study., METHODS: Data were retrospectively collected for 2461 consecutive patients with hepatocellular carcinoma (HCC) who had undergone hepatic resection with curative intent at 13 institutions between January 2004 and December 2015. Patients were assigned to two groups: preoperative CONUT scores <= 3 (low CONUT score) and >= 4 (high CONUT score). Clinicopathological characteristics, surgical outcomes, and long-term survival were compared using propensity score matching analysis., RESULTS: Of the 2461 patients, 540 (21.9%) had high (>= 4) and 1921 (78.1%) had low (<= 3) preoperative CONUT scores. Overall, a high CONUT score was significantly associated with older age, female sex, low body mass index, low serum albumin, high serum total bilirubin, low lymphocyte count, low serum cholesterol, shorter prothrombin time, higher indocyanine green retention test at 15 min, Child-Pugh B (vs. A), liver cirrhosis, minor resection, shorter operation time, massive blood loss, blood transfusion, and postoperative complications. After propensity score matching, a higher CONUT score was significantly associated with poor overall survival (OS) and recurrence-free survival (RFS) using multivariate analysis., CONCLUSIONS: This retrospective, multi-institutional analysis showed that, in patients who undergo curative hepatectomy for HCC, the preoperative CONUT score is predictive of worse OS and RFS, even after propensity score matching analysis.
+AU  - Harimoto, Norifumi
+AU  - Yoshizumi, Tomoharu
+AU  - Inokuchi, Shoichi
+AU  - Itoh, Shinji
+AU  - Adachi, Eisuke
+AU  - Ikeda, Yasuharu
+AU  - Uchiyama, Hideaki
+AU  - Utsunomiya, Tohru
+AU  - Kajiyama, Kiyoshi
+AU  - Kimura, Koichi
+AU  - Kishihara, Fumiaki
+AU  - Sugimachi, Keishi
+AU  - Tsujita, Eiji
+AU  - Ninomiya, Mizuki
+AU  - Fukuzawa, Kengo
+AU  - Maeda, Takashi
+AU  - Shirabe, Ken
+AU  - Maehara, Yoshihiko
+C1  - Base de datos: Ovid MEDLINE(R) ALL / PubMed(R) <1946 to Present> Estrategia de bÃºsqueda:
+DO  - https://dx.doi.org/10.1245/s10434-018-6672-6
+IS  - 11
+KW  - Aged
+*Carcinoma, Hepatocellular/pa [Pathology]
+Carcinoma, Hepatocellular/su [Surgery]
+Female
+Follow-Up Studies
+*Hepatectomy
+Humans
+*Liver Neoplasms/pa [Pathology]
+Liver Neoplasms/su [Surgery]
+Male
+*Neoplasm Recurrence, Local/pa [Pathology]
+Neoplasm Recurrence, Local/su [Surgery]
+*Nutritional Status
+*Postoperative Complications
+*Preoperative Care
+Prognosis
+Retrospective Studies
+Survival Rate
+PY  - 2018
+SE  - Harimoto, Norifumi. Department of Hepatobiliary and Pancreatic Surgery, Graduate School of Medicine, Gunma University, Maebashi, Japan. nharimotoh1@gunma-u.ac.jp.
+Harimoto, Norifumi. Department of Surgery and Science, Graduate School of Medical Sciences, Kyushu University, Fukuoka, Japan. nharimotoh1@gunma-u.ac.jp.
+Yoshizumi, Tomoharu. Department of Surgery and Science, Graduate School of Medical Sciences, Kyushu University, Fukuoka, Japan.
+Inokuchi, Shoichi. Department of Surgery and Science, Graduate School of Medical Sciences, Kyushu University, Fukuoka, Japan.
+Itoh, Shinji. Department of Surgery and Science, Graduate School of Medical Sciences, Kyushu University, Fukuoka, Japan.
+Adachi, Eisuke. Department of Surgery, Kyushu Central Hospital, Fukuoka, Japan.
+Ikeda, Yasuharu. Department of Surgery, Fukuoka City Hospital, Fukuoka, Japan.
+Uchiyama, Hideaki. Department of Surgery, Saiseikai Fukuoka General Hospital, Fukuoka, Japan.
+Utsunomiya, Tohru. Department of Surgery, Oita Prefectural Hospital, Oita, Japan.
+Kajiyama, Kiyoshi. Department of Surgery, Iizuka Hospital, Fukuoka, Japan.
+Kimura, Koichi. Department of Surgery, Munakata Medical Association Hospital, Fukuoka, Japan.
+Kishihara, Fumiaki. Department of Gastroenterological Surgery, Steel Memorial Yawata Hospital, Fukuoka, Japan.
+Sugimachi, Keishi. Department of Hepato-Biliary-Pancreatic Surgery, National Kyushu Cancer Center, Fukuoka, Japan.
+Tsujita, Eiji. Department of Hepato-Biliary-Pancreatic Surgery, National Kyushu Cancer Center, Fukuoka, Japan.
+Ninomiya, Mizuki. Department of Surgery, Matsuyama Red Cross Hospital, Matsuyama, Ehime, Japan.
+Fukuzawa, Kengo. Department of Surgery, Oita Red Cross Hospital, Oita, Japan.
+Maeda, Takashi. Department of Surgery, Hiroshima Red Cross Hospital and Atomic Bomb Survivors Hospital, Hiroshima, Japan.
+Shirabe, Ken. Department of Hepatobiliary and Pancreatic Surgery, Graduate School of Medicine, Gunma University, Maebashi, Japan.
+Maehara, Yoshihiko. Department of Surgery and Science, Graduate School of Medical Sciences, Kyushu University, Fukuoka, Japan.
+SN  - 1534-4681
+1068-9265
+SP  - 3316-3323
+ST  - Prognostic Significance of Preoperative Controlling Nutritional Status (CONUT) Score in Patients Undergoing Hepatic Resection for Hepatocellular Carcinoma: A Multi-institutional Study
+T2  - Annals of surgical oncology
+TI  - Prognostic Significance of Preoperative Controlling Nutritional Status (CONUT) Score in Patients Undergoing Hepatic Resection for Hepatocellular Carcinoma: A Multi-institutional Study
+UR  - http://ovidsp.ovid.com/ovidweb.cgi?T=JS&PAGE=reference&D=med15&NEWS=N&AN=30051372
+VL  - 25
+ID  - 52
+ER  - 
+
+TY  - JOUR
+AB  - BACKGROUND: The Controlling Nutritional Status (CONUT) score is an objective tool widely used to assess nutritional status in patients with inflammatory disease, chronic heart failure, and chronic liver disease. The relationship between CONUT score and prognosis in patients who have undergone hepatic resection, however, has not been evaluated., METHODS: Data were retrospectively collected for 357 consecutive patients with hepatocellular carcinoma (HCC) who had undergone hepatic resection with curative intent between January 2004 and December 2015. The patients were assigned to two groups, those with preoperative CONUT scores <=3 (low CONUT score) and >3 (high CONUT score), and their clinicopathological characteristics, surgical outcomes, and long-term survival were compared., RESULTS: Of the 357 patients, 69 (19.3%) had high (>3) and 288 (80.7%) had low (<=3) preoperative CONUT scores. High CONUT score was significantly associated with HCV infection, low serum albumin and cholesterol concentrations, low lymphocyte count, shorter prothrombin time, Child-Pugh B and liver damage B scores, and blood transfusion. Multivariate analysis identified six factors prognostic of poor overall survival (older age, liver damage B score, high CONUT score, poor tumor differentiation, the presence of intrahepatic metastases, and blood transfusion) and five factors prognostic of reduced recurrence-free survival (older age, higher ICGR15, larger tumor size, presence of intrahepatic metastasis, and blood transfusion)., CONCLUSIONS: In patients with HCC, preoperative CONUT scores are predictive of poorer overall survival, even after adjustments for other known predictors.
+AU  - Harimoto, Norifumi
+AU  - Yoshizumi, Tomoharu
+AU  - Sakata, Kazuhito
+AU  - Nagatsu, Akihisa
+AU  - Motomura, Takashi
+AU  - Itoh, Shinji
+AU  - Harada, Noboru
+AU  - Ikegami, Toru
+AU  - Uchiyama, Hideaki
+AU  - Soejima, Yuji
+AU  - Maehara, Yoshihiko
+C1  - Base de datos: Ovid MEDLINE(R) ALL / PubMed(R) <1946 to Present> Estrategia de bÃºsqueda:
+DO  - https://dx.doi.org/10.1007/s00268-017-4097-1
+IS  - 11
+KW  - Age Factors
+Aged
+Blood Transfusion
+*Carcinoma, Hepatocellular/sc [Secondary]
+*Carcinoma, Hepatocellular/su [Surgery]
+Female
+Hepatectomy
+Humans
+*Liver Neoplasms/pa [Pathology]
+Liver Neoplasms/sc [Secondary]
+*Liver Neoplasms/su [Surgery]
+Male
+Middle Aged
+Neoplasm Grading
+*Nutritional Status
+Preoperative Period
+Prognosis
+Retrospective Studies
+Survival Rate
+PY  - 2017
+SE  - Harimoto, Norifumi. Department of Surgery and Science, Graduate School of Medical Sciences, Kyushu University, 3-1-1 Maidashi, Higashi-ku, Fukuoka, 812-8582, Japan. harimoto@surg2.med.kyushu-u.ac.jp.
+Yoshizumi, Tomoharu. Department of Surgery and Science, Graduate School of Medical Sciences, Kyushu University, 3-1-1 Maidashi, Higashi-ku, Fukuoka, 812-8582, Japan.
+Sakata, Kazuhito. Department of Surgery and Science, Graduate School of Medical Sciences, Kyushu University, 3-1-1 Maidashi, Higashi-ku, Fukuoka, 812-8582, Japan.
+Nagatsu, Akihisa. Department of Surgery and Science, Graduate School of Medical Sciences, Kyushu University, 3-1-1 Maidashi, Higashi-ku, Fukuoka, 812-8582, Japan.
+Motomura, Takashi. Department of Surgery and Science, Graduate School of Medical Sciences, Kyushu University, 3-1-1 Maidashi, Higashi-ku, Fukuoka, 812-8582, Japan.
+Itoh, Shinji. Department of Surgery and Science, Graduate School of Medical Sciences, Kyushu University, 3-1-1 Maidashi, Higashi-ku, Fukuoka, 812-8582, Japan.
+Harada, Noboru. Department of Surgery and Science, Graduate School of Medical Sciences, Kyushu University, 3-1-1 Maidashi, Higashi-ku, Fukuoka, 812-8582, Japan.
+Ikegami, Toru. Department of Surgery and Science, Graduate School of Medical Sciences, Kyushu University, 3-1-1 Maidashi, Higashi-ku, Fukuoka, 812-8582, Japan.
+Uchiyama, Hideaki. Department of Surgery and Science, Graduate School of Medical Sciences, Kyushu University, 3-1-1 Maidashi, Higashi-ku, Fukuoka, 812-8582, Japan.
+Soejima, Yuji. Department of Surgery and Science, Graduate School of Medical Sciences, Kyushu University, 3-1-1 Maidashi, Higashi-ku, Fukuoka, 812-8582, Japan.
+Maehara, Yoshihiko. Department of Surgery and Science, Graduate School of Medical Sciences, Kyushu University, 3-1-1 Maidashi, Higashi-ku, Fukuoka, 812-8582, Japan.
+SN  - 1432-2323
+0364-2313
+SP  - 2805-2812
+ST  - Prognostic Significance of Preoperative Controlling Nutritional Status (CONUT) Score in Patients Undergoing Hepatic Resection for Hepatocellular Carcinoma
+T2  - World journal of surgery
+TI  - Prognostic Significance of Preoperative Controlling Nutritional Status (CONUT) Score in Patients Undergoing Hepatic Resection for Hepatocellular Carcinoma
+UR  - http://ovidsp.ovid.com/ovidweb.cgi?T=JS&PAGE=reference&D=med14&NEWS=N&AN=28653142
+VL  - 41
+ID  - 74
+ER  - 
+
+TY  - JOUR
+AB  - Postoperative complication III-V is closely related with hepatectomy-related mortality for hepatocellular carcinoma (HCC) patients. The aim of the study was to investigate the relationship between CONUTS and postoperative complication III-V. 1334 HCC patients who underwent hepatectomy were divided into two groups: high CONUTS group (early postoperative CONUTS >= 8, n = 659) and low CONUTS group (early postoperative CONUTS < 8, n = 675). The characteristics and clinical outcomes were compared and analyzed. Risk factors for postoperative complication III-V were evaluated by univariate and multivariate analysis. early postoperative CONUTS showed a good prediction ability for postoperative complication III-V (AUROC = 0.653, P < 0.001), with the cut-off value of 8. The high CONUTS group had higher incidence of postoperative pulmonary complications (12.0% vs 7.9%, P = 0.011), bile leakage (2.6% vs 0.9%, P = 0.018), intra-abdominal hemorrhage (4.9% vs 1.6%, P = 0.001), postoperative liver failure Grade C (3.6% vs 1.0%, P = 0.002), complication III-V (15.6% vs 6.2%, P < 0.001), length of ICU stay > 48 hours (9.4% vs 4.1%, P < 0.001) and mortality in 90 days (2.6% vs 0.4%, P = 0.001), longer period of postoperative hospitalization (10 (8-13) vs 9 (7-11) days, P < 0.001). Multivariable analysis revealed that early postoperative CONUTS >= 8 (OR = 2.054, 95%CI = 1.371-3.078, P < 0.001) was independently associated with postoperative complication III-V. Early postoperative CONUTS >= 8 was identified as a novel risk factor for postoperative complication III-V, and should be further evaluated as a predictive marker for who are to undergo liver resection.
+AU  - Li, Lei
+AU  - Liu, Chang
+AU  - Yang, Jiayin
+AU  - Wu, Hong
+AU  - Wen, Tianfu
+AU  - Wang, Wentao
+AU  - Li, Bo
+AU  - Yan, Lvnan
+C1  - Base de datos: Ovid MEDLINE(R) ALL / PubMed(R) <1946 to Present> Estrategia de bÃºsqueda:
+DO  - https://dx.doi.org/10.1038/s41598-018-31714-w
+IS  - 1
+KW  - Adult
+Carcinoma, Hepatocellular/mo [Mortality]
+Carcinoma, Hepatocellular/pa [Pathology]
+Carcinoma, Hepatocellular/su [Surgery]
+*Carcinoma, Hepatocellular
+Female
+*Hepatectomy/ae [Adverse Effects]
+Humans
+Intensive Care Units
+Liver Failure/mo [Mortality]
+Liver Failure/pa [Pathology]
+Liver Failure/su [Surgery]
+Liver Neoplasms/mo [Mortality]
+Liver Neoplasms/pa [Pathology]
+Liver Neoplasms/su [Surgery]
+*Liver Neoplasms
+Lung Diseases/et [Etiology]
+Lung Diseases/mo [Mortality]
+Lung Diseases/pa [Pathology]
+*Lung Diseases
+Male
+Middle Aged
+Mortality
+*Nutritional Status
+Postoperative Hemorrhage/mo [Mortality]
+Postoperative Hemorrhage/pa [Pathology]
+*Postoperative Hemorrhage
+Retrospective Studies
+Risk Factors
+Time Factors
+PY  - 2018
+SE  - Li, Lei. Department of Liver Surgery & Liver transplantation center, West China Hospital of Sichuan University, Chengdu, 610041, China.
+Liu, Chang. Department of Liver Surgery & Liver transplantation center, West China Hospital of Sichuan University, Chengdu, 610041, China.
+Yang, Jiayin. Department of Liver Surgery & Liver transplantation center, West China Hospital of Sichuan University, Chengdu, 610041, China. yangjygyz@163.com.
+Wu, Hong. Department of Liver Surgery & Liver transplantation center, West China Hospital of Sichuan University, Chengdu, 610041, China.
+Wen, Tianfu. Department of Liver Surgery & Liver transplantation center, West China Hospital of Sichuan University, Chengdu, 610041, China.
+Wang, Wentao. Department of Liver Surgery & Liver transplantation center, West China Hospital of Sichuan University, Chengdu, 610041, China.
+Li, Bo. Department of Liver Surgery & Liver transplantation center, West China Hospital of Sichuan University, Chengdu, 610041, China.
+Yan, Lvnan. Department of Liver Surgery & Liver transplantation center, West China Hospital of Sichuan University, Chengdu, 610041, China.
+SN  - 2045-2322
+SP  - 13406
+ST  - Early postoperative controlling nutritional status (CONUT) score is associated with complication III-V after hepatectomy in hepatocellular carcinoma: A retrospective cohort study of 1,334 patients
+T2  - Scientific reports
+TI  - Early postoperative controlling nutritional status (CONUT) score is associated with complication III-V after hepatectomy in hepatocellular carcinoma: A retrospective cohort study of 1,334 patients
+UR  - http://ovidsp.ovid.com/ovidweb.cgi?T=JS&PAGE=reference&D=med15&NEWS=N&AN=30194336
+VL  - 8
+ID  - 49
+ER  - 
+
+TY  - JOUR
+AB  - PURPOSE: As a novel immune-nutritional biomarker, the controlling nutritional status (CONUT) score has been reported to predict outcomes in cancer patients. We aimed to elucidate the prognostic value of preoperative CONUT score and construct a CONUT score-based nomogram to predict individual survival of patients with hepatitis B viral (HBV)-associated hepatocellular carcinoma (HCC) after curative hepatectomy., METHODS: Preoperative CONUT score was retrospectively calculated in 380 HBV-associated HCC patients undergoing radical resection between 2006 and 2012. Patients were assigned to two groups: CONUT-low ( < 2) and CONUT-high ( >= 2), according to the optimal cut-off value determined using receiver operating characteristic analysis. Associations of CONUT score with oncological outcomes were evaluated. The Cox proportional hazard model was used to identify predictors of survival and a new nomogram was developed based on the independent prognostic factors for overall survival (OS)., RESULTS: The CONUT score exhibited a higher area under the curve value than the other immune-nutritional parameters. The CONUT-high group had significant poorer OS and recurrence-free survival compared with CONUT-low group (P < 0.001 and P = 0.016, respectively). Multivariate analyses identified CONUT score, liver cirrhosis, tumor size and differentiation as independent prognostic factors for OS. And the nomogram based on these four variables had superior discriminative ability to predict survival compared with other conventional staging systems., CONCLUSIONS: Preoperative CONUT score is an effective independent predictor of OS in patients with resected HBV-related HCC. This novel nomogram based on CONUT may provide accurate and individualized survival prediction for HCC patients undergoing surgical resection.
+AU  - Lin, Z. X.
+AU  - Ruan, D. Y.
+AU  - Jia, C. C.
+AU  - Wang, T. T.
+AU  - Cheng, J. T.
+AU  - Huang, H. Q.
+AU  - Wu, X. Y.
+C1  - Base de datos: Ovid MEDLINE(R) ALL / PubMed(R) <1946 to Present> Estrategia de bÃºsqueda:
+DO  - https://dx.doi.org/10.1007/s12094-019-02137-4
+IS  - 3
+PY  - 2020
+SE  - Lin, Z-X. Department of Medical Oncology, Sun Yat-Sen University Cancer Center, State Key Laboratory of Oncology in South China, Collaborative Innovation Center for Cancer Medicine, 651 Dongfengdong Road, Guangzhou, 510060, China.
+Lin, Z-X. Department of Medical Oncology and Guangdong Key Laboratory of Liver Disease, The Third Affiliated Hospital of Sun Yat-Sen University, 600 Tianhe Road, Guangzhou, 510630, China.
+Ruan, D-Y. Department of Medical Oncology and Guangdong Key Laboratory of Liver Disease, The Third Affiliated Hospital of Sun Yat-Sen University, 600 Tianhe Road, Guangzhou, 510630, China.
+Jia, C-C. Department of Cell-Gene Therapy Translational Medicine Research Center, The Third Affiliated Hospital of Sun Yat-Sen University, 600 Tianhe Road, Guangzhou, 510630, China.
+Wang, T-T. Department of Medical Oncology and Guangdong Key Laboratory of Liver Disease, The Third Affiliated Hospital of Sun Yat-Sen University, 600 Tianhe Road, Guangzhou, 510630, China.
+Cheng, J-T. Department of Cell-Gene Therapy Translational Medicine Research Center, The Third Affiliated Hospital of Sun Yat-Sen University, 600 Tianhe Road, Guangzhou, 510630, China.
+Huang, H-Q. Department of Medical Oncology, Sun Yat-Sen University Cancer Center, State Key Laboratory of Oncology in South China, Collaborative Innovation Center for Cancer Medicine, 651 Dongfengdong Road, Guangzhou, 510060, China. huanghqsysucc@163.com.
+Wu, X-Y. Department of Medical Oncology and Guangdong Key Laboratory of Liver Disease, The Third Affiliated Hospital of Sun Yat-Sen University, 600 Tianhe Road, Guangzhou, 510630, China. wuxiangy@mail.sysu.edu.cn.
+SN  - 1699-3055
+1699-048X
+SP  - 370-380
+ST  - Controlling nutritional status (CONUT) score-based nomogram to predict overall survival of patients with HBV-associated hepatocellular carcinoma after curative hepatectomy
+T2  - Clinical & translational oncology : official publication of the Federation of Spanish Oncology Societies and of the National Cancer Institute of Mexico
+TI  - Controlling nutritional status (CONUT) score-based nomogram to predict overall survival of patients with HBV-associated hepatocellular carcinoma after curative hepatectomy
+UR  - http://ovidsp.ovid.com/ovidweb.cgi?T=JS&PAGE=reference&D=prem&NEWS=N&AN=31201606
+VL  - 22
+ID  - 21
+ER  - 
+
+TY  - JOUR
+AB  - BACKGROUND: Preoperative nutritional status is reportedly associated with postoperative outcomes in patients with hepatocellular carcinoma. This study aimed to investigate the significance of the controlling nutritional status (CONUT) score and the prognostic nutritional index (PNI) as predictors of postoperative outcomes., METHODS: We retrospectively reviewed data from 331 patients who underwent hepatectomy for hepatocellular carcinoma between January 2007 and December 2015. Patients were divided into 2 groups based on their CONUT score and the PNI. We evaluated the effect of the CONUT score and PNI on perioperative outcomes. Multivariate analysis was performed to identify independent predictors of in-hospital mortality after hepatectomy. -Results: The high CONUT group had a significantly higher -incidence of 30-day mortality (p < 0.001), in-hospital mortality (p = 0.002), ascites (p = 0.006), liver failure (p = 0.02), sepsis (p = 0.01), and enteritis (p < 0.001). The low PNI group was also significantly associated with 30-day mortality (p < 0.001), in-hospital mortality (p = 0.003), liver failure (p < 0.001), sepsis (p = 0.02), enteritis (p = 0.02), and hospital stay (p = 0.01). In multivariate analyses, a high CONUT score was an independent predictor of in-hospital mortality after hepatectomy (hazard ratio [HR] 9.41, p = 0.038), but the PNI was not (HR 5.86, p = 0.08)., CONCLUSIONS: Preoperative assessment of the CONUT score is helpful for evaluating patients' nutritional status and mortality risk after liver surgery. Copyright © 2018 S. Karger AG, Basel.
+AU  - Takagi, Kosei
+AU  - Umeda, Yuzo
+AU  - Yoshida, Ryuichi
+AU  - Nobuoka, Daisuke
+AU  - Kuise, Takashi
+AU  - Fushimi, Takuro
+AU  - Fujiwara, Toshiyoshi
+AU  - Yagi, Takahito
+C1  - Base de datos: Ovid MEDLINE(R) ALL / PubMed(R) <1946 to Present> Estrategia de bÃºsqueda:
+DO  - https://dx.doi.org/10.1159/000488215
+IS  - 3
+KW  - Aged
+Carcinoma, Hepatocellular/mo [Mortality]
+*Carcinoma, Hepatocellular/su [Surgery]
+Female
+*Hepatectomy/mo [Mortality]
+Humans
+Liver Neoplasms/mo [Mortality]
+*Liver Neoplasms/su [Surgery]
+Male
+Middle Aged
+*Nutrition Assessment
+*Nutritional Status
+Preoperative Care
+Prognosis
+Retrospective Studies
+Risk Factors
+PY  - 2019
+SE  - Takagi, Kosei. Division of HPB and Transplant Surgery, Erasmus Medical Center, Rotterdam, The Netherlands, kotakagi15@gmail.com.
+Takagi, Kosei. Department of Gastroenterological Surgery, Okayama University Graduate School of Medicine, Dentistry, and Pharmaceutical Sciences, Okayama, Japan, kotakagi15@gmail.com.
+Umeda, Yuzo. Department of Gastroenterological Surgery, Okayama University Graduate School of Medicine, Dentistry, and Pharmaceutical Sciences, Okayama, Japan.
+Yoshida, Ryuichi. Department of Gastroenterological Surgery, Okayama University Graduate School of Medicine, Dentistry, and Pharmaceutical Sciences, Okayama, Japan.
+Nobuoka, Daisuke. Department of Gastroenterological Surgery, Okayama University Graduate School of Medicine, Dentistry, and Pharmaceutical Sciences, Okayama, Japan.
+Kuise, Takashi. Department of Gastroenterological Surgery, Okayama University Graduate School of Medicine, Dentistry, and Pharmaceutical Sciences, Okayama, Japan.
+Fushimi, Takuro. Department of Gastroenterological Surgery, Okayama University Graduate School of Medicine, Dentistry, and Pharmaceutical Sciences, Okayama, Japan.
+Fujiwara, Toshiyoshi. Department of Gastroenterological Surgery, Okayama University Graduate School of Medicine, Dentistry, and Pharmaceutical Sciences, Okayama, Japan.
+Yagi, Takahito. Department of Gastroenterological Surgery, Okayama University Graduate School of Medicine, Dentistry, and Pharmaceutical Sciences, Okayama, Japan.
+SN  - 1421-9883
+0253-4886
+SP  - 226-232
+ST  - Preoperative Controlling Nutritional Status Score Predicts Mortality after Hepatectomy for Hepatocellular Carcinoma
+T2  - Digestive surgery
+TI  - Preoperative Controlling Nutritional Status Score Predicts Mortality after Hepatectomy for Hepatocellular Carcinoma
+UR  - http://ovidsp.ovid.com/ovidweb.cgi?T=JS&PAGE=reference&D=med16&NEWS=N&AN=29672297
+VL  - 36
+ID  - 46
+ER  - 
+
+TY  - JOUR
+AB  - BACKGROUND: Immune-nutritional status has been recently reported as a prognostic factor in hepatocellular carcinoma (HCC). The controlling nutritional status (CONUT) score has been established as a useful tool to evaluate immune-nutritional status. This study aimed to investigate the efficacy of the CONUT score as a prognostic factor in patients undergoing hepatectomy for HCC., METHODS: A total of 295 patients who underwent curative hepatectomy for HCC between January 2007 and December 2014 were retrospectively analyzed. Patients were divided into two groups according to the CONUT score. The impact of the CONUT score on clinicopathological, surgical, and long-term outcomes was evaluated. Subsequently, the impact of prognostic factors, including the CONUT score, associated with outcomes was assessed using multivariate analyses., RESULTS: Of 295 patients, 118 (40%) belonged to the high CONUT group (CONUT score >= 3). The high CONUT group had a significantly lower 5-year recurrence-free survival rate than the low CONUT group (27.9 vs. 41.4%, p = 0.011) and a significantly lower 5-year overall survival rate (61.9 vs. 74.9%, p = 0.006). In multivariate analyses of prognostic factors, the CONUT score was an independent predictor of recurrence-free survival (hazard ratio = 1.64, p = 0.006) and overall survival (hazard ratio = 2.50, p = 0.001)., CONCLUSIONS: The CONUT score is a valuable preoperative predictor of survival in patients undergoing hepatectomy for HCC.
+AU  - Takagi, Kosei
+AU  - Yagi, Takahito
+AU  - Umeda, Yuzo
+AU  - Shinoura, Susumu
+AU  - Yoshida, Ryuichi
+AU  - Nobuoka, Daisuke
+AU  - Kuise, Takashi
+AU  - Araki, Hiroyuki
+AU  - Fujiwara, Toshiyoshi
+C1  - Base de datos: Ovid MEDLINE(R) ALL / PubMed(R) <1946 to Present> Estrategia de bÃºsqueda:
+DO  - https://dx.doi.org/10.1007/s00268-017-3985-8
+IS  - 9
+KW  - Aged
+*Carcinoma, Hepatocellular/su [Surgery]
+Disease-Free Survival
+Female
+Hepatectomy
+Humans
+*Liver Neoplasms/su [Surgery]
+Male
+Middle Aged
+*Nutritional Status
+*Preoperative Period
+Retrospective Studies
+Survival Rate
+PY  - 2017
+SE  - Takagi, Kosei. Department of Gastroenterological Surgery, Okayama University Graduate School of Medicine, Dentistry, and Pharmaceutical Sciences, 2-5-1 Shikata-cho, Kita-ku, Okayama, 700-8558, Japan.
+Yagi, Takahito. Department of Gastroenterological Surgery, Okayama University Graduate School of Medicine, Dentistry, and Pharmaceutical Sciences, 2-5-1 Shikata-cho, Kita-ku, Okayama, 700-8558, Japan. twin1957yagi2000@yahoo.co.jp.
+Umeda, Yuzo. Department of Gastroenterological Surgery, Okayama University Graduate School of Medicine, Dentistry, and Pharmaceutical Sciences, 2-5-1 Shikata-cho, Kita-ku, Okayama, 700-8558, Japan.
+Shinoura, Susumu. Department of Gastroenterological Surgery, Okayama University Graduate School of Medicine, Dentistry, and Pharmaceutical Sciences, 2-5-1 Shikata-cho, Kita-ku, Okayama, 700-8558, Japan.
+Yoshida, Ryuichi. Department of Gastroenterological Surgery, Okayama University Graduate School of Medicine, Dentistry, and Pharmaceutical Sciences, 2-5-1 Shikata-cho, Kita-ku, Okayama, 700-8558, Japan.
+Nobuoka, Daisuke. Department of Gastroenterological Surgery, Okayama University Graduate School of Medicine, Dentistry, and Pharmaceutical Sciences, 2-5-1 Shikata-cho, Kita-ku, Okayama, 700-8558, Japan.
+Kuise, Takashi. Department of Gastroenterological Surgery, Okayama University Graduate School of Medicine, Dentistry, and Pharmaceutical Sciences, 2-5-1 Shikata-cho, Kita-ku, Okayama, 700-8558, Japan.
+Araki, Hiroyuki. Department of Gastroenterological Surgery, Okayama University Graduate School of Medicine, Dentistry, and Pharmaceutical Sciences, 2-5-1 Shikata-cho, Kita-ku, Okayama, 700-8558, Japan.
+Fujiwara, Toshiyoshi. Department of Gastroenterological Surgery, Okayama University Graduate School of Medicine, Dentistry, and Pharmaceutical Sciences, 2-5-1 Shikata-cho, Kita-ku, Okayama, 700-8558, Japan.
+SN  - 1432-2323
+0364-2313
+SP  - 2353-2360
+ST  - Preoperative Controlling Nutritional Status (CONUT) Score for Assessment of Prognosis Following Hepatectomy for Hepatocellular Carcinoma
+T2  - World journal of surgery
+TI  - Preoperative Controlling Nutritional Status (CONUT) Score for Assessment of Prognosis Following Hepatectomy for Hepatocellular Carcinoma
+UR  - http://ovidsp.ovid.com/ovidweb.cgi?T=JS&PAGE=reference&D=med14&NEWS=N&AN=28389736
+VL  - 41
+ID  - 78
+ER  - 
+
+TY  - JOUR
+AB  - BACKGROUND: Postoperative hepatitis B virus (HBV) reactivation (PHR) is associated with resection-induced immunosuppression in patients with HBV-related hepatocellular carcinoma (HCC). Controlling Nutritional Status (CONUT) score is an effective index for evaluating immune-nutrition function. However, the value of COUNT in predicting PHR in HBV-HCC patients remains unknown., METHODS: Totally, 209 HCC patients were enrolled., RESULTS: Preoperative immune function (CD3+CD4+, CD3+CD8+, IgG and IgM) in patients with high CONUT score was significantly worse than that in patients with low CONUT score (P<0.05). Blood test results on postoperative day 7 showed the same trend. In addition, patients with high CONUT score experienced a significantly larger decrease in the proportions of CD3+CD4+ and CD3+CD8+ than those with low CONUT score (P<0.05). In patients with high CONUT score, the incidence of overall complications was also significantly higher (P=0.029) and hospital-stay was significantly longer (P=0.020). Besides, overall survival and recurrence free survival in patients with high CONUT score were significantly worse than those in patients with low CONUT score (48.32 vs. 38.12 months, P<0.001; 36.08 vs. 27.03 months, P=0.001). The incidence of PHR was significantly higher in patients with high COUNT score (P<0.001), and CONUT score was strongly associated with PHR (P<0.001). Additionally, the fellow subgroup results also demonstrated that COUNT score was more effective in predicting PHR in patients with HBV-DNA level <500 copies/ml than patients with HBV-DNA 500-1000 copies/ml., CONCLUSION: CONUT score is an effective indicator predicting survival and PHR in HBV-HCC patients, especially in those with HBV-DNA levels <500 copies/ml. Copyright © 2018 Elsevier Ltd, BASO ~ The Association for Cancer Surgery, and the European Society of Surgical Oncology. All rights reserved.
+AU  - Wang, Xiao-Bo
+AU  - Chen, Jie
+AU  - Xiang, Bang-De
+AU  - Wu, Fei-Xiang
+AU  - Li, Le-Qun
+C1  - Base de datos: Ovid MEDLINE(R) ALL / PubMed(R) <1946 to Present> Estrategia de bÃºsqueda:
+DO  - https://dx.doi.org/10.1016/j.ejso.2018.11.007
+IS  - 5
+KW  - *Carcinoma, Hepatocellular/im [Immunology]
+Carcinoma, Hepatocellular/su [Surgery]
+*Carcinoma, Hepatocellular/vi [Virology]
+*DNA, Viral/an [Analysis]
+DNA, Viral/im [Immunology]
+Female
+Hepatectomy
+*Hepatitis B/im [Immunology]
+*Hepatitis B virus/im [Immunology]
+Humans
+Liver Function Tests
+*Liver Neoplasms/im [Immunology]
+Liver Neoplasms/su [Surgery]
+*Liver Neoplasms/vi [Virology]
+Male
+Middle Aged
+Nutritional Status
+Polymerase Chain Reaction
+Predictive Value of Tests
+Prognosis
+Risk Factors
+Survival Rate
+Viral Load
+Virus Activation
+PY  - 2019
+SE  - Wang, Xiao-Bo. Department of Hepatobiliary Surgery, Affiliated Tumor Hospital of Guangxi Medical University, Nanning, 530021, China.
+Chen, Jie. Department of Hepatobiliary Surgery, Affiliated Tumor Hospital of Guangxi Medical University, Nanning, 530021, China.
+Xiang, Bang-De. Department of Hepatobiliary Surgery, Affiliated Tumor Hospital of Guangxi Medical University, Nanning, 530021, China.
+Wu, Fei-Xiang. Department of Hepatobiliary Surgery, Affiliated Tumor Hospital of Guangxi Medical University, Nanning, 530021, China.
+Li, Le-Qun. Department of Hepatobiliary Surgery, Affiliated Tumor Hospital of Guangxi Medical University, Nanning, 530021, China. Electronic address: jxncxzblw@163.com.
+SN  - 1532-2157
+0748-7983
+SP  - 782-787
+ST  - High CONUT score predicts poor survival and postoperative HBV reactivation in HBV-related hepatocellular carcinoma patients with low HBV-DNA levels
+T2  - European journal of surgical oncology : the journal of the European Society of Surgical Oncology and the British Association of Surgical Oncology
+TI  - High CONUT score predicts poor survival and postoperative HBV reactivation in HBV-related hepatocellular carcinoma patients with low HBV-DNA levels
+UR  - http://ovidsp.ovid.com/ovidweb.cgi?T=JS&PAGE=reference&D=med16&NEWS=N&AN=30503048
+VL  - 45
+ID  - 44
+ER  - 
+

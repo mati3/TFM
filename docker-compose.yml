@@ -11,17 +11,17 @@ services:
       - './frontend:/myapp/frontend'
       - '/myapp/frontend/node_modules'
     links: 
-      - backend
+      - backendUser
     ports:
       - '4201:4200'
 
-  backend: #name of the second service
+      backendUser: #name of the second service
     build: 
-      context: ./backend
+      context: ./backendUser
       dockerfile: Dockerfile
     ports:
       - "3000:3000" #specify ports forewarding
-    container_name: back-container
+    container_name: backUser-container
     restart: always
     links:
       - database # link this service to the database service
@@ -32,3 +32,20 @@ services:
       dockerfile: Dockerfile
     container_name: database-container
     restart: always
+
+  backendFile: #name of the second service
+    build: 
+      context: ./backendFile
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000" #specify ports forewarding
+    container_name: backFile-container
+    restart: always
+    links: 
+      - mongodb
+
+  mongodb:
+    image: mongo
+    container_name: mongodb
+    ports:
+        - "27017:27017"

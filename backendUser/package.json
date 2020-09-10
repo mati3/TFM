@@ -1,0 +1,31 @@
+{
+  "name": "Rest-User-Bio",
+  "version": "1.0.0",
+  "description": "Api Rest User Biomedical Consultations",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mati3/TFM.git"
+  },
+  "author": "Matilde Cabrera González",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mati3/TFM/issues"
+  },
+  "homepage": "https://github.com/mati3/TFM#readme",
+  "dependencies": {
+    "@angular/cli": "~9.1.1",
+    "body-parser": "^1.18.3",
+    "ejs": "latest",
+    "express": "^4.16.4",
+    "grpc": "^1.6.0"
+  },
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "mocha": "^5.1.1",
+    "mysql": "^2.16.0"
+  }
+}
