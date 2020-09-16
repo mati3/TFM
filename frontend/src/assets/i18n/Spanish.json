@@ -50,6 +50,20 @@
         "add": "Añadir nuevo usuario",
         "edit": "Editar",
         "delete": "Eliminar",
+        "accept": "Aceptar",
         "passwordblanck": "(Dejar en blanco si es la misma contraseña)"
+    },
+    "files": {
+        "included": "Incluido",
+        "negative": "Negativo",
+        "positive": "Positivo",
+        "tis": "TIS",
+        "fvs": "FVS",
+        "fds": "FDS",
+        "filter": "Filtros",
+        "search": "Busqueda",
+        "upload": "Subir",
+        "cancel": "Cancelar",
+        "remove": "Eliminar"
     }
 }

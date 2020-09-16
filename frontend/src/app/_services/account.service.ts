@@ -11,6 +11,7 @@ import { User } from '@app/_models';
 export class AccountService {
     private userSubject: BehaviorSubject<User>;
     public user: Observable<User>;
+    apt: boolean = false;
 
     constructor(
         private router: Router,
@@ -43,6 +44,10 @@ export class AccountService {
 
     register(user: User) {
         return this.http.post(`${environment.apiUrl}/api/user/register`, user);
+    }
+
+    accept(id: string) {
+        return this.http.get(`${environment.apiUrl}/api/acceptuser/${id}`);
     }
 
     getAll() {

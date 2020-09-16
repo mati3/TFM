@@ -1,65 +1,110 @@
-<div class="col-md-6 offset-md-3 mt-5">
-
-<!-- no admite form....
-<form class="form-inline md-form mr-auto mb-4">
-    <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
-    <button class="btn aqua-gradient btn-rounded btn-sm my-0" type="submit">Search</button>
-</form>
--->
-
-<!-- Buscardor -->
-<h4>Buscador</h4>
-<div class="form-inline my-2 my-lg-0">
-  <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-  <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-</div>
-<!-- <div id="search-component">
-  <h4><label for="search-box">Hero Search</label></h4>
-
-  <input #searchBox id="search-box" (input)="search(searchBox.value)" />
-
-  <ul class="search-result">
-    <li *ngFor="let hero of heroes$ | async" >
-      <a routerLink="/detail/{{hero.id}}">
-        {{hero.name}}
-      </a>
-    </li>
-  </ul>
-</div> -->
-
-<!-- filtros-->
-<h4>Filtros</h4>
-<div class="input-group">
-  <input type="text" class="form-control" aria-label="Text input with segmented dropdown button">
-  <div class="input-group-append">
-    <button type="button" class="btn btn-outline-secondary">Filter</button>
-    <button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-      <span class="sr-only">Toggle Dropdown</span>
-    </button>
-    <div class="dropdown-menu">
-      <a class="dropdown-item" href="#">Filter</a>
-      <a class="dropdown-item" href="#">Another Filter</a>
-      <a class="dropdown-item" href="#">Something else here</a>
-      <div role="separator" class="dropdown-divider"></div>
-      <a class="dropdown-item" href="#">Separated link</a>
+<div class="col-md-9 offset-md-1 mt-5">
+  <a routerLink="filter" class="btn btn-sm btn-success mb-2">{{ 'files.filter' | translate }}</a>
+  <a routerLink="search" class="btn btn-sm btn-success mb-2">{{ 'files.search' | translate }}</a>
+  <!-- espacio de archivos por ahora selecciona-->
+  <h4>Selección de archivos</h4>
+    <div>
+      <form [formGroup]="myForm">
+        <div class="form-group">
+          <caption>{{'files.fvs' | translate}}</caption>
+            <input formControlName="file" id="file" type="file" multiple
+                class="form-control" (change)="onFileChange($event,'filesFVS')">
+        </div>
+      </form>
     </div>
-  </div>
+ 
+    <table class="table">
+      <thead>
+        <tr>
+          <th width="50%">Name</th>
+          <th>Size</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of filesFVS">
+          <td><strong>{{ item.name }}</strong></td>
+          <td nowrap>{{ item.size/1024/1024 | number:'.2' }} MB</td>
+          <td nowrap>
+            <button type="button" class="btn btn-success btn-xs" 
+              (click)="upload(item)"  [disabled]="item.invalid" >
+              <span class="glyphicon glyphicon-upload"></span> {{'files.upload' | translate}}
+            </button>
+            <button type="button" class="btn btn-danger btn-xs"
+              (click)="remove(item,'filesFVS')" [disabled]="!item.invalid">
+              <span class="glyphicon glyphicon-trash"></span> {{'files.remove' | translate}}
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div>
+      <form [formGroup]="myForm">
+        <div class="form-group">
+          <caption>{{'files.fds' | translate}}</caption>
+            <input formControlName="file" id="file" type="file" 
+                class="form-control" (change)="onFileChange($event, 'filesFDS')">
+        </div>
+      </form>
+    </div>
+ 
+    <table class="table">
+      <thead>
+        <tr>
+          <th width="50%">Name</th>
+          <th>Size</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of filesFDS">
+          <td><strong>{{ item.name }}</strong></td>
+          <td nowrap>{{ item.size/1024/1024 | number:'.2' }} MB</td>
+          <td nowrap>
+            <button type="button" class="btn btn-success btn-xs" 
+              (click)="upload(item)" [disabled]="item.invalid" >
+              <span class="glyphicon glyphicon-upload"></span> {{'files.upload' | translate}}
+            </button>
+            <button type="button" class="btn btn-danger btn-xs"
+              (click)="remove(item, 'filesFDS')" [disabled]="!item.invalid">
+              <span class="glyphicon glyphicon-trash"></span> {{'files.remove' | translate}}
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div>
+      <form [formGroup]="myForm">
+        <div class="form-group">
+          <caption>{{'files.tis' | translate}}</caption>
+            <input formControlName="file" id="file" type="file" 
+                class="form-control" (change)="onFileChange($event, 'filesTIS')">
+        </div>
+      </form>
+    </div>
+ 
+    <table class="table">
+      <thead>
+        <tr>
+          <th width="50%">Name</th>
+          <th>Size</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of filesTIS">
+          <td><strong>{{ item.name }}</strong></td>
+          <td nowrap>{{ item.size/1024/1024 | number:'.2' }} MB</td>
+          <td nowrap>
+            <button type="button" class="btn btn-success btn-xs" 
+              (click)="upload(item)" [disabled]="item.invalid" >
+              <span class="glyphicon glyphicon-upload"></span> {{'files.upload' | translate}}
+            </button>
+            <button type="button" class="btn btn-danger btn-xs"
+              (click)="remove(item, 'filesTIS')" [disabled]="!item.invalid">
+              <span class="glyphicon glyphicon-trash"></span> {{'files.remove' | translate}}
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
 </div>
-<!-- espacio de archivos por ahora selecciona-->
-<h4>Selección de archivos</h4>
-<div class="input-group mb-3">
-  <div class="custom-file">
-    <input type="file" class="custom-file-input" id="inputGroupFile02">
-    <label class="custom-file-label" for="inputGroupFile02">Choose file</label>
-  </div>
-  <div class="input-group-append">
-    <span class="input-group-text" id="">Upload</span>
-  </div>
-</div>
-
-
-
-resultados:
-archivos 
-medidas de rendimiento
-

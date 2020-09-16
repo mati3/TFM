@@ -22,6 +22,18 @@ module.exports = function (app, mysql) {
       });
     });
 
+       /**
+     * change param accept : id
+     */
+    app.get('/api/acceptuser/:id', (req, res) => {
+      const id = req.params.id;
+      mysql.query("UPDATE users set accept=true WHERE id = ?", id, function (err, result, fields) {
+        if (err) res.send(err);
+        res.send(result);
+        console.log(result);
+      });
+    });
+    
   /**
      * DELETE user : id
      */

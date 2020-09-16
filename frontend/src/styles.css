@@ -76,3 +76,14 @@ a { cursor: pointer; }
     text-align: center;
     box-sizing: content-box;
 }
+
+.drop-zone { 
+  border: dotted 3px lightgray; 
+  height: 100px;
+}
+
+
+.form-control{
+  background-color: transparent;
+  border: 1px none;
+}

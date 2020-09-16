@@ -9,5 +9,6 @@ export class User {
     last_name: string;
     token?: string;
     role: Role;
+    accept: boolean;
 
 }

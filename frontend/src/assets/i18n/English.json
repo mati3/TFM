@@ -50,6 +50,20 @@
         "add": "Add User",
         "edit": "Edit",
         "delete": "Delete",
+        "accept": "Accept",
         "passwordblanck": "(Leave blank to keep the same password)"
+    },
+    "files": {
+        "included": "Included",
+        "negative": "Negative",
+        "positive": "Positive",
+        "tis": "TIS",
+        "fvs": "FVS",
+        "fds": "FDS",
+        "filter": "Filter",
+        "search": "Search",
+        "upload": "Upload",
+        "cancel": "Cancel",
+        "remove": "Remove"
     }
 }

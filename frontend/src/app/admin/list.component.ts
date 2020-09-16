@@ -1,13 +1,16 @@
 ﻿import { Component, OnInit } from '@angular/core';
 import { first } from 'rxjs/operators';
-
-import { AccountService } from '@app/_services';
+import { AccountService, AlertService } from '@app/_services';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({ templateUrl: 'list.component.html' })
 export class ListComponent implements OnInit {
     users = null;
 
-    constructor(private accountService: AccountService) {
+    constructor(private accountService: AccountService,
+        private route: ActivatedRoute,
+        private router: Router,
+        private alertService: AlertService) {
         }
 
     ngOnInit() {
@@ -24,5 +27,20 @@ export class ListComponent implements OnInit {
             .subscribe(() => {
                 this.users = this.users.filter(x => x.id !== id) 
             });
+    }
+
+    acceptUser(id: string) {
+        const user = this.users.find(x => x.id === id);
+        this.accountService.accept(id)
+            .pipe(first())
+            .subscribe(
+                data => {
+                    this.alertService.success('Update successful', { keepAfterRouteChange: true });
+                    this.router.navigate(['..', { relativeTo: this.route }]);
+                },
+                error => {
+                    this.alertService.error(error);
+                });
+        user.isSuccess = user.accept;
     }
 }
