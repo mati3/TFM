@@ -26,7 +26,7 @@
           <td nowrap>{{ item.size/1024/1024 | number:'.2' }} MB</td>
           <td nowrap>
             <button type="button" class="btn btn-success btn-xs" 
-              (click)="upload(item)"  [disabled]="item.invalid" >
+              (click)="upload(item,'filesFVS')"  [disabled]="item.invalid" >
               <span class="glyphicon glyphicon-upload"></span> {{'files.upload' | translate}}
             </button>
             <button type="button" class="btn btn-danger btn-xs"
@@ -60,7 +60,7 @@
           <td nowrap>{{ item.size/1024/1024 | number:'.2' }} MB</td>
           <td nowrap>
             <button type="button" class="btn btn-success btn-xs" 
-              (click)="upload(item)" [disabled]="item.invalid" >
+              (click)="upload(item, 'filesFDS')" [disabled]="item.invalid" >
               <span class="glyphicon glyphicon-upload"></span> {{'files.upload' | translate}}
             </button>
             <button type="button" class="btn btn-danger btn-xs"
@@ -95,7 +95,7 @@
           <td nowrap>{{ item.size/1024/1024 | number:'.2' }} MB</td>
           <td nowrap>
             <button type="button" class="btn btn-success btn-xs" 
-              (click)="upload(item)" [disabled]="item.invalid" >
+              (click)="upload(item, 'filesTIS')" [disabled]="item.invalid" >
               <span class="glyphicon glyphicon-upload"></span> {{'files.upload' | translate}}
             </button>
             <button type="button" class="btn btn-danger btn-xs"

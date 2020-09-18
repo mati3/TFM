@@ -1,6 +1,6 @@
 ﻿import { Component, OnInit } from '@angular/core';
 import { first } from 'rxjs/operators';
-import { AccountService, AlertService } from '@app/_services';
+import { AccountService, AlertService, FilterService } from '@app/_services';
 import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({ templateUrl: 'list.component.html' })
@@ -10,7 +10,8 @@ export class ListComponent implements OnInit {
     constructor(private accountService: AccountService,
         private route: ActivatedRoute,
         private router: Router,
-        private alertService: AlertService) {
+        private alertService: AlertService,
+        private filterService: FilterService) {
         }
 
     ngOnInit() {
@@ -27,6 +28,9 @@ export class ListComponent implements OnInit {
             .subscribe(() => {
                 this.users = this.users.filter(x => x.id !== id) 
             });
+        this.filterService.deleteUser(user.email)
+            .pipe(first())
+            .subscribe();  
     }
 
     acceptUser(id: string) {
@@ -41,6 +45,9 @@ export class ListComponent implements OnInit {
                 error => {
                     this.alertService.error(error);
                 });
-        user.isSuccess = user.accept;
+        this.filterService.addUser(user.email)
+            .pipe(first())
+            .subscribe();        
+        user.isSuccess = user.accept = true;
     }
 }

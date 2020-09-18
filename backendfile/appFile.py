@@ -22,14 +22,13 @@ app.config.from_mapping(config)
 cache = Cache(app)
 
 CORS(app)
-#cors = CORS(app, resources={r"/*": {"origins": "http://localhost:4201"}}, supports_credentials = True )
 
 conn = MongoClient('mongodb', 27017)
 # create db
 db = conn.baseDeDatos
 # create collection Clientes
-
 client = dbClientes(db.Clientes)
+print(client)
 
 @app.route('/')
 @cache.cached(timeout=50)
@@ -42,32 +41,34 @@ def hello_world():
 def cesta(correo_id):
     return jsonify(client.getCesta(correo_id)), 200
 
-# recorre el directorio y devuelve lista d los clientes
-@app.route('/clientes', methods = ['GET','POST'])
-@cache.cached(timeout=50)
-def clientes():
-    return  jsonify(client.getClientes()), 200
-
 @app.route('/todo', methods = ['GET','POST'])
 @cache.cached(timeout=50)
 def todo():
     return  jsonify(client.getAll()), 200
-
-# new client
-@app.route('/newclient/<string:correo_id>', methods = ['GET','POST'])
-def newclient(correo_id):
-    return  jsonify(client.insertClient(correo_id)), 200    
-
 
 # new cesta 
 @app.route('/file/add/<string:correo_id>/<string:cesta_id>', methods = ['GET','POST'])
 def newcesta(correo_id,cesta_id):
     return jsonify(client.insertCesta(correo_id,cesta_id)), 200
 
-@app.route('/delete/<string:correo_id>', methods = ['GET','POST'])
+#############
+
+# recorre el directorio y devuelve lista d los clientes
+@app.route('/clientes', methods = ['GET','POST'])
+@cache.cached(timeout=50)
+def clientes():
+    return  jsonify(client.getClientes()), 200
+
+# new client
+@app.route('/newclient/<string:correo_id>', methods = ['GET','POST'])
+def newclient(correo_id):
+    return  jsonify(client.insertClient(correo_id)), 200    
+
+# remove client
+@app.route('/delete/<string:correo_id>', methods = ['DELETE'])
 def deleteClient(correo_id):
     return  jsonify(client.deleteClient(correo_id)), 200 
-
+    
 @app.route('/removefile', methods = ['POST'])
 def removefile():
     print(request.files)
@@ -92,10 +93,9 @@ def removefile():
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-@app.route('/upload/<string:correo_id>', methods = ['POST'])
-def upload(correo_id):
-    print(request.files)
-    print(request.files.get('file'))
+# insert file in folder uploads
+@app.route('/upload/<string:correo_id>/<string:typefile>', methods = ['POST'])
+def upload(correo_id, typefile):
     response = ''   
     # check if the post request has the file part
     if 'file' not in request.files:
@@ -109,7 +109,14 @@ def upload(correo_id):
         response = 'file upload ok'
         filename = secure_filename(file.filename)
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        print(client.insertCesta(correo_id,filename))
+
+        if "included" in filename:
+            nameaux = filename.replace("included", "negative") 
+            print(nameaux)
+            if os.listdir(app.config['UPLOAD_FOLDER']).count(nameaux):
+                data = nameaux.read()
+                print(data)
+        #print(client.insertFile(correo_id,typefile,filename))
         return jsonify(response), 200
     response = 'response post ok'
     return jsonify(response), 200

@@ -39,11 +39,11 @@ export class WorkspaceComponent {
       });
     }
   }
-  upload(file){
+  upload(file,typefile: String){
     const formData = new FormData();
     formData.append('file', file);
     file.invalid = true
-    this.http.post(`http://localhost:5000/upload/${this.user.email}`, formData)
+    this.http.post(`http://localhost:5000/upload/${this.user.email}/${typefile}`, formData)
       .subscribe(res => {
         console.log(res);
       })

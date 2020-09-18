@@ -16,9 +16,6 @@ ENV PATH /myapp/frontend/node_modules/.bin:$PATH
 COPY package.json /myapp/frontend/package.json
 RUN npm install
 RUN npm install -g @angular/cli
-RUN npm install ngx-cookie-service --save
-RUN npm install ng2-file-upload --save
-RUN npm install angular-file --save-dev
 
 # add app
 #COPY . .

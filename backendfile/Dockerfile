@@ -24,22 +24,6 @@ ENV PYTHONUNBUFFERED 1
 # lupyne
 RUN pip install lupyne
 
-#RUN tar xzvf jdk-8u261-linux-x64.tar.gz
-#RUN mkdir /usr/lib/jvm/
-#RUN mv jdk1.8.0_261/ /usr/lib/jvm/jdk1.8.0_261
-#RUN update-alternatives --install "/usr/bin/java" "java" "/usr/lib/jvm/jdk1.8.0_261/bin/java" 0
-#RUN update-alternatives --install "/usr/bin/javac" "javac" "/usr/lib/jvm/jdk1.8.0_261/bin/javac" 0
-#RUN update-alternatives --set java /usr/lib/jvm/jdk1.8.0_261/bin/java
-#RUN update-alternatives --set javac /usr/lib/jvm/jdk1.8.0_261/bin/javac
-#RUN export JAVA_HOME=/usr/lib/jvm/jdk1.8.0_261
-#RUN export PATH=$PATH:$JAVA_HOME/bin
-
-#RUN svn co https://svn.apache.org/repos/asf/lucene/pylucene/trunk/jcc jcc
-# cambiar en archivo setup.py oracle 8 por jdk1.8.0_261
-#RUN sed -i 's/java-8-oracle/jdk1.8.0_261/g' jcc/setup.py
-#RUN python jcc/setup.py build
-#RUN python jcc/setup.py install
-
 # Create a directory where our app will be placed
 RUN mkdir -p /usr/src/app
 
