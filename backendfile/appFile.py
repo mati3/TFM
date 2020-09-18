@@ -8,8 +8,8 @@ import os
 from werkzeug.utils import secure_filename
 from flask_caching import Cache
 
-#from src.lucene import Lucene
-# lc = Lucene
+from src.lucene import Lucene
+lc = Lucene()
 
 config = {
     "DEBUG": True,          
@@ -31,7 +31,7 @@ conn = MongoClient('mongodb', 27017)
 db = conn.baseDeDatos
 # create collection Clientes
 client = dbClientes(db.Clientes)
-print(client)
+
 
 @app.route('/')
 @cache.cached(timeout=50)
@@ -98,7 +98,7 @@ def allowed_file(filename):
 
 def concat_file(file1, file2, myfolder):
     count = file1.find("included")
-    newstr = file1[:count]
+    filename = file1[:count]+".txt"
     f1 = open(myfolder+'/'+file1, "r").read()
     f2 = open(myfolder+'/'+file2, "r").read()
     indexfolder = myfolder+'/indexar/'
@@ -106,9 +106,12 @@ def concat_file(file1, file2, myfolder):
         os.stat(indexfolder)
     except:
         os.mkdir(indexfolder)
-    newfile = open(indexfolder+newstr+".txt", "a")
+    newfile = open(indexfolder+filename, "a")
     newfile.write(f1 + f2)
+    newfile.close()
     # aqui directamente llamo a indexar ???
+    filepath = indexfolder+filename
+    lc.indexar(filepath,filename)
 
 def checkpair(filename, myfolder):
     if "included" in filename:
