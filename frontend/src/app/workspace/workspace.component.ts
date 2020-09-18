@@ -62,7 +62,7 @@ export class WorkspaceComponent {
     }
     const formData = new FormData();
     formData.append('file', file);
-    this.http.post('http://localhost:5000/removefile', formData)
+    this.http.post(`http://localhost:5000/removefile/${this.user.email}`, formData)
       .subscribe(res => {
         console.log(res);
       })

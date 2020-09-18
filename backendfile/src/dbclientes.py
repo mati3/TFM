@@ -1,10 +1,8 @@
-from src.lucene import Lucene
 import json
 from pymongo import MongoClient
 
 class dbClientes:
     def __init__(self, collection):
-        self.lc = Lucene
         self.client = collection
 
 #########

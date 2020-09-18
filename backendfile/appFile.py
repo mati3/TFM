@@ -8,6 +8,9 @@ import os
 from werkzeug.utils import secure_filename
 from flask_caching import Cache
 
+#from src.lucene import Lucene
+# lc = Lucene
+
 config = {
     "DEBUG": True,          
     "CACHE_TYPE": "simple",
@@ -69,8 +72,8 @@ def newclient(correo_id):
 def deleteClient(correo_id):
     return  jsonify(client.deleteClient(correo_id)), 200 
     
-@app.route('/removefile', methods = ['POST'])
-def removefile():
+@app.route('/removefile/<string:correo_id>', methods = ['POST'])
+def removefile(correo_id):
     print(request.files)
     print(request.files.get('file'))
     response = ''   
@@ -85,13 +88,37 @@ def removefile():
     if file and allowed_file(file.filename):
         response = 'file remove ok'
         filename = secure_filename(file.filename)
-        os.remove(app.config['UPLOAD_FOLDER']+'/'+ filename)
+        os.remove(app.config['UPLOAD_FOLDER']+'/'+correo_id+'/'+ filename)
         return jsonify(response), 200
     response = 'response post ok'
     return jsonify(response), 200
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+def concat_file(file1, file2, myfolder):
+    count = file1.find("included")
+    newstr = file1[:count]
+    f1 = open(myfolder+'/'+file1, "r").read()
+    f2 = open(myfolder+'/'+file2, "r").read()
+    indexfolder = myfolder+'/indexar/'
+    try: 
+        os.stat(indexfolder)
+    except:
+        os.mkdir(indexfolder)
+    newfile = open(indexfolder+newstr+".txt", "a")
+    newfile.write(f1 + f2)
+    # aqui directamente llamo a indexar ???
+
+def checkpair(filename, myfolder):
+    if "included" in filename:
+        nameaux = filename.replace("included", "negative") 
+        if os.listdir(myfolder).count(nameaux):
+            concat_file(filename, nameaux, myfolder)
+    elif "negative" in filename:
+        nameaux = filename.replace("negative", "included") 
+        if os.listdir(myfolder).count(nameaux):
+            concat_file(nameaux, filename, myfolder)
 
 # insert file in folder uploads
 @app.route('/upload/<string:correo_id>/<string:typefile>', methods = ['POST'])
@@ -108,15 +135,17 @@ def upload(correo_id, typefile):
     if file and allowed_file(file.filename):
         response = 'file upload ok'
         filename = secure_filename(file.filename)
-        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-
-        if "included" in filename:
-            nameaux = filename.replace("included", "negative") 
-            print(nameaux)
-            if os.listdir(app.config['UPLOAD_FOLDER']).count(nameaux):
-                data = nameaux.read()
-                print(data)
-        #print(client.insertFile(correo_id,typefile,filename))
+        # comprobar si el directorio para el usuario actual existe
+        myfolder = app.config['UPLOAD_FOLDER']+'/'+correo_id
+        try: 
+            os.stat(myfolder)
+        except:
+            os.mkdir(myfolder)
+        # guardar archivo en directorio para el usuario actual
+        file.save(os.path.join(myfolder, filename))
+        # chequeo si el par del archivo existe, si es asi se concatenaran para indexar
+        checkpair(filename, myfolder)
+        
         return jsonify(response), 200
     response = 'response post ok'
     return jsonify(response), 200
