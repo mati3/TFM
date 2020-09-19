@@ -40,32 +40,17 @@
         <li class="nav-item">
           <a class="nav-link text-white" routerLink="account/profile" *ngIf="user">{{'nav.profile' | translate}}</a>
         </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link text-white dropdown-toggle" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{'nav.selectl' | translate}}</a>
-          <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-            <a class="dropdown-item" (click)="switchLang('English')">{{'nav.english' | translate}}</a>
-            <a class="dropdown-item" (click)="switchLang('Spanish')">{{'nav.spanish' | translate}}</a>
-          </div>
-        </li>
       </ul>
     </div>
-<!--     <span class="form-inline">
-     <select class="form-control" #selectedLang (change)="switchLang(selectedLang.value)">
-        <option *ngFor="let language of translate.getLangs()" [value]="language"
-          [selected]="language === translate.getCurrentLang">
-          {{ language }}
-        </option>
-      </select> -->
-      <li class="nav-item dropdown">
-        <a class="nav-link text-white dropdown-toggle" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          {{'nav.selectl' | translate}}
-        </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-          <a class="dropdown-item" (click)="switchLang('English')">{{'nav.english' | translate}}</a>
-          <a class="dropdown-item" (click)="switchLang('Spanish')">{{'nav.spanish' | translate}}</a>
-        </div>
-      </li>
-<!--     </span> -->
+    <ul class="nav-item dropdown">
+      <a class="nav-link text-white dropdown-toggle" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        {{'nav.selectl' | translate}}
+      </a>
+      <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+        <a class="dropdown-item" (click)="switchLang('English')">{{'nav.english' | translate}}</a>
+        <a class="dropdown-item" (click)="switchLang('Spanish')">{{'nav.spanish' | translate}}</a>
+      </div>
+    </ul>
   </nav>
   
   
@@ -89,17 +74,17 @@
     <ul class="text-info">
     <div class="row">
       <div class="col l6 s12">
-    <p>Fundación "Mati_TFM"</p>
-    </div>
-        <div class="col l6 s12">
-    <p>Terminos de uso</p>
-    </div>
-        <div class="col l6 s12" >
-    <p>Politica de privacidad</p>
-    </div>
-        <div class="col l6 s12">
-    <p>Derechos de autor</p>
-    </div>
+        <a href="https://github.com/mati3/TFM" target="blank">Repositorio Git</a>
+      </div>
+      <div class="col l6 s12">
+        <a href="https://github.com/mati3/TFM/blob/master/LICENSE" target="blank">LICENSE</a>
+      </div>
+      <div class="col l6 s12" >
+        <a href="https://www.comunidad.madrid/hospital/ramonycajal/" target="blank">Ramón y Cajal</a>
+      </div>
+      <div class="col l6 s12">
+        <a href="https://etsiit.ugr.es/" target="blank">ETSIIT</a>
+      </div>
     </div>
     </ul>
   </div>	
