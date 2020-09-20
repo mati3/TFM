@@ -83,7 +83,7 @@ a { cursor: pointer; }
 }
 
 
-.form-control{
+.form-control#file{
   background-color: transparent;
   border: 1px none;
 }

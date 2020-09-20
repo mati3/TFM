@@ -6,6 +6,7 @@ import { map } from 'rxjs/operators';
 
 import { environment } from '@environments/environment';
 import { User } from '@app/_models';
+import { AlertService } from './alert.service';
 
 @Injectable({ providedIn: 'root' })
 export class AccountService {
@@ -15,7 +16,8 @@ export class AccountService {
 
     constructor(
         private router: Router,
-        private http: HttpClient
+        private http: HttpClient,
+        private alertService:AlertService
     ) {
         this.userSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('user')));
         this.user = this.userSubject.asObservable();
@@ -30,9 +32,14 @@ export class AccountService {
     login(username, password) {
         return this.http.post<User>(`${environment.apiUrl}/api/users/authenticate`, { username, password })
             .pipe(map(user => {
-                localStorage.setItem('user', JSON.stringify(user));
-                this.userSubject.next(user);
-                return user;
+                if (user[0].accept){
+                    localStorage.setItem('user', JSON.stringify(user));
+                    this.userSubject.next(user);
+                    return user;
+                }else {
+                    return  user=null;        
+                }
+                     
             }));
     }
 

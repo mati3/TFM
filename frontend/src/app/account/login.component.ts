@@ -53,13 +53,17 @@ export class LoginComponent implements OnInit {
         this.accountService.login(this.f.username.value, this.f.password.value)
             .pipe(first())
             .subscribe(
-                data => {
-                    this.router.navigate([this.returnUrl]);
+                user =>{
+                    if (user == null){
+                        this.alertService.error("User not registered or not accepted");
+                        this.loading = false;
+                    }else {
+                        this.router.navigate([this.returnUrl]);
+                    }
                 },
                 error => {
                     this.alertService.error(error);
                     this.loading = false;
                 });
-        location.reload();
     }
 }
