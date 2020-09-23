@@ -1,14 +1,22 @@
 <div class="col-md-9 offset-md-1 mt-5">
-  <a routerLink="filter" class="btn btn-sm btn-success mb-2">{{ 'files.filter' | translate }}</a>
-  <a routerLink="search" class="btn btn-sm btn-success mb-2">{{ 'files.search' | translate }}</a>
+  <a routerLink="filter" class="btn btn-sm btn-success mb-2 mr-1">{{ 'files.filter' | translate }}</a>
+  <a routerLink="search" class="btn btn-sm btn-success mb-2 mr-1">{{ 'files.search' | translate }}</a>
   <!-- espacio de archivos por ahora selecciona-->
   <h4>Selección de archivos</h4>
     <div>
       <form [formGroup]="myForm">
         <div class="form-group">
-          <caption>{{'files.fvs' | translate}}</caption>
-            <input formControlName="file" id="file" type="file" multiple
-                class="form-control" (change)="onFileChange($event,'filesFVS')">
+          <caption class="row">{{'files.fvs' | translate}}
+            <button type="button" class="btn btn-outline-danger btn-sm float-left  ml-3" data-toggle="modal" data-target="#deleteIndex" (click)="filetype('filesFVS')">
+              <span class="glyphicon glyphicon-trash"></span> Clear indexar FVS
+            </button>
+          </caption>
+            <label class="btn btn-dark btn-rounded waves-effect btn-sm float-left mr-1">Select positive file            
+              <input formControlName="filepositive" id="file" type="file" class="form-control" (change)="onFileChange($event,'filesFVS')">
+            </label>
+            <label class="btn btn-outline-dark btn-rounded waves-effect btn-sm float-left mr-1" data-toggle="tooltip" title="Primero ha de seleccionar el archivo positivo">Select negative file  
+              <input formControlName="filenegative" id="file" type="file" class="form-control" (change)="onFileChange($event,'filesFVS')">
+            </label>
         </div>
       </form>
     </div>
@@ -16,14 +24,14 @@
     <table class="table">
       <thead>
         <tr>
-          <th width="50%">Name</th>
-          <th>Size</th>
+          <th width="50%">Positive</th>
+          <th width="50%">Negative</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let item of filesFVS">
-          <td><strong>{{ item.name }}</strong></td>
-          <td nowrap>{{ item.size/1024/1024 | number:'.2' }} MB</td>
+          <td><strong>{{ item.filepositive.name }}</strong></td>
+          <td nowrap><strong>{{ item.filenegative.name }}</strong></td>
           <td nowrap>
             <button type="button" class="btn btn-success btn-xs" 
               (click)="upload(item,'filesFVS')"  [disabled]="item.invalid" >
@@ -33,6 +41,10 @@
               (click)="remove(item,'filesFVS')" [disabled]="!item.invalid">
               <span class="glyphicon glyphicon-trash"></span> {{'files.remove' | translate}}
             </button>
+            <button type="button" class="btn btn-warning btn-xs"
+              (click)="clear(item,'filesFVS')" [disabled]="item.invalid">
+              <span class="glyphicon glyphicon-trash"></span> Clear
+            </button>
           </td>
         </tr>
       </tbody>
@@ -40,24 +52,34 @@
     <div>
       <form [formGroup]="myForm">
         <div class="form-group">
-          <caption>{{'files.fds' | translate}}</caption>
-            <input formControlName="file" id="file" type="file" 
-                class="form-control" (change)="onFileChange($event, 'filesFDS')">
+          <caption class="row">{{'files.fds' | translate}}
+            <button type="button" class="btn btn-outline-danger btn-sm float-left  ml-3" data-toggle="modal" data-target="#deleteIndex" (click)="filetype('filesFDS')">
+              <span class="glyphicon glyphicon-trash"></span> Clear indexar FDS
+            </button>
+          </caption>
+          <label class="btn btn-dark btn-rounded waves-effect btn-sm float-left mr-1" >Select positive file 
+            <input formControlName="filepositive" id="file" type="file" class="form-control" (change)="onFileChange($event, 'filesFDS')"> 
+          </label>
+          <div>
+          <label class="btn btn-outline-dark btn-rounded waves-effect btn-sm float-left mr-1" data-toggle="tooltip" title="Primero ha de seleccionar el archivo positivo">Select negative file
+            <input formControlName="filenegative" id="file" type="file" class="form-control" (change)="onFileChange($event, 'filesFDS')">
+          </label>
+          </div>
         </div>
       </form>
     </div>
  
     <table class="table">
-      <thead>
+      <thead> 
         <tr>
-          <th width="50%">Name</th>
-          <th>Size</th>
+          <th width="50%">Positive</th>
+          <th width="50%">Negative</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let item of filesFDS">
-          <td><strong>{{ item.name }}</strong></td>
-          <td nowrap>{{ item.size/1024/1024 | number:'.2' }} MB</td>
+          <td><strong>{{ item.filepositive.name }}</strong></td>
+          <td nowrap><strong>{{ item.filenegative.name }}</strong></td>
           <td nowrap>
             <button type="button" class="btn btn-success btn-xs" 
               (click)="upload(item, 'filesFDS')" [disabled]="item.invalid" >
@@ -75,9 +97,17 @@
     <div>
       <form [formGroup]="myForm">
         <div class="form-group">
-          <caption>{{'files.tis' | translate}}</caption>
-            <input formControlName="file" id="file" type="file" 
-                class="form-control" (change)="onFileChange($event, 'filesTIS')">
+          <caption class="row">{{'files.tis' | translate}}
+            <button type="button" class="btn btn-outline-danger btn-sm float-left  ml-3" data-toggle="modal" data-target="#deleteIndex" (click)="filetype('filesTIS')">
+              <span class="glyphicon glyphicon-trash"></span> Clear indexar TIS
+            </button>
+          </caption>
+          <label class="btn btn-dark btn-rounded waves-effect btn-sm float-left mr-1">Select positive file
+            <input formControlName="filepositive" id="file" type="file" class="form-control" (change)="onFileChange($event, 'filesTIS')">
+          </label>
+          <label class="btn btn-outline-dark btn-rounded waves-effect btn-sm float-left mr-1">Select negative file
+            <input formControlName="filenegative" id="file" type="file" class="form-control" (change)="onFileChange($event, 'filesTIS')">
+          </label>
         </div>
       </form>
     </div>
@@ -85,14 +115,14 @@
     <table class="table">
       <thead>
         <tr>
-          <th width="50%">Name</th>
-          <th>Size</th>
+          <th width="50%">Positive</th>
+          <th width="50%">Negative</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let item of filesTIS">
-          <td><strong>{{ item.name }}</strong></td>
-          <td nowrap>{{ item.size/1024/1024 | number:'.2' }} MB</td>
+          <td><strong>{{ item.filepositive.name }}</strong></td>
+          <td nowrap><strong>{{ item.filenegative.name }}</strong></td>
           <td nowrap>
             <button type="button" class="btn btn-success btn-xs" 
               (click)="upload(item, 'filesTIS')" [disabled]="item.invalid" >
@@ -107,4 +137,30 @@
       </tbody>
     </table>
 
+</div>
+
+<!-- The Modal -->
+<div class="modal" id="deleteIndex">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Eliminar indexación</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        Estas seguro de que quieres eliminar todo lo indexado en el elemento seleccionado
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" data-dismiss="modal">Anular</button>
+        <button type="button" class="btn btn-danger" data-dismiss="modal" (click)="removeindex()">Eliminar</button>
+      </div>
+
+    </div>
+  </div>
 </div>

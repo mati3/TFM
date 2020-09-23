@@ -7,64 +7,97 @@ import { AccountService, AlertService, FilterService } from '@app/_services';
 @Component({ templateUrl: 'workspace.component.html' })
 export class WorkspaceComponent {
   myForm = new FormGroup({
-    file: new FormControl('', [Validators.required]),
-    fileSource: new FormControl('', [Validators.required])
+    filepositive: new FormControl('', [Validators.required]),
+    filenegative: new FormControl('', [Validators.required])
   });
-  filesFVS: File[] = [];
-  filesFDS: File[] = [];
-  filesTIS: File[] = [];
+  filesFVS = [];
+  filesFDS = [];
+  filesTIS = [];
+  filepositive: File ;
+
+  typefile: String;
   index: number;
   user: User;
 
-  constructor(private http: HttpClient, private accountService: AccountService) { 
+  constructor(private http: HttpClient, 
+    private accountService: AccountService,
+    private alertService: AlertService) { 
     this.user = this.accountService.userValue;
   }
       
   get f(){
     return this.myForm.controls;
   }
+  //onInit hay que poner que lea en la base de datos
+  ngOnInit() {
+    this.myForm.controls.filenegative.disable();
+  }
      
   onFileChange(event,typefile: String) {
-  
-    if (event.target.files.length > 0) {
+    this.myForm.controls.filenegative.enable();
+    if (event.target.files.length > 0 && this.myForm.valid) {
       const file = event.target.files[0];
-      if (typefile === 'filesFVS')
-        this.filesFVS.push(file);
-      else if (typefile === 'filesFDS')
-        this.filesFDS.push(file);
-      else if(typefile === 'filesTIS')
-        this.filesTIS.push(file);
-      this.myForm.patchValue({
-        fileSource: file
-      });
+      if (typefile === 'filesFVS'){
+        this.filesFVS.push({'filenegative':file,'filepositive':this.filepositive});
+      } else if (typefile === 'filesFDS'){
+        this.filesFDS.push({'filenegative':file,'filepositive':this.filepositive});
+      } else if(typefile === 'filesTIS'){
+        this.filesTIS.push({'filenegative':file,'filepositive':this.filepositive});
+      }
+      // si ya tenemos filepositive y negative, reseteamos
+      if (this.myForm.valid){
+        this.myForm.reset();
+        this.myForm.controls.filenegative.disable();
+      }
+      this.filepositive = null;
+    }else if(this.myForm.invalid  && this.myForm.controls.filepositive.valid){
+      this.filepositive = event.target.files[0];
+      //this.myForm.controls.filenegative.enable();
     }
   }
-  upload(file,typefile: String){
+
+  clear(item,typefile: String){
+    if (typefile === 'filesFVS'){
+      this.index = this.filesFVS.indexOf(item);
+      this.filesFVS.splice(this.index,1);
+    }else if (typefile === 'filesFDS'){
+      this.index = this.filesFDS.indexOf(item);
+      this.filesFDS.splice(this.index,1);
+    }else if(typefile === 'filesTIS'){
+      this.index = this.filesTIS.indexOf(item);
+      this.filesTIS.splice(this.index,1);
+    }
+  }
+  
+  upload(item,typefile: String){
     const formData = new FormData();
-    formData.append('file', file);
-    file.invalid = true
+    formData.append('filepositive', item.filepositive);
+    formData.append('filenegative', item.filenegative);
+    item.invalid = true
     this.http.post(`http://localhost:5000/upload/${this.user.email}/${typefile}`, formData)
       .subscribe(res => {
         console.log(res);
       })
   }   
  
-  remove(file,typefile: String){
-    if (typefile === 'filesFVS'){
-      this.index = this.filesFVS.indexOf(file);
-      this.filesFVS.splice(this.index,1);
-    }else if (typefile === 'filesFDS'){
-      this.index = this.filesFDS.indexOf(file);
-      this.filesFDS.splice(this.index,1);
-    }else if(typefile === 'filesTIS'){
-      this.index = this.filesTIS.indexOf(file);
-      this.filesTIS.splice(this.index,1);
-    }
+  remove(item,typefile: String){
+    this.clear(item,typefile);
     const formData = new FormData();
-    formData.append('file', file);
+    formData.append('filepositive', item.filepositive);
+    formData.append('filenegative', item.filenegative);
     this.http.post(`http://localhost:5000/removefile/${this.user.email}`, formData)
       .subscribe(res => {
         console.log(res);
       })
+  }
+
+  filetype(typefile: String){
+    this.typefile = typefile;
+  }
+  
+  removeindex(){
+    console.log("test, llego aqui ahora")
+    console.log(this.typefile);
+// solo elimino lo indexado en el backend
   }
 }

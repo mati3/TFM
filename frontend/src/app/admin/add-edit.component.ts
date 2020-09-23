@@ -81,10 +81,12 @@ export class AddEditComponent implements OnInit {
             .pipe(first())
             .subscribe(
                 data => {
+                    console.log("createuser data ");
                     this.alertService.success('User added successfully', { keepAfterRouteChange: true });
                     this.router.navigate(['.', { relativeTo: this.route }]);
                 },
                 error => {
+                    console.log("createuser error");
                     this.alertService.error(error);
                     this.loading = false;
                 });

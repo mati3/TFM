@@ -48,7 +48,7 @@ h1 {
     border-radius: 4px;
   }
   nav a:visited, a:link {
-    color: #607D8B;
+    color: #eee;
   }
   nav a:hover {
     color: #039be5;
@@ -86,4 +86,5 @@ a { cursor: pointer; }
 .form-control#file{
   background-color: transparent;
   border: 1px none;
+  display: none;
 }

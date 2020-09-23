@@ -41,8 +41,8 @@ module.exports = function (app, mysql) {
       var id = req.params.id;
       mysql.query('DELETE FROM users WHERE id = ?', id, (error, result) => {
         if (error) throw error;
- 
-        res.send('User deleted.');
+        res.send(result);
+        console.log(result);
     });
 });
 
@@ -59,6 +59,7 @@ module.exports = function (app, mysql) {
       };
       mysql.query("INSERT INTO users SET ?", data, function (err, result) {
         if (err) res.send(err);
+        res.send(result);
         console.log(result);
       });
     });

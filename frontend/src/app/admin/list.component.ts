@@ -6,6 +6,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 @Component({ templateUrl: 'list.component.html' })
 export class ListComponent implements OnInit {
     users = null;
+    loading = false;
 
     constructor(private accountService: AccountService,
         private route: ActivatedRoute,
@@ -26,28 +27,38 @@ export class ListComponent implements OnInit {
         this.accountService.delete(id)
             .pipe(first())
             .subscribe(() => {
-                this.users = this.users.filter(x => x.id !== id) 
-            });
+                this.users = this.users.filter(x => x.id !== id); 
+            },
+            error => {
+                this.alertService.error(error);
+            }); 
         this.filterService.deleteUser(user.email)
             .pipe(first())
             .subscribe();  
     }
 
     acceptUser(id: string) {
+        this.loading = true;
         const user = this.users.find(x => x.id === id);
+        user.isSuccess = user.accept = true;
         this.accountService.accept(id)
             .pipe(first())
             .subscribe(
                 data => {
                     this.alertService.success('Update successful', { keepAfterRouteChange: true });
                     this.router.navigate(['..', { relativeTo: this.route }]);
-                },
+                }/*,
                 error => {
                     this.alertService.error(error);
-                });
+                    this.isSuccess = false;
+                }*/);
         this.filterService.addUser(user.email)
             .pipe(first())
-            .subscribe();        
+            .subscribe(
+                error => {
+                this.alertService.error("");
+                user.isSuccess = false;
+            });        
         user.isSuccess = user.accept = true;
     }
 }

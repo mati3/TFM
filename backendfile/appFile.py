@@ -128,16 +128,18 @@ def checkpair(filename, myfolder):
 def upload(correo_id, typefile):
     response = ''   
     # check if the post request has the file part
-    if 'file' not in request.files:
-        response='no file in request', 500
+    if ('filepositive' not in request.files) or ('filenegative' not in request.files):
+        response='no file positive or negative in request', 500
         return jsonify(response)
-    file = request.files['file']
-    if file.filename == '':
-        response ='no selected file'
+    filepos = request.files['filepositive']
+    fileneg = request.files['filenegative']
+    if (filepos.filename == '') or (fileneg.filename == ''):
+        response ='no selected file positive or negative'
         return jsonify(response), 500
-    if file and allowed_file(file.filename):
-        response = 'file upload ok'
-        filename = secure_filename(file.filename)
+    if (filepos and allowed_file(filepos.filename)) or (fileneg and allowed_file(fileneg.filename)):
+        response = 'files upload ok'
+        filenamepos = secure_filename(filepos.filename)
+        filenameneg = secure_filename(fileneg.filename)
         # comprobar si el directorio para el usuario actual existe
         myfolder = app.config['UPLOAD_FOLDER']+'/'+correo_id
         try: 
@@ -145,9 +147,10 @@ def upload(correo_id, typefile):
         except:
             os.mkdir(myfolder)
         # guardar archivo en directorio para el usuario actual
-        file.save(os.path.join(myfolder, filename))
+        filepos.save(os.path.join(myfolder, filenamepos))
+        fileneg.save(os.path.join(myfolder, filenameneg))
         # chequeo si el par del archivo existe, si es asi se concatenaran para indexar
-        checkpair(filename, myfolder)
+        #checkpair(filename, myfolder)
         
         return jsonify(response), 200
     response = 'response post ok'

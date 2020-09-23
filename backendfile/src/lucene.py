@@ -27,6 +27,7 @@ class Lucene:
         doc.add(
             Field("titulo", filename, StringField.TYPE_STORED)
         )
+        print(doc['titulo'])
         doc.add(
             Field("texto", d.read(), TextField.TYPE_STORED)
         )
@@ -35,3 +36,15 @@ class Lucene:
         
         writer.commit()
         writer.close()
+        print(filename)
+        searcher = IndexSearcher(DirectoryReader.open(directory))
+        query = QueryParser("titulo", analyzer).parse(filename)
+        print(query)
+        #query = "titulo:"+filename
+        #print(query)
+        scoreDocs = searcher.search(query, 10).scoreDocs
+        print(scoreDocs)
+        for sd in scoreDocs:
+            doc = searcher.doc(sd.doc)
+            print(' ********* titulo')
+            print(doc.get("titulo"))
