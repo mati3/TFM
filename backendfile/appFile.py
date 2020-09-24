@@ -5,6 +5,7 @@ from flask import jsonify
 from src.dbclientes import dbClientes
 from pymongo import MongoClient
 import os
+import shutil
 from werkzeug.utils import secure_filename
 from flask_caching import Cache
 
@@ -16,7 +17,7 @@ config = {
     "CACHE_TYPE": "simple",
     "CACHE_DEFAULT_TIMEOUT": 300
 }
-UPLOAD_FOLDER = './uploads'
+UPLOAD_FOLDER = './clients' 
 ALLOWED_EXTENSIONS = set(['txt'])
 
 app = Flask(__name__)
@@ -38,12 +39,6 @@ client = dbClientes(db.Clientes)
 def hello_world():
     return jsonify('Hello, World !'), 200
 
-# devuelve los archivos de un cliente dado su id
-@app.route('/files/<string:correo_id>', methods=['GET','POST'])
-@cache.cached(timeout=50)
-def cesta(correo_id):
-    return jsonify(client.getCesta(correo_id)), 200
-
 @app.route('/todo', methods = ['GET','POST'])
 @cache.cached(timeout=50)
 def todo():
@@ -55,6 +50,40 @@ def newcesta(correo_id,cesta_id):
     return jsonify(client.insertCesta(correo_id,cesta_id)), 200
 
 #############
+
+# devuelve los archivos Indexados de un cliente dado su id
+@app.route('/filesindex/<string:correo_id>', methods=['GET'])
+@cache.cached(timeout=50)
+def filesindex(correo_id):
+    filesFVS = os.listdir(app.config['UPLOAD_FOLDER']+'/'+correo_id+'/filesFVS/index')
+    #filesFVS.remove("lucene") 
+    filesFDS = os.listdir(app.config['UPLOAD_FOLDER']+'/'+correo_id+'/filesFDS/index')
+    #filesFDS.remove("lucene") 
+    filesTIS = os.listdir(app.config['UPLOAD_FOLDER']+'/'+correo_id+'/filesTIS/index')
+    #filesTIS.remove("lucene") 
+    files = {'filesFVS':filesFVS, 'filesFDS': filesFDS, 'filesTIS': filesTIS}
+    return jsonify(files), 200
+
+# devuelve los archivos de un cliente dado su id
+@app.route('/files/<string:correo_id>', methods=['GET'])
+@cache.cached(timeout=50)
+def files(correo_id):
+    files = client.getFiles(correo_id)
+    for item in files:
+        print('****** files ****************')
+        print(item)
+        filesFVS = item['filesFVS']
+        print('****** filesfvs ****************')
+        print(filesFVS) 
+        filesFDS = item['filesFDS']
+        filesTIS = item['filesTIS'] 
+        files = {'filesFVS':filesFVS, 'filesFDS': filesFDS, 'filesTIS': filesTIS}
+        return jsonify(files), 200
+    filesFVS = os.listdir(app.config['UPLOAD_FOLDER']+'/'+correo_id+'/filesFVS')
+    filesFDS = os.listdir(app.config['UPLOAD_FOLDER']+'/'+correo_id+'/filesFDS')
+    filesTIS = os.listdir(app.config['UPLOAD_FOLDER']+'/'+correo_id+'/filesTIS')
+    files = {'filesFVS':filesFVS, 'filesFDS': filesFDS, 'filesTIS': filesTIS}
+    return jsonify("files"), 200
 
 # recorre el directorio y devuelve lista d los clientes
 @app.route('/clientes', methods = ['GET','POST'])
@@ -72,56 +101,40 @@ def newclient(correo_id):
 def deleteClient(correo_id):
     return  jsonify(client.deleteClient(correo_id)), 200 
     
-@app.route('/removefile/<string:correo_id>', methods = ['POST'])
-def removefile(correo_id):
-    print(request.files)
-    print(request.files.get('file'))
-    response = ''   
-    # check if the post request has the file part
-    if 'file' not in request.files:
-        response='no file in request', 500
-        return jsonify(response)
-    file = request.files['file']
-    if file.filename == '':
-        response ='no selected file'
-        return jsonify(response), 500
-    if file and allowed_file(file.filename):
-        response = 'file remove ok'
-        filename = secure_filename(file.filename)
-        os.remove(app.config['UPLOAD_FOLDER']+'/'+correo_id+'/'+ filename)
-        return jsonify(response), 200
-    response = 'response post ok'
-    return jsonify(response), 200
+@app.route('/removefile/<string:correo_id>/<string:typefile>', methods = ['DELETE'])
+def removefile(correo_id,typefile):
+    shutil.rmtree(app.config['UPLOAD_FOLDER']+'/'+correo_id+'/'+ typefile)
+    os.mkdir(app.config['UPLOAD_FOLDER']+'/'+correo_id+'/'+typefile)
+    os.mkdir(app.config['UPLOAD_FOLDER']+'/'+correo_id+'/'+typefile+'/index')
+    return jsonify('ok'), 200
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 def concat_file(file1, file2, myfolder):
-    count = file1.find("included")
-    filename = file1[:count]+".txt"
+    count = file1.find(".txt")
+    filename = file1[:count]+file2
     f1 = open(myfolder+'/'+file1, "r").read()
     f2 = open(myfolder+'/'+file2, "r").read()
-    indexfolder = myfolder+'/indexar/'
+    filepath = myfolder+'/index/'
     try: 
-        os.stat(indexfolder)
+        os.stat(filepath)
     except:
-        os.mkdir(indexfolder)
-    newfile = open(indexfolder+filename, "a")
+        os.mkdir(filepath)
+    newfile = open(filepath+filename, "a")
     newfile.write(f1 + f2)
     newfile.close()
     # aqui directamente llamo a indexar ???
-    filepath = indexfolder+filename
     lc.indexar(filepath,filename)
 
-def checkpair(filename, myfolder):
-    if "included" in filename:
-        nameaux = filename.replace("included", "negative") 
-        if os.listdir(myfolder).count(nameaux):
-            concat_file(filename, nameaux, myfolder)
-    elif "negative" in filename:
-        nameaux = filename.replace("negative", "included") 
-        if os.listdir(myfolder).count(nameaux):
-            concat_file(nameaux, filename, myfolder)
+def createDirectory(myfolder):
+    os.mkdir(myfolder)
+    os.mkdir(myfolder+'/filesFVS')
+    os.mkdir(myfolder+'/filesFDS')
+    os.mkdir(myfolder+'/filesTIS')
+    os.mkdir(myfolder+'/filesFVS/index')
+    os.mkdir(myfolder+'/filesFDS/index')
+    os.mkdir(myfolder+'/filesTIS/index')
 
 # insert file in folder uploads
 @app.route('/upload/<string:correo_id>/<string:typefile>', methods = ['POST'])
@@ -145,12 +158,14 @@ def upload(correo_id, typefile):
         try: 
             os.stat(myfolder)
         except:
-            os.mkdir(myfolder)
+            createDirectory(myfolder)
         # guardar archivo en directorio para el usuario actual
-        filepos.save(os.path.join(myfolder, filenamepos))
-        fileneg.save(os.path.join(myfolder, filenameneg))
+        filepos.save(os.path.join(myfolder+'/'+typefile, filenamepos))
+        fileneg.save(os.path.join(myfolder+'/'+typefile, filenameneg))
         # chequeo si el par del archivo existe, si es asi se concatenaran para indexar
         #checkpair(filename, myfolder)
+        concat_file(filenamepos, filenameneg, myfolder+'/'+typefile)
+        client.insertFiles(correo_id,typefile,filenamepos, filenameneg)
         
         return jsonify(response), 200
     response = 'response post ok'

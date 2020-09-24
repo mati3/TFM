@@ -23,8 +23,9 @@ export class FilterComponent {
       this.filterService.getAll()
           .pipe(first())
           .subscribe(users => this.users = users);
-      this.filterService.getAllFiles(this.user.email)
+      this.filterService.getAllFilesIndex(this.user.email)
           .pipe(first())
           .subscribe(files => this.files = files);
+          console.log(this.files);
   }
 }

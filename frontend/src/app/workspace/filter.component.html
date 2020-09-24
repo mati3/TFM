@@ -12,15 +12,12 @@
           <caption>{{'files.fvs' | translate}}</caption>
             <tr>
                 <th style="width: 30%">{{'files.included' | translate}}</th>
-                <th style="width: 30%">{{'files.negative' | translate}}</th>
                 <th style="width: 10%"></th>
             </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let fil of files">
-            <td>{{fil.Included}}</td>
-            <td>{{fil.Negative}}</td>
-            <td>{{fil.Pair}}</td>
+          <tr *ngFor="let fil of files?.filesFVS">
+            <td>{{fil}}</td>
           </tr>
           <tr *ngIf="!files">
               <td colspan="4" class="text-center">
@@ -35,14 +32,12 @@
           <caption>{{'files.fds' | translate}}</caption>
             <tr>
                 <th style="width: 30%">{{'files.included' | translate}}</th>
-                <th style="width: 30%">{{'files.negative' | translate}}</th>
                 <th style="width: 10%"></th>
             </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let fil of files">
-            <td>{{fil.Included}}</td>
-            <td>{{fil.Negative}}</td>
+          <tr *ngFor="let fil of files?.filesFDS">
+            <td>{{fil}}</td>
           </tr>
           <tr *ngIf="!files">
               <td colspan="4" class="text-center">
@@ -57,14 +52,12 @@
           <caption>{{'files.tis' | translate}}</caption>
             <tr>
               <th style="width: 30%">{{'files.negative' | translate}}</th>
-              <th style="width: 30%">{{'files.positive' | translate}}</th>
               <th style="width: 10%"></th>
             </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let fil of files">
-            <td>{{fil.negative}}</td>
-            <td>{{fil.positive}}</td>
+          <tr *ngFor="let fil of files?.filesTIS">
+            <td>{{fil}}</td>          
           </tr>
           <tr *ngIf="!files">
               <td colspan="4" class="text-center">

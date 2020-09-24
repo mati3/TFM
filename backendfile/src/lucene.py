@@ -16,13 +16,13 @@ lucene.initVM()
 class Lucene:
 
     def indexar(self, filepath, filename):
-        directory = SimpleFSDirectory(Paths.get("./lucene/index"))
+        directory = SimpleFSDirectory(Paths.get(filepath+"/lucene"))
         analyzer = SpanishAnalyzer()
         analyzer = LimitTokenCountAnalyzer(analyzer, 10000)
         config = IndexWriterConfig(analyzer)
         writer = IndexWriter(directory, config)
 
-        d = open(filepath, "r")
+        d = open(filepath+'/'+filename, "r")
         doc = Document()
         doc.add(
             Field("titulo", filename, StringField.TYPE_STORED)
@@ -37,6 +37,23 @@ class Lucene:
         writer.commit()
         writer.close()
         print(filename)
+        searcher = IndexSearcher(DirectoryReader.open(directory))
+        query = QueryParser("titulo", analyzer).parse(filename)
+        print(query)
+        #query = "titulo:"+filename
+        #print(query)
+        scoreDocs = searcher.search(query, 10).scoreDocs
+        print(scoreDocs)
+        for sd in scoreDocs:
+            doc = searcher.doc(sd.doc)
+            print(' ********* titulo')
+            print(doc.get("titulo"))
+
+    def search(self, filepath, filename):
+        directory = SimpleFSDirectory(Paths.get(filepath+"/lucene"))
+        analyzer = SpanishAnalyzer()
+        analyzer = LimitTokenCountAnalyzer(analyzer, 10000)
+        
         searcher = IndexSearcher(DirectoryReader.open(directory))
         query = QueryParser("titulo", analyzer).parse(filename)
         print(query)

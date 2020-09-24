@@ -28,8 +28,30 @@ export class FilterService {
         return this.http.get<File[]>(`${environment.apiData}/clientes`);
     }
 
+    getAllFilesIndex(id: string) {
+        console.log("llego aqui");
+        return this.http.get<File[]>(`${environment.apiData}/filesindex/${id}`)
+        .pipe(map(x => {
+            //x.forEach(element => {
+                //this.files.push(element);
+                    console.log(x);
+                    //console.log(x.filesFVS);
+                //}); 
+            return x
+        }));
+    }
+
     getAllFiles(id: string) {
-        return this.http.get<File[]>(`${environment.apiData}/files/${id}`);
+        console.log("llego aqui");
+        return this.http.get<File[]>(`${environment.apiData}/files/${id}`)
+        .pipe(map(x => {
+            //x.forEach(element => {
+                //this.files.push(element);
+                    console.log(x);
+                    //console.log(x.filesFVS);
+                //}); 
+            return x
+        }));
     }
 
 }

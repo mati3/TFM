@@ -2,7 +2,8 @@ import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FormGroup, FormControl, Validators} from '@angular/forms';
 import { User } from '@app/_models';
-import { AccountService, AlertService, FilterService } from '@app/_services';
+import { AccountService, FilterService } from '@app/_services';
+import { first } from 'rxjs/operators';
 
 @Component({ templateUrl: 'workspace.component.html' })
 export class WorkspaceComponent {
@@ -14,14 +15,14 @@ export class WorkspaceComponent {
   filesFDS = [];
   filesTIS = [];
   filepositive: File ;
-
+  myfiles = null;
   typefile: String;
   index: number;
   user: User;
 
   constructor(private http: HttpClient, 
     private accountService: AccountService,
-    private alertService: AlertService) { 
+    private filterService: FilterService) { 
     this.user = this.accountService.userValue;
   }
       
@@ -31,6 +32,14 @@ export class WorkspaceComponent {
   //onInit hay que poner que lea en la base de datos
   ngOnInit() {
     this.myForm.controls.filenegative.disable();
+    this.filterService.getAllFiles(this.user.email)
+      .pipe(first())
+      .subscribe(files => this.myfiles = files);
+    
+    //this.filesFDS = this.myfiles?.filesFDS;
+    //this.filesFVS = this.myfiles?.filesFVS;
+    //this.filesTIS = this.myfiles?.filesTIS;
+    console.log(this.myfiles);
   }
      
   onFileChange(event,typefile: String) {
@@ -79,7 +88,7 @@ export class WorkspaceComponent {
         console.log(res);
       })
   }   
- 
+ // ya no se usa
   remove(item,typefile: String){
     this.clear(item,typefile);
     const formData = new FormData();
@@ -96,8 +105,16 @@ export class WorkspaceComponent {
   }
   
   removeindex(){
-    console.log("test, llego aqui ahora")
-    console.log(this.typefile);
-// solo elimino lo indexado en el backend
+    if (this.typefile === 'filesFVS'){
+      this.filesFVS = [];
+    }else if (this.typefile === 'filesFDS'){
+      this.filesFDS = [];
+    }else if(this.typefile === 'filesTIS'){
+      this.filesTIS = [];
+    }
+    this.http.delete(`http://localhost:5000/removefile/${this.user.email}/${this.typefile}`)
+      .subscribe(res => {
+      console.log(res);
+      })
   }
 }

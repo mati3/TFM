@@ -37,13 +37,9 @@
               (click)="upload(item,'filesFVS')"  [disabled]="item.invalid" >
               <span class="glyphicon glyphicon-upload"></span> {{'files.upload' | translate}}
             </button>
-            <button type="button" class="btn btn-danger btn-xs"
-              (click)="remove(item,'filesFVS')" [disabled]="!item.invalid">
-              <span class="glyphicon glyphicon-trash"></span> {{'files.remove' | translate}}
-            </button>
             <button type="button" class="btn btn-warning btn-xs"
               (click)="clear(item,'filesFVS')" [disabled]="item.invalid">
-              <span class="glyphicon glyphicon-trash"></span> Clear
+              <span class="glyphicon glyphicon-trash"></span> {{'files.remove' | translate}}
             </button>
           </td>
         </tr>
@@ -85,8 +81,8 @@
               (click)="upload(item, 'filesFDS')" [disabled]="item.invalid" >
               <span class="glyphicon glyphicon-upload"></span> {{'files.upload' | translate}}
             </button>
-            <button type="button" class="btn btn-danger btn-xs"
-              (click)="remove(item, 'filesFDS')" [disabled]="!item.invalid">
+            <button type="button" class="btn btn-warning btn-xs"
+              (click)="clear(item, 'filesFDS')" [disabled]="item.invalid">
               <span class="glyphicon glyphicon-trash"></span> {{'files.remove' | translate}}
             </button>
           </td>
@@ -128,8 +124,8 @@
               (click)="upload(item, 'filesTIS')" [disabled]="item.invalid" >
               <span class="glyphicon glyphicon-upload"></span> {{'files.upload' | translate}}
             </button>
-            <button type="button" class="btn btn-danger btn-xs"
-              (click)="remove(item, 'filesTIS')" [disabled]="!item.invalid">
+            <button type="button" class="btn btn-warning btn-xs"
+              (click)="clear(item, 'filesTIS')" [disabled]="item.invalid">
               <span class="glyphicon glyphicon-trash"></span> {{'files.remove' | translate}}
             </button>
           </td>
