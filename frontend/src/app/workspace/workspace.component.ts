@@ -32,7 +32,6 @@ export class WorkspaceComponent {
   //onInit hay que poner que lea en la base de datos
   ngOnInit() {
     this.myForm.controls.filenegative.disable();
-    console.log(this.user.email)
     this.filterService.getAllFiles(this.user.email)
       .pipe(first())
       .subscribe(files => this.myfiles = files);
@@ -79,22 +78,8 @@ export class WorkspaceComponent {
     formData.append('filepositive', item.filepositive);
     formData.append('filenegative', item.filenegative);
     item.invalid = true
-    this.http.post(`http://localhost:5000/upload/${this.user.email}/${typefile}`, formData)
-      .subscribe(res => {
-        console.log(res);
-      })
+    this.filterService.upload(this.user.email, typefile, formData);
   }   
- // ya no se usa
-  remove(item,typefile: String){
-    this.clear(item,typefile);
-    const formData = new FormData();
-    formData.append('filepositive', item.filepositive);
-    formData.append('filenegative', item.filenegative);
-    this.http.post(`http://localhost:5000/removefile/${this.user.email}`, formData)
-      .subscribe(res => {
-        console.log(res);
-      })
-  }
 
   filetype(typefile: String){
     this.typefile = typefile;
@@ -108,9 +93,6 @@ export class WorkspaceComponent {
     }else if(this.typefile === 'filesTIS'){
       this.filesTIS = [];
     }
-    this.http.delete(`http://localhost:5000/removefile/${this.user.email}/${this.typefile}`)
-      .subscribe(res => {
-      console.log(res);
-      })
+    this.filterService.deleteIndex(this.user.email, this.typefile);
   }
 }

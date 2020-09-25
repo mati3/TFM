@@ -14,8 +14,16 @@ export class FilterService {
     ) {
     }
 
+    upload(email: string,typefile: String,formData: FormData){
+        return this.http.post(`${environment.apiData}/upload/${email}/${typefile}`, formData)
+            .subscribe();
+    }
 
-    //probados ok
+    deleteIndex(email: string,typefile: String){
+        return this.http.delete(`${environment.apiData}/removefile/${email}/${typefile}`)
+            .subscribe();
+    }
+
     addUser(id: string) {
       return this.http.get(`${environment.apiData}/newclient/${id}`);
     }
@@ -23,35 +31,19 @@ export class FilterService {
     deleteUser(id: string) {
       return this.http.delete(`${environment.apiData}/delete/${id}`);
     }
-///
+
     getAll() {
         return this.http.get<File[]>(`${environment.apiData}/clientes`);
     }
 
     getAllFilesIndex(id: string) {
-        console.log("llego aqui");
         return this.http.get<File[]>(`${environment.apiData}/filesindex/${id}`)
-        .pipe(map(x => {
-            //x.forEach(element => {
-                //this.files.push(element);
-                    console.log(x);
-                    //console.log(x.filesFVS);
-                //}); 
-            return x
-        }));
+        .pipe(map(x => { return x }));
     }
 
     getAllFiles(id: string) {
-        console.log("llego aqui");
         return this.http.get<File[]>(`${environment.apiData}/files/${id}`)
-        .pipe(map(x => {
-            //x.forEach(element => {
-                //this.files.push(element);
-                    console.log(x);
-                    //console.log(x.filesFVS);
-                //}); 
-            return x
-        }));
+        .pipe(map(x => { return x }));
     }
 
 }

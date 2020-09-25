@@ -26,6 +26,5 @@ export class FilterComponent {
       this.filterService.getAllFilesIndex(this.user.email)
           .pipe(first())
           .subscribe(files => this.files = files);
-          console.log(this.files);
   }
 }
