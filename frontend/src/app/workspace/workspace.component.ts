@@ -32,14 +32,10 @@ export class WorkspaceComponent {
   //onInit hay que poner que lea en la base de datos
   ngOnInit() {
     this.myForm.controls.filenegative.disable();
+    console.log(this.user.email)
     this.filterService.getAllFiles(this.user.email)
       .pipe(first())
       .subscribe(files => this.myfiles = files);
-    
-    //this.filesFDS = this.myfiles?.filesFDS;
-    //this.filesFVS = this.myfiles?.filesFVS;
-    //this.filesTIS = this.myfiles?.filesTIS;
-    console.log(this.myfiles);
   }
      
   onFileChange(event,typefile: String) {
