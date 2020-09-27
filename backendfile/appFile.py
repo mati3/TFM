@@ -63,7 +63,6 @@ def deleteClient(correo_id):
 
 # devuelve los archivos Indexados de un cliente dado su id
 @app.route('/filesindex/<string:correo_id>', methods=['GET'])
-@cache.cached(timeout=50)
 def filesindex(correo_id):
     myfolder = app.config['UPLOAD_FOLDER']+'/'+correo_id
     createDirectory(myfolder)
@@ -78,7 +77,6 @@ def filesindex(correo_id):
 
 # devuelve los archivos de un cliente dado su id
 @app.route('/files/<string:correo_id>', methods=['GET'])
-@cache.cached(timeout=50)
 def files(correo_id):
     files = client.getFiles(correo_id)
     for i in files:
@@ -129,10 +127,36 @@ def upload(correo_id, typefile):
     response = 'response post ok'
     return jsonify(response), 200
 
+@app.route('/search', methods = ['GET', 'POST'])
+def search():
+    response = ''
+    body = request.get_json() # obtener el contenido del cuerpo de la solicitud
+    if body is None:
+        return "The request body is null", 400
+    if body['positive'] is None:
+        return 'You need to specify the file positive',400
+    if body['negative'] is None:
+        return 'You need to specify the file negative',400
+    if body['typefile'] == '':
+        return 'You need to specify the typefile',400
+    if body['wanted'] == '':
+        return 'You need to specify what looking for',400
+
+    filepos = body['positive']
+    fileneg = body['negative']
+    typefile = body['typefile']
+    correo = body['id']['email']
+    count = filepos.find(".txt")
+    count2 = fileneg.find(".txt")
+    pathfile = app.config['UPLOAD_FOLDER']+'/'+correo+'/'+typefile+'/'+filepos[:count]+fileneg[:count2]
+    print(pathfile)
+    resultado = lc.search(pathfile,body['wanted'])
+    return jsonify(resultado), 200
+
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-def concat_file(file1, file2, myfolder):
+def concat_file2(file1, file2, myfolder):
     count = file1.find(".txt")
     filename = file1[:count]+file2
     f1 = open(myfolder+'/'+file1, "r").read()
@@ -146,6 +170,51 @@ def concat_file(file1, file2, myfolder):
     newfile.write(f1 + f2)
     newfile.close()
     lc.indexar(filepath,filename)
+
+def concat_file(file1, file2, myfolder):
+    count = file1.find(".txt")
+    count2 = file2.find(".txt")
+    filename = file1[:count]+file2[:count2]
+    f1 = open(myfolder+'/'+file1, "r").read()
+    f2 = open(myfolder+'/'+file2, "r").read()
+    filepath = myfolder+'/'+filename
+    try: 
+        os.stat(filepath)
+    except:
+        os.mkdir(filepath)
+
+    newfile = open(myfolder+'/'+filename+'.txt', "a")
+    newfile.write(f1 + f2)
+    newfile.close()
+
+    text_file = open(myfolder+'/'+filename+'.txt','r')
+    docs =text_file.read()
+    text_file.close()
+    contador = 0
+    for i in docs:
+        if contador < 100:
+            primero = docs.find("- JOUR")
+            ultimo = docs.find("ER  -")
+            cadena = docs[primero:ultimo]
+            if primero != -1 :
+                new_file = open(filepath+'/DOC_0' + str(contador) + '.txt' , 'w')
+                new_file.write(cadena)
+                new_file.close()
+        else:
+            primero = docs.find("- JOUR")
+            ultimo = docs.find("ER  -")
+            cadena = docs[primero:ultimo]
+            if primero != -1 :
+                new_file = open(filepath+'/DOC_' + str(contador) + '.txt' , 'w')
+                new_file.write(cadena)
+                new_file.close()
+
+        # elimino el documento recogido.
+        docs = docs.replace(cadena,"")
+        docs = docs.replace("TY  ER  -","")
+        contador = contador + 1
+    os.remove(myfolder+'/'+filename+'.txt')
+    lc.indexar(filepath)
 
 def createDirectory(myfolder):
     try: 

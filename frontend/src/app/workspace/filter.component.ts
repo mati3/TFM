@@ -9,7 +9,6 @@ export class FilterComponent {
 
   user: User;
   files = null;
-  users = null;
 
   constructor(
       private accountService: AccountService,
@@ -20,10 +19,7 @@ export class FilterComponent {
   }
 
   ngOnInit() {
-      this.filterService.getAll()
-          .pipe(first())
-          .subscribe(users => this.users = users);
-      this.filterService.getAllFilesIndex(this.user.email)
+      this.filterService.getAllFiles(this.user.email)
           .pipe(first())
           .subscribe(files => this.files = files);
   }

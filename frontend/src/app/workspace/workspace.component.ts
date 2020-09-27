@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { FormGroup, FormControl, Validators} from '@angular/forms';
 import { User } from '@app/_models';
 import { AccountService, FilterService } from '@app/_services';
@@ -20,10 +19,10 @@ export class WorkspaceComponent {
   index: number;
   user: User;
 
-  constructor(private http: HttpClient, 
+  constructor( 
     private accountService: AccountService,
     private filterService: FilterService) { 
-    this.user = this.accountService.userValue;
+      this.user = this.accountService.userValue;
   }
       
   get f(){

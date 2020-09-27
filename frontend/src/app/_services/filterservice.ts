@@ -5,6 +5,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { environment } from '@environments/environment';
+import { LookingFiles } from '@app/_models';
 
 @Injectable({ providedIn: 'root' })
 export class FilterService {
@@ -16,6 +17,12 @@ export class FilterService {
 
     upload(email: string,typefile: String,formData: FormData){
         return this.http.post(`${environment.apiData}/upload/${email}/${typefile}`, formData)
+            .subscribe();
+    }
+
+    search(id){
+        console.log(" hasta aqui llego")
+        return this.http.post(`${environment.apiData}/search`, id)
             .subscribe();
     }
 
@@ -36,6 +43,7 @@ export class FilterService {
         return this.http.get<File[]>(`${environment.apiData}/clientes`);
     }
 
+    // comprobar si se usa
     getAllFilesIndex(id: string) {
         return this.http.get<File[]>(`${environment.apiData}/filesindex/${id}`)
         .pipe(map(x => { return x }));

@@ -1,4 +1,5 @@
 <div class="col-md-6 offset-md-3 mt-5">
+  <h1>Search</h1>
   <a routerLink="/workspace/filter" class="btn btn-sm btn-success mb-2">{{ 'files.filter' | translate }}</a>
     <!-- no admite form....
     <form class="form-inline md-form mr-auto mb-4">
@@ -7,11 +8,11 @@
     </form>
     -->
     
-    <!-- Buscardor -->
+    <!-- Buscardor --> 
     <h4>Buscador</h4>
     <div class="form-inline my-2 my-lg-0">
       <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+      <button class="btn btn-outline-success my-2 my-sm-0" (click)="search('Immune-nutritional status has been recently')" type="submit">Search</button>
     </div>
     <!-- <div id="search-component">
       <h4><label for="search-box">Hero Search</label></h4>
@@ -26,6 +27,75 @@
         </li>
       </ul>
     </div> -->
+
+     <!-- espacio de archivos -->
+     <h4>Selección de archivos</h4>
+  
+     <table class="table table-striped">
+       <thead>
+         <caption>{{'files.fvs' | translate}}</caption>
+           <tr>
+            <th width="50%">Positive</th>
+            <th width="50%">Negative</th>
+           </tr>
+       </thead>
+       <tbody>
+         <tr *ngFor="let fil of files?.filesFVS">
+           <td>{{fil.positive}}</td>
+           <td nowrap>{{ fil.negative }}</td>
+           <td nowrap>
+             <button type="button" class="btn btn-success btn-xs" 
+               (click)="select(fil.positive, fil.negative, 'filesFVS')"  >
+               <span class="glyphicon glyphicon-upload"></span> Select
+             </button>
+           </td>
+         </tr>
+       </tbody>
+     </table>
+ 
+     <table class="table table-striped">
+       <thead>
+         <caption>{{'files.fds' | translate}}</caption>
+           <tr>
+            <th width="50%">Positive</th>
+            <th width="50%">Negative</th>
+           </tr>
+       </thead>
+       <tbody>
+         <tr *ngFor="let fil of files?.filesFDS">
+          <td>{{fil.positive}}</td>
+          <td nowrap>{{ fil.negative }}</td>
+          <td nowrap>
+            <button type="button" class="btn btn-success btn-xs" 
+              (click)="select(fil.positive, fil.negative, 'filesFDS')"  >
+              <span class="glyphicon glyphicon-upload"></span> Select
+            </button>
+          </td>
+         </tr>
+       </tbody>
+     </table>
+
+     <table class="table table-striped">
+       <thead>
+         <caption>{{'files.tis' | translate}}</caption>
+           <tr>
+            <th width="50%">Positive</th>
+            <th width="50%">Negative</th>
+           </tr>
+       </thead>
+       <tbody>
+         <tr *ngFor="let fil of files?.filesTIS">
+          <td>{{fil.positive}}</td>
+          <td nowrap>{{ fil.negative }}</td>
+          <td nowrap>
+            <button type="button" class="btn btn-success btn-xs" 
+              (click)="select(fil.positive, fil.negative, 'filesTIS')"  >
+              <span class="glyphicon glyphicon-upload"></span> Select
+            </button>
+          </td>
+         </tr>
+       </tbody>
+     </table>
 
     <!-- medidas de rendimiento-->
     <h4>Medidas de rendimiento</h4>

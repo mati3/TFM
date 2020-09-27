@@ -12,7 +12,6 @@ import { AlertService } from './alert.service';
 export class AccountService {
     private userSubject: BehaviorSubject<User>;
     public user: Observable<User>;
-    apt: boolean = false;
 
     constructor(
         private router: Router,

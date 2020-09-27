@@ -1,28 +1,22 @@
 <div class="col-md-9 offset-md-1 mt-5">
+  <h1>Filter</h1>
     <a routerLink="/workspace/search" class="btn btn-sm btn-success mb-2">{{ 'files.search' | translate }}</a>
 
-   <tr *ngFor="let user of users">
-     <td>{{user}}</td>
-   </tr>
-    <!-- espacio de archivos por ahora selecciona-->
+    <!-- espacio de archivos -->
     <h4>Selección de archivos</h4>
   
       <table class="table table-striped">
         <thead>
           <caption>{{'files.fvs' | translate}}</caption>
             <tr>
-                <th style="width: 30%">{{'files.included' | translate}}</th>
-                <th style="width: 10%"></th>
+              <th width="50%">Positive</th>
+              <th width="50%">Negative</th>
             </tr>
         </thead>
         <tbody>
           <tr *ngFor="let fil of files?.filesFVS">
-            <td>{{fil}}</td>
-          </tr>
-          <tr *ngIf="!files">
-              <td colspan="4" class="text-center">
-                  <span class="spinner-border spinner-border-lg align-center"></span>
-              </td>
+            <td>{{fil.positive}}</td>
+            <td>{{fil.negative}}</td>
           </tr>
         </tbody>
       </table>
@@ -31,18 +25,14 @@
         <thead>
           <caption>{{'files.fds' | translate}}</caption>
             <tr>
-                <th style="width: 30%">{{'files.included' | translate}}</th>
-                <th style="width: 10%"></th>
+              <th width="50%">Positive</th>
+              <th width="50%">Negative</th>
             </tr>
         </thead>
         <tbody>
           <tr *ngFor="let fil of files?.filesFDS">
-            <td>{{fil}}</td>
-          </tr>
-          <tr *ngIf="!files">
-              <td colspan="4" class="text-center">
-                  <span class="spinner-border spinner-border-lg align-center"></span>
-              </td>
+            <td>{{fil.positive}}</td>
+            <td>{{fil.negative}}</td>
           </tr>
         </tbody>
       </table>
@@ -51,18 +41,14 @@
         <thead>
           <caption>{{'files.tis' | translate}}</caption>
             <tr>
-              <th style="width: 30%">{{'files.negative' | translate}}</th>
-              <th style="width: 10%"></th>
+              <th width="50%">Positive</th>
+              <th width="50%">Negative</th>
             </tr>
         </thead>
         <tbody>
           <tr *ngFor="let fil of files?.filesTIS">
-            <td>{{fil}}</td>          
-          </tr>
-          <tr *ngIf="!files">
-              <td colspan="4" class="text-center">
-                  <span class="spinner-border spinner-border-lg align-center"></span>
-              </td>
+            <td>{{fil.positive}}</td>
+            <td>{{fil.negative}}</td>
           </tr>
         </tbody>
       </table>
