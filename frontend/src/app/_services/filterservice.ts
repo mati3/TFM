@@ -23,7 +23,7 @@ export class FilterService {
     search(id){
         console.log(" hasta aqui llego")
         return this.http.post(`${environment.apiData}/search`, id)
-            .subscribe();
+        .pipe(map(x => { return x }));
     }
 
     deleteIndex(email: string,typefile: String){

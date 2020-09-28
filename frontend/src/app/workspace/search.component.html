@@ -10,9 +10,9 @@
     
     <!-- Buscardor --> 
     <h4>Buscador</h4>
-    <div class="form-inline my-2 my-lg-0">
-      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-      <button class="btn btn-outline-success my-2 my-sm-0" (click)="search('Immune-nutritional status has been recently')" type="submit">Search</button>
+    <div div [formGroup]="form" class="form-inline my-2 my-lg-0" (change)="search()">
+      <input class="form-control mr-sm-2" type="search" formControlName="search"  placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
     </div>
     <!-- <div id="search-component">
       <h4><label for="search-box">Hero Search</label></h4>
@@ -97,7 +97,7 @@
        </tbody>
      </table>
 
-    <!-- medidas de rendimiento-->
+    <!-- medidas de rendimiento
     <h4>Medidas de rendimiento</h4>
     <div class="input-group">
         <input type="text" class="form-control" aria-label="Text input with segmented dropdown button">
@@ -111,6 +111,15 @@
                 <a class="dropdown-item" href="#">Another Rendimiento</a>
             </div>
         </div>
-    </div>
+    </div> -->
 
+</div>
+
+<h4>Resultados</h4>
+<div class="row">
+    <ul *ngFor="let res of result">
+     <li><strong>titulo</strong></li>{{res.titulo}}
+     <li><strong>abtrast</strong></li>{{ res.abtrast }}
+     <li><strong>golden words</strong></li>{{ res.golden_words }}
+     </ul>
 </div>

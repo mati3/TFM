@@ -6,7 +6,7 @@
             <div class="form-col">
                 <div class="form-group ">
                     <label for="first_name">{{'profile.first_name' | translate}}</label>
-                    <input type="text" value="hola" formControlName="first_name" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.first_name.errors }" />
+                    <input type="text" formControlName="first_name" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.first_name.errors }" />
                     <div *ngIf="submitted && f.first_name.errors" class="invalid-feedback">
                         <div *ngIf="f.first_name.errors.required">{{'error.first_name' | translate}}</div>
                     </div>
