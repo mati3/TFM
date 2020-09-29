@@ -9,11 +9,11 @@ from org.apache.lucene.index import IndexWriter, IndexWriterConfig, DirectoryRea
 from org.apache.lucene.document import Document, Field, StringField, TextField
 from org.apache.lucene.store import SimpleFSDirectory
 from org.apache.lucene.queryparser.classic import QueryParser, QueryParserBase, MultiFieldQueryParser
-from org.apache.lucene.search import IndexSearcher
+from org.apache.lucene.search import IndexSearcher, BooleanClause
 
 lucene.initVM()
 
-class Lucene:
+class Lucene():
 
     def indexar(self, filepath):
         directory = SimpleFSDirectory(Paths.get(filepath+"/lucene"))
@@ -43,8 +43,8 @@ class Lucene:
                     #print(line)
                     abtrast = line
                 if line.find('ST  -') != -1:
-                    print(' ********* TITULO *********')
-                    print(line)
+                    #print(' ********* TITULO *********')
+                    #print(line)
                     titulo = line
                 # 'N1  -' or 'PY  -'
                 if line.find('KW  -') != -1:
@@ -67,26 +67,19 @@ class Lucene:
             writer.addDocument(doc)
             writer.commit()
         writer.close()
-        print(" end ")
+        return 'files upload ok'
 
 
     def search(self, filepath, word):
         directory = SimpleFSDirectory(Paths.get(filepath+"/lucene"))
         searcher = IndexSearcher(DirectoryReader.open(directory))
         analyzer = EnglishAnalyzer()
-        query = QueryParser("abtrast", analyzer).parse(word)
+        #query = QueryParser("abtrast", analyzer).parse(word)
         result = []
-        #fields = ["titulo","abtrast","golden_words"]
-        #parser = MultiFieldQueryParser( fields, analyzer)
-        #parser.setDefaultOperator(QueryParserBase.AND_OPERATOR)
-        #query = parser.parse(word)
-        #query = MultiFieldQueryParser.parse(word,["titulo","abtrast","golden_words"], analyzer)
-        print("filepath")
-        print(filepath)
-        print("word")
-        print(word)
-        print("query")
-        print(query)
+        SHOULD = BooleanClause.Occur.SHOULD
+        query = MultiFieldQueryParser.parse(QueryParserBase.escape(word), ["titulo","abtrast","golden_words"],
+                                                [SHOULD, SHOULD, SHOULD],
+                                                analyzer)
         scoreDocs = searcher.search(query, 10).scoreDocs
         #print("scoreDocs")
         #print(scoreDocs)

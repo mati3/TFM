@@ -109,7 +109,6 @@ def upload(correo_id, typefile):
         response ='no selected file positive or negative'
         return jsonify(response), 500
     if (filepos and allowed_file(filepos.filename)) or (fileneg and allowed_file(fileneg.filename)):
-        response = 'files upload ok'
         filenamepos = secure_filename(filepos.filename)
         filenameneg = secure_filename(fileneg.filename)
         # comprobar si el directorio para el usuario actual existe
@@ -119,12 +118,12 @@ def upload(correo_id, typefile):
         # guardar archivo en directorio para el usuario actual
         filepos.save(os.path.join(myfolder+'/'+typefile, filenamepos))
         fileneg.save(os.path.join(myfolder+'/'+typefile, filenameneg))
+        response = client.insertFiles(correo_id,typefile,filenamepos, filenameneg)
         # concatenamos los archivos y lo indexamos
-        concat_file(filenamepos, filenameneg, myfolder+'/'+typefile)
-        client.insertFiles(correo_id,typefile,filenamepos, filenameneg)
-        
+        response = concat_file(filenamepos, filenameneg, myfolder+'/'+typefile)
+                
         return jsonify(response), 200
-    response = 'response post ok'
+    response = 'response post NO indexing'
     return jsonify(response), 200
 
 @app.route('/search', methods = ['GET', 'POST'])
@@ -149,7 +148,6 @@ def search():
     count = filepos.find(".txt")
     count2 = fileneg.find(".txt")
     pathfile = app.config['UPLOAD_FOLDER']+'/'+correo+'/'+typefile+'/'+filepos[:count]+fileneg[:count2]
-    print(pathfile)
     resultado = lc.search(pathfile,body['wanted'])
     return jsonify(resultado), 200
 
@@ -169,7 +167,7 @@ def concat_file2(file1, file2, myfolder):
     newfile = open(filepath+filename, "a")
     newfile.write(f1 + f2)
     newfile.close()
-    lc.indexar(filepath,filename)
+    return lc.indexar(filepath,filename)
 
 def concat_file(file1, file2, myfolder):
     count = file1.find(".txt")
@@ -214,7 +212,7 @@ def concat_file(file1, file2, myfolder):
         docs = docs.replace("TY  ER  -","")
         contador = contador + 1
     os.remove(myfolder+'/'+filename+'.txt')
-    lc.indexar(filepath)
+    return lc.indexar(filepath)
 
 def createDirectory(myfolder):
     try: 
