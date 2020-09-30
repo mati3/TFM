@@ -1,8 +1,8 @@
 ﻿import { Component } from '@angular/core';
-import { TranslatorService } from './_services';
+import { TranslatorService } from './services';
 
-import { AccountService } from './_services';
-import { User, Role } from './_models';
+import { AccountService } from './services';
+import { User, Role } from './models';
 
 @Component({ selector: 'app', templateUrl: 'app.component.html' })
 export class AppComponent {
@@ -19,17 +19,27 @@ export class AppComponent {
         //}
     }
 
+    /**
+     * @param {string} lang - language selected
+     */
     switchLang(lang: string) {
         return this.translate.selectLanguage(lang);
     }
 
+    /**
+     * Checks if the current user is an admin
+     * 
+     * @return {boolean} 
+     */
     get isAdmin() {
         if (this.user){
             return this.user && this.user[0].role === Role.Admin;
         }
         return this.user && this.user.role === Role.Admin;
     }
-
+    /**
+     * Logout for the current user
+     */
     logout() {
         this.accountService.logout();
         //location.reload();

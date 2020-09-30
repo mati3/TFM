@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { first } from 'rxjs/operators';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { User, LookingFiles } from '@app/_models';
-import { AccountService, AlertService, FilterService } from '@app/_services';
+import { User, LookingFiles } from '@app/models';
+import { AccountService, AlertService, FilterService } from '@app/services';
 
 @Component({ templateUrl: 'search.component.html' })
 export class SearchComponent {

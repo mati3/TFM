@@ -1,6 +1,6 @@
 ﻿import { Component, OnInit } from '@angular/core';
 import { first } from 'rxjs/operators';
-import { AccountService, AlertService, FilterService } from '@app/_services';
+import { AccountService, AlertService, FilterService } from '@app/services';
 import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({ templateUrl: 'list.component.html' })

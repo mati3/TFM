@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { User } from '@app/_models';
-import { AccountService } from '@app/_services';
+import { User } from '@app/models';
+import { AccountService } from '@app/services';
 
 @Component({ templateUrl: 'profile.component.html' })
 export class ProfileComponent {

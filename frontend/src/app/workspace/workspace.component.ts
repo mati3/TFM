@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormControl, Validators} from '@angular/forms';
-import { User } from '@app/_models';
-import { AccountService, FilterService } from '@app/_services';
+import { User } from '@app/models';
+import { AccountService, FilterService } from '@app/services';
 import { first } from 'rxjs/operators';
 
 @Component({ templateUrl: 'workspace.component.html' })

@@ -5,7 +5,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { environment } from '@environments/environment';
-import { LookingFiles } from '@app/_models';
+import { LookingFiles } from '@app/models';
 
 @Injectable({ providedIn: 'root' })
 export class FilterService {

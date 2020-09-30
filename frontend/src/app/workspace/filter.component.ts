@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { first } from 'rxjs/operators';
 
-import { User } from '@app/_models';
-import { AccountService, AlertService, FilterService } from '@app/_services';
+import { User } from '@app/models';
+import { AccountService, AlertService, FilterService } from '@app/services';
 
 @Component({ templateUrl: 'filter.component.html' })
 export class FilterComponent {
