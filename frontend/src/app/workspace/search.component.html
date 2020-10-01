@@ -1,42 +1,22 @@
 <div class="col-md-6 offset-md-3 mt-5">
-  <h1>Search</h1>
+  <h1>{{'files.looking' | translate}}</h1>
   <a routerLink="/workspace/filter" class="btn btn-sm btn-success mb-2">{{ 'files.filter' | translate }}</a>
-    <!-- no admite form....
-    <form class="form-inline md-form mr-auto mb-4">
-        <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
-        <button class="btn aqua-gradient btn-rounded btn-sm my-0" type="submit">Search</button>
-    </form>
-    -->
     
     <!-- Buscardor --> 
-    <h4>Buscador</h4>
     <div div [formGroup]="form" class="form-inline my-2 my-lg-0" (change)="search()">
-      <input class="form-control mr-sm-2" type="search" formControlName="search"  placeholder="Search" aria-label="Search">
-      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+      <input class="form-control mr-sm-2" type="search" formControlName="search"  placeholder="{{'files.looking' | translate}}" aria-label="Search">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">{{'files.looking' | translate}}</button>
     </div>
-    <!-- <div id="search-component">
-      <h4><label for="search-box">Hero Search</label></h4>
-    
-      <input #searchBox id="search-box" (input)="search(searchBox.value)" />
-    
-      <ul class="search-result">
-        <li *ngFor="let hero of heroes$ | async" >
-          <a routerLink="/detail/{{hero.id}}">
-            {{hero.name}}
-          </a>
-        </li>
-      </ul>
-    </div> -->
 
      <!-- espacio de archivos -->
-     <h4>Selección de archivos</h4>
+     <h4>{{'files.selecfiles' | translate}}</h4>
   
      <table class="table table-striped">
        <thead>
          <caption>{{'files.fvs' | translate}}</caption>
            <tr>
-            <th width="50%">Positive</th>
-            <th width="50%">Negative</th>
+            <th width="50%">{{ 'files.positive' | translate }}</th>
+            <th width="50%">{{ 'files.negative' | translate }}</th>
            </tr>
        </thead>
        <tbody>
@@ -46,7 +26,7 @@
            <td nowrap>
              <button type="button" class="btn btn-success btn-xs" 
                (click)="select(fil.positive, fil.negative, 'filesFVS')"  >
-               <span class="glyphicon glyphicon-upload"></span> Select
+               <span class="glyphicon glyphicon-upload"></span> {{ 'files.select' | translate }}
              </button>
            </td>
          </tr>
@@ -57,8 +37,8 @@
        <thead>
          <caption>{{'files.fds' | translate}}</caption>
            <tr>
-            <th width="50%">Positive</th>
-            <th width="50%">Negative</th>
+            <th width="50%">{{ 'files.positive' | translate }}</th>
+            <th width="50%">{{ 'files.negative' | translate }}</th>
            </tr>
        </thead>
        <tbody>
@@ -68,7 +48,7 @@
           <td nowrap>
             <button type="button" class="btn btn-success btn-xs" 
               (click)="select(fil.positive, fil.negative, 'filesFDS')"  >
-              <span class="glyphicon glyphicon-upload"></span> Select
+              <span class="glyphicon glyphicon-upload"></span> {{ 'files.select' | translate }}
             </button>
           </td>
          </tr>
@@ -79,8 +59,8 @@
        <thead>
          <caption>{{'files.tis' | translate}}</caption>
            <tr>
-            <th width="50%">Positive</th>
-            <th width="50%">Negative</th>
+            <th width="50%">{{ 'files.positive' | translate }}</th>
+            <th width="50%">{{ 'files.negative' | translate }}</th>
            </tr>
        </thead>
        <tbody>
@@ -90,36 +70,19 @@
           <td nowrap>
             <button type="button" class="btn btn-success btn-xs" 
               (click)="select(fil.positive, fil.negative, 'filesTIS')"  >
-              <span class="glyphicon glyphicon-upload"></span> Select
+              <span class="glyphicon glyphicon-upload"></span> {{ 'files.select' | translate }}
             </button>
           </td>
          </tr>
        </tbody>
      </table>
-
-    <!-- medidas de rendimiento
-    <h4>Medidas de rendimiento</h4>
-    <div class="input-group">
-        <input type="text" class="form-control" aria-label="Text input with segmented dropdown button">
-        <div class="input-group-append">
-            <button type="button" class="btn btn-outline-secondary">Filter</button>
-            <button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="sr-only">Toggle Dropdown</span>
-            </button>
-            <div class="dropdown-menu">
-                <a class="dropdown-item" href="#">especificidad</a>
-                <a class="dropdown-item" href="#">Another Rendimiento</a>
-            </div>
-        </div>
-    </div> -->
-
 </div>
 
-<h4>Resultados</h4>
+<h4>{{ 'search.result' | translate }}</h4>
 <div class="row">
     <ul *ngFor="let res of result">
-     <li><strong>titulo</strong></li>{{res.titulo}}
-     <li><strong>abtrast</strong></li>{{ res.abtrast }}
-     <li><strong>golden words</strong></li>{{ res.golden_words }}
+     <li><strong>{{ 'search.tittle' | translate }}</strong></li>{{res.titulo}}
+     <li><strong>{{ 'search.abstract' | translate }}</strong></li>{{ res.abtrast }}
+     <li><strong>{{ 'search.key' | translate }}</strong></li>{{ res.golden_words }}
      </ul>
 </div>

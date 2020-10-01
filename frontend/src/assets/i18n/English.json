@@ -14,6 +14,11 @@
         "cancel": "Cancel",
         "save": "Save"
     },
+    "footer":{
+        "git": "Git repository",
+        "contact": "Contact details",
+        "biostatistics":"Biostatistics unit"
+    },
     "profile": {
         "first_name": "First Name",
         "last_name": "Last Name",
@@ -54,16 +59,33 @@
         "passwordblanck": "(Leave blank to keep the same password)"
     },
     "files": {
+        "selecfiles": "File selection",
+        "workspace": "Workspace",
         "included": "Included",
         "negative": "Negative",
+        "selectnegative": "Select negative file",
+        "messagenegative": "First you have to select the positive file",
         "positive": "Positive",
+        "selectpositive": "Select positive file",
         "tis": "TIS",
+        "cleartis": "Clear index TIS",
         "fvs": "FVS",
+        "clearfvs": "Clear index FVS",
         "fds": "FDS",
+        "clearfds": "Clear index FDS",
         "filter": "Filter",
-        "search": "Search",
+        "looking": "Search",
         "upload": "Upload",
         "cancel": "Cancel",
-        "remove": "Remove"
+        "remove": "Remove",
+        "select": "Select",
+        "removeindex": "Remove index",
+        "removemessage": "Are you sure you want to delete everything indexed?"
+    },
+    "search": {
+        "result": "Result",
+        "tittle": "Tittle",
+        "abstract": "Abstract",
+        "key": "KeyWords"
     }
 }

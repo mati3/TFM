@@ -1,21 +1,21 @@
 <div class="col-md-9 offset-md-1 mt-5">
-  <h1>Workspace</h1>
+  <h1>{{ 'files.workspace' | translate }}</h1>
   <a routerLink="filter" class="btn btn-sm btn-success mb-2 mr-1">{{ 'files.filter' | translate }}</a>
   <a routerLink="search" class="btn btn-sm btn-success mb-2 mr-1">{{ 'files.search' | translate }}</a>
   <!-- espacio de archivos por ahora selecciona-->
-  <h4>Selección de archivos</h4>
+  <h4>{{'files.selecfiles' | translate}}</h4>
     <div>
       <form [formGroup]="myForm">
         <div class="form-group">
           <caption class="row">{{'files.fvs' | translate}}
             <button type="button" class="btn btn-outline-danger btn-sm float-left  ml-3" data-toggle="modal" data-target="#deleteIndex" (click)="filetype('filesFVS')">
-              <span class="glyphicon glyphicon-trash"></span> Clear indexar FVS
+              <span class="glyphicon glyphicon-trash"></span>{{ 'files.clearfvs' | translate }}
             </button>
           </caption>
-            <label class="btn btn-dark btn-rounded waves-effect btn-sm float-left mr-1">Select positive file            
+            <label class="btn btn-dark btn-rounded waves-effect btn-sm float-left mr-1">{{ 'files.selectpositive' | translate }}          
               <input formControlName="filepositive" id="file" type="file" class="form-control" (change)="onFileChange($event,'filesFVS')">
             </label>
-            <label class="btn btn-outline-dark btn-rounded waves-effect btn-sm float-left mr-1" data-toggle="tooltip" title="Primero ha de seleccionar el archivo positivo">Select negative file  
+            <label class="btn btn-outline-dark btn-rounded waves-effect btn-sm float-left mr-1" data-toggle="tooltip" title="{{'files.messagenegative' | translate}}">{{ 'files.selectnegative' | translate }}  
               <input formControlName="filenegative" id="file" type="file" class="form-control" (change)="onFileChange($event,'filesFVS')">
             </label>
         </div>
@@ -25,8 +25,8 @@
     <table class="table">
       <thead>
         <tr>
-          <th width="50%">Positive</th>
-          <th width="50%">Negative</th>
+          <th width="50%">{{ 'files.positive' | translate }}</th>
+          <th width="50%">{{ 'files.negative' | translate }}</th>
         </tr>
       </thead>
       <tbody>
@@ -65,14 +65,14 @@
         <div class="form-group">
           <caption class="row">{{'files.fds' | translate}}
             <button type="button" class="btn btn-outline-danger btn-sm float-left  ml-3" data-toggle="modal" data-target="#deleteIndex" (click)="filetype('filesFDS')">
-              <span class="glyphicon glyphicon-trash"></span> Clear indexar FDS
+              <span class="glyphicon glyphicon-trash"></span>{{ 'files.clearfds' | translate }}
             </button>
           </caption>
-          <label class="btn btn-dark btn-rounded waves-effect btn-sm float-left mr-1" >Select positive file 
+          <label class="btn btn-dark btn-rounded waves-effect btn-sm float-left mr-1" >{{ 'files.selectpositive' | translate }}
             <input formControlName="filepositive" id="file" type="file" class="form-control" (change)="onFileChange($event, 'filesFDS')"> 
           </label>
           <div>
-          <label class="btn btn-outline-dark btn-rounded waves-effect btn-sm float-left mr-1" data-toggle="tooltip" title="Primero ha de seleccionar el archivo positivo">Select negative file
+          <label class="btn btn-outline-dark btn-rounded waves-effect btn-sm float-left mr-1" data-toggle="tooltip" title="{{'files.messagenegative' | translate}}">{{ 'files.selectnegative' | translate }}
             <input formControlName="filenegative" id="file" type="file" class="form-control" (change)="onFileChange($event, 'filesFDS')">
           </label>
           </div>
@@ -83,8 +83,8 @@
     <table class="table">
       <thead> 
         <tr>
-          <th width="50%">Positive</th>
-          <th width="50%">Negative</th>
+          <th width="50%">{{ 'files.positive' | translate }}</th>
+          <th width="50%">{{ 'files.negative' | translate }}</th>
         </tr>
       </thead>
       <tbody>
@@ -124,13 +124,13 @@
         <div class="form-group">
           <caption class="row">{{'files.tis' | translate}}
             <button type="button" class="btn btn-outline-danger btn-sm float-left  ml-3" data-toggle="modal" data-target="#deleteIndex" (click)="filetype('filesTIS')">
-              <span class="glyphicon glyphicon-trash"></span> Clear indexar TIS
+              <span class="glyphicon glyphicon-trash"></span>{{ 'files.cleartis' | translate }}
             </button>
           </caption>
-          <label class="btn btn-dark btn-rounded waves-effect btn-sm float-left mr-1">Select positive file
+          <label class="btn btn-dark btn-rounded waves-effect btn-sm float-left mr-1">{{ 'files.selectpositive' | translate }}
             <input formControlName="filepositive" id="file" type="file" class="form-control" (change)="onFileChange($event, 'filesTIS')">
           </label>
-          <label class="btn btn-outline-dark btn-rounded waves-effect btn-sm float-left mr-1">Select negative file
+          <label class="btn btn-outline-dark btn-rounded waves-effect btn-sm float-left mr-1" data-toggle="tooltip" title="{{'files.messagenegative' | translate}}">{{ 'files.selectnegative' | translate }}
             <input formControlName="filenegative" id="file" type="file" class="form-control" (change)="onFileChange($event, 'filesTIS')">
           </label>
         </div>
@@ -140,8 +140,8 @@
     <table class="table">
       <thead>
         <tr>
-          <th width="50%">Positive</th>
-          <th width="50%">Negative</th>
+          <th width="50%">{{ 'files.positive' | translate }}</th>
+          <th width="50%">{{ 'files.negative' | translate }}</th>
         </tr>
       </thead>
       <tbody>
@@ -185,19 +185,19 @@
 
       <!-- Modal Header -->
       <div class="modal-header">
-        <h4 class="modal-title">Eliminar indexación</h4>
+        <h4 class="modal-title">{{ 'files.removeindex' | translate }}</h4>
         <button type="button" class="close" data-dismiss="modal">&times;</button>
       </div>
 
       <!-- Modal body -->
       <div class="modal-body">
-        Estas seguro de que quieres eliminar todo lo indexado en el elemento seleccionado
+        {{ 'files.removemessage' | translate }}
       </div>
 
       <!-- Modal footer -->
       <div class="modal-footer">
-        <button type="button" class="btn btn-success" data-dismiss="modal">Anular</button>
-        <button type="button" class="btn btn-danger" data-dismiss="modal" (click)="removeindex()">Eliminar</button>
+        <button type="button" class="btn btn-success" data-dismiss="modal">{{ 'files.cancel' | translate }}</button>
+        <button type="button" class="btn btn-danger" data-dismiss="modal" (click)="removeindex()">{{ 'files.remove' | translate }}</button>
       </div>
 
     </div>
