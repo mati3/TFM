@@ -1,6 +1,6 @@
 <div class="col-md-9 offset-md-1 mt-5">
   <h1>{{'files.filter' | translate}}</h1>
-    <a routerLink="/workspace/search" class="btn btn-sm btn-success mb-2">{{ 'files.search' | translate }}</a>
+    <a routerLink="/workspace/search" class="btn btn-sm btn-success mb-2">{{ 'files.looking' | translate }}</a>
   
     <table class="table table-striped">
       <thead>
@@ -46,9 +46,26 @@
         <tr *ngFor="let fil of files?.filesTIS">
           <td>{{fil.positive}}</td>
           <td>{{fil.negative}}</td>
+          <td nowrap>
+            <button type="button" class="btn btn-success btn-xs" 
+              (click)="select(fil.positive, fil.negative)"  >
+              <span class="glyphicon glyphicon-upload"></span> {{ 'files.select' | translate }}
+            </button>
+          </td>
         </tr>
       </tbody>
     </table>
+
+    <!-- Filtros -->
+    <div class="form-group">
+      <select class="custom-select" required>
+        <option value="">Seleccione un filtro</option>
+        <option value="1">Filtro basado en frecuencias</option>
+        <option value="2">Two</option>
+        <option value="3">Three</option>
+      </select>
+      <div class="invalid-feedback">Invalid custom select feedback</div>
+    </div>
 
     <!-- medidas de rendimiento
     <h4>Medidas de rendimiento</h4>

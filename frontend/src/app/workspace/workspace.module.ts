@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 import { WorkspaceRoutingModule } from './workspace-routing.module';
 import { WorkspaceComponent } from './workspace.component';
@@ -17,6 +18,7 @@ import { FilterComponent } from './filter.component';
         FormsModule,
         HttpClientModule,
         WorkspaceRoutingModule,
+        NgxPaginationModule,
         TranslateModule.forChild({ 
           useDefaultLang: true, 
           isolate: false, 

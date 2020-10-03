@@ -83,7 +83,8 @@
         "removemessage": "Estas seguro de que quieres eliminar todo lo indexado?"
     },
     "search": {
-        "result": "Resultados",
+        "results": "Resultados",
+        "result": "Resultado",
         "tittle": "Titulo",
         "abstract": "Resumen",
         "key": "Palabras Clave"

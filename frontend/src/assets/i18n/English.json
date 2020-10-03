@@ -83,7 +83,8 @@
         "removemessage": "Are you sure you want to delete everything indexed?"
     },
     "search": {
-        "result": "Result",
+        "results": "Results",
+        "result": "Outcome",
         "tittle": "Tittle",
         "abstract": "Abstract",
         "key": "KeyWords"

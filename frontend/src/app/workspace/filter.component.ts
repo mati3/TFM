@@ -9,6 +9,8 @@ export class FilterComponent {
 
   user: User;
   files = null;
+  pos = null;
+  neg = null;
 
   constructor(
       private accountService: AccountService,
@@ -23,4 +25,9 @@ export class FilterComponent {
           .pipe(first())
           .subscribe(files => this.files = files);
   }
+  select(positive, negative){
+    this.pos = positive;
+    this.neg = negative;
+  }
+
 }

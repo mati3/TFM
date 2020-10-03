@@ -16,6 +16,12 @@ ENV PATH /myapp/frontend/node_modules/.bin:$PATH
 COPY package.json /myapp/frontend/package.json
 RUN npm install
 RUN npm install -g @angular/cli
+# paginación
+RUN npm install ngx-pagination --save
+# documentación
+RUN npm install --save-dev @compodoc/compodoc 
+# documentación typeScript
+RUN npm install --global typedoc
 
 # add app
 #COPY . .
