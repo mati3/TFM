@@ -20,9 +20,19 @@ export class FilterService {
             .subscribe();
     }
 
+    indexTIS(email: string, formData: FormData){
+        return this.http.post(`${environment.apiData}/indexTIS/${email}`, formData)
+            .subscribe();
+    }
+
     search(id){
-        console.log(" hasta aqui llego")
         return this.http.post(`${environment.apiData}/search`, id)
+        .pipe(map(x => { return x }));
+    }
+
+    selectTIS(id){
+        console.log("helloooooo")
+        return this.http.post(`${environment.apiData}/tis`, id)
         .pipe(map(x => { return x }));
     }
 

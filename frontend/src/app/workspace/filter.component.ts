@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { first } from 'rxjs/operators';
 
-import { User } from '@app/models';
+import { User, LookingFiles } from '@app/models';
 import { AccountService, AlertService, FilterService } from '@app/services';
 
 @Component({ templateUrl: 'filter.component.html' })
@@ -11,6 +11,7 @@ export class FilterComponent {
   files = null;
   pos = null;
   neg = null;
+  lookingfiles = null;
 
   constructor(
       private accountService: AccountService,
@@ -18,6 +19,7 @@ export class FilterComponent {
       private alertService: AlertService
       ) {
       this.user = this.accountService.userValue;
+      this.lookingfiles = new LookingFiles(this.user);
   }
 
   ngOnInit() {
@@ -25,9 +27,14 @@ export class FilterComponent {
           .pipe(first())
           .subscribe(files => this.files = files);
   }
+
   select(positive, negative){
-    this.pos = positive;
-    this.neg = negative;
+    this.lookingfiles.positive = positive;
+    this.lookingfiles.negative = negative; 
+    this.lookingfiles.typefile = 'fileTIS';
+    this.filterService.selectTIS(this.lookingfiles)
+      .pipe(first())
+      .subscribe();
   }
 
 }

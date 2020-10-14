@@ -78,6 +78,9 @@ export class WorkspaceComponent {
     formData.append('filenegative', item.filenegative);
     item.invalid = true
     this.filterService.upload(this.user.email, typefile, formData);
+    if (typefile == 'filesTIS'){
+      this.filterService.indexTIS(this.user.email,formData);
+    }
   }   
 
   filetype(typefile: String){

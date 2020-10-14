@@ -54,6 +54,9 @@ def clientes():
 # new client
 @app.route('/newclient/<string:correo_id>', methods = ['GET','POST'])
 def newclient(correo_id):
+    myfolder = app.config['UPLOAD_FOLDER']+'/'+ correo_id
+    # si no existe lo creamos
+    createDirectory(myfolder)
     return  jsonify(client.insertClient(correo_id)), 200    
 
 # remove client
@@ -64,7 +67,7 @@ def deleteClient(correo_id):
 # devuelve los archivos Indexados de un cliente dado su id
 @app.route('/filesindex/<string:correo_id>', methods=['GET'])
 def filesindex(correo_id):
-    myfolder = app.config['UPLOAD_FOLDER']+'/'+correo_id
+    myfolder = app.config['UPLOAD_FOLDER']+'/'+ correo_id
     createDirectory(myfolder)
     filesFVS = os.listdir(app.config['UPLOAD_FOLDER']+'/'+correo_id+'/filesFVS/index')
     if "lucene" in filesFVS: filesFVS.remove("lucene") 
@@ -111,9 +114,9 @@ def upload(correo_id, typefile):
     if (filepos and allowed_file(filepos.filename)) or (fileneg and allowed_file(fileneg.filename)):
         filenamepos = secure_filename(filepos.filename)
         filenameneg = secure_filename(fileneg.filename)
-        # comprobar si el directorio para el usuario actual existe
+        # el directorio para el usuario actual
         myfolder = app.config['UPLOAD_FOLDER']+'/'+correo_id
-        # si no existe lo creamos
+        # si no existe el directorio lo creamos
         createDirectory(myfolder)
         # guardar archivo en directorio para el usuario actual
         filepos.save(os.path.join(myfolder+'/'+typefile, filenamepos))
@@ -122,6 +125,29 @@ def upload(correo_id, typefile):
         # concatenamos los archivos y lo indexamos
         response = concat_file(filenamepos, filenameneg, myfolder+'/'+typefile)
                 
+        return jsonify(response), 200
+    response = 'response post NO indexing'
+    return jsonify(response), 200
+
+# index TIS for filter
+@app.route('/indexTIS/<string:correo_id>', methods = ['POST'])
+def indexTIS(correo_id):
+    response = ''  
+    # check if the post request has the file part
+    if ('filepositive' not in request.files) or ('filenegative' not in request.files):
+        response='no file positive or negative in request', 500
+        return jsonify(response)
+    filepos = request.files['filepositive']
+    fileneg = request.files['filenegative']
+    if (filepos.filename == '') or (fileneg.filename == ''):
+        response ='no selected file positive or negative'
+        return jsonify(response), 500
+    if (filepos and allowed_file(filepos.filename)) or (fileneg and allowed_file(fileneg.filename)):
+        filenamepos = secure_filename(filepos.filename)
+        filenameneg = secure_filename(fileneg.filename)        
+        filepath =  app.config['UPLOAD_FOLDER']+'/'+ correo_id+'/filesTIS'
+        lc.indexTIS(filepath, filepos, filenamepos)
+        response = lc.indexTIS(filepath, fileneg, filenameneg )        
         return jsonify(response), 200
     response = 'response post NO indexing'
     return jsonify(response), 200
@@ -149,6 +175,32 @@ def search():
     count2 = fileneg.find(".txt")
     pathfile = app.config['UPLOAD_FOLDER']+'/'+correo+'/'+typefile+'/'+filepos[:count]+fileneg[:count2]
     resultado = lc.search(pathfile,body['wanted'])
+    return jsonify(resultado), 200
+
+@app.route('/tis', methods = ['GET', 'POST'])
+def selectTIS():
+    response = ''
+    body = request.get_json() # obtener el contenido del cuerpo de la solicitud
+    if body is None:
+        return "The request body is null", 400
+    if body['positive'] is None:
+        return 'You need to specify the file positive',400
+    if body['negative'] is None:
+        return 'You need to specify the file negative',400
+
+    filepos = body['positive']
+    fileneg = body['negative']
+    typefile = body['typefile']
+    correo = body['id']['email']
+    count = filepos.find(".txt")
+    count2 = fileneg.find(".txt")
+    pathfilepos = app.config['UPLOAD_FOLDER']+'/'+correo+'/filesTIS/lucene_'+filepos
+    pathfileneg = app.config['UPLOAD_FOLDER']+'/'+correo+'/filesTIS/lucene_'+fileneg
+    resultadopos = lc.selectTIS(pathfilepos)
+    print("end positive")
+    resultadoneg = lc.selectTIS(pathfileneg)
+    print(" end negative ")
+    resultado = lc.filterfreq(resultadopos, resultadoneg)
     return jsonify(resultado), 200
 
 def allowed_file(filename):
