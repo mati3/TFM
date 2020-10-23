@@ -200,7 +200,55 @@ def selectTIS():
     print("end positive")
     resultadoneg = lc.selectTIS(pathfileneg)
     print(" end negative ")
-    resultado = lc.filterfreq(resultadopos, resultadoneg)
+    #resultado = lc.filterfreq(resultadopos, resultadoneg)
+    resultado = {'terms_freqs_positive': resultadopos, 'terms_freqs_negative': resultadoneg}
+    return jsonify(resultado), 200
+
+@app.route('/filter', methods = ['GET', 'POST'])
+def filter():
+    body = request.get_json()
+    typefilter = body['typefilter']
+    print(typefilter)
+    terms_freqs_positive = body['terms_freqs_positive']
+    print(terms_freqs_positive)
+    terms_freqs_negative = body['terms_freqs_negative']
+    print(terms_freqs_negative)
+    sum = body['sum']
+    print(sum)
+    email = body['email']
+    print(email)
+    resultado = lc.filter(typefilter, terms_freqs_positive, terms_freqs_negative, sum, email)
+    # devuelvo la consulta ???
+    return jsonify(resultado), 200
+
+@app.route('/applyFilter', methods = ['GET', 'POST'])
+def applyFilter():
+    response = ''
+    body = request.get_json() # obtener el contenido del cuerpo de la solicitud
+    if body is None:
+        return "The request body is null", 400
+    if body['id']['email'] is None:
+        return 'You need to identify yourself', 400
+    if body['wanted'] == '':
+        return 'You need to specify what looking for',400
+
+    correo = body['id']['email']
+    files = client.getFiles(correo)
+    for i in files:
+        filesFVS = i['filesFVS']
+        filesFDS = i['filesFDS']
+        filesTIS = i['filesTIS'] 
+        files = {'filesFVS':filesFVS, 'filesFDS': filesFDS, 'filesTIS': filesTIS}
+
+    resultado = []
+    for e in filesFVS:
+        filepos = e['positive']
+        fileneg = e['negative']
+        typefile = 'filesFVS'
+        count = filepos.find(".txt")
+        count2 = fileneg.find(".txt")
+        pathfile = app.config['UPLOAD_FOLDER']+'/'+correo+'/'+typefile+'/'+filepos[:count]+fileneg[:count2]
+        resultado.append(lc.search(pathfile,body['wanted']))
     return jsonify(resultado), 200
 
 def allowed_file(filename):

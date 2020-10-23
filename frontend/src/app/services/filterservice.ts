@@ -31,8 +31,18 @@ export class FilterService {
     }
 
     selectTIS(id){
-        console.log("helloooooo")
         return this.http.post(`${environment.apiData}/tis`, id)
+        .pipe(map(x => { return x }));
+    }
+
+    selectFilter(id){
+        console.log("helloooooo")
+        return this.http.post(`${environment.apiData}/filter`, id)
+        .pipe(map(x => { return x }));
+    }
+
+    applyFilter(id){
+        return this.http.post(`${environment.apiData}/applyFilter`, id)
         .pipe(map(x => { return x }));
     }
 

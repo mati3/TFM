@@ -7,3 +7,4 @@ requests
 Flask-Caching
 Flask-Cors
 mongomock
+scipy
