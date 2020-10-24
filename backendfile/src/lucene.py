@@ -3,7 +3,8 @@ import operator
 from datetime import datetime, timedelta
 from itertools import *
 import math
-from scipy.stats import norm
+import numpy as np, scipy.stats as st
+from scipy.special import ndtri
 
 import lucene
 from java.nio.file import Paths
@@ -273,7 +274,7 @@ query = parser.parse(query)'''
             #p_F_Cpos = p_Cpos_F/p_Cpos
             #p_F_Cneg = p_Cneg_F/p_Cneg  
             #print("prob", k, 'is', prob[k])
-            tabla[k] = {'prob': prob[k], 'p_Cpos_F': p_Cpos_F[k], 'p_Cneg_F':  p_Cneg_F[k]}
+            tabla[k] = {'prob': prob[k], 'p_Cpos_F': p_Cpos_F[k], 'p_Cneg_F':  p_Cneg_F[k], 'p_F': p_Cpos_F[k]+p_Cneg_F[k]}
         return tabla
 
     def filterfreq(self, resultadopos, resultadoneg, sum):
@@ -361,9 +362,9 @@ query = parser.parse(query)'''
                 # numero de veces que aparece un termino en el positivo entre el totalterminofrecuencia de los positivos
                 condProbFpos = tabla[f]['p_Cpos_F']/resultadopos['sumTotalTermFreq']
                 condProbFneg = tabla[f]['p_Cneg_F']/resultadoneg['sumTotalTermFreq']
-                #OddsRatio[f]=math.log(((tabla[f]['p_Cpos_F']*(1-tabla[f]['p_Cneg_F']))/((1-tabla[f]['p_Cpos_F'])*tabla[f]['p_Cneg_F'])))
+                OddsRatio[f]=math.log(tabla[f]['p_Cpos_F']*(1-tabla[f]['p_Cneg_F'])/(1-tabla[f]['p_Cpos_F'])*tabla[f]['p_Cneg_F'])
                 # si condProbFneg es 0, es decir, el termino no existe en negativos, no se puede calcular oddratio
-                OddsRatio[f]=math.log((condProbFpos*(1-condProbFneg))/((1-condProbFpos)*condProbFneg))
+                #OddsRatio[f]=math.log((condProbFpos*(1-condProbFneg))/((1-condProbFpos)*condProbFneg))
         print("mutualInfo")
         print(OddsRatio)
         salida = sorted(OddsRatio, key=OddsRatio.get, reverse=True)
@@ -373,35 +374,35 @@ query = parser.parse(query)'''
         return salida
 
     def filterNormalSeparation(self, resultadopos, resultadoneg, sum):
-        # prob de ci, la probabilidad de una clase, es el numero de documentos de esa clase entre el total de documentos.
-        p_Cpos = resultadopos['docCount']/(resultadopos['docCount']+resultadoneg['docCount'])
-        p_Cneg = resultadoneg['docCount']/(resultadoneg['docCount']+resultadopos['docCount'])
-
+       
         tabla = self.tabla_Term(resultadopos, resultadoneg)
         del tabla['sumTotalTermFreq']
         del tabla['docCount']
-        distr = sorted(tabla, key=tabla.get('prob'), reverse=True)
-
-        maximo = distr[0]
-        t = 0
+        
+        md = []
         for m in tabla:
-            t += (tabla[m]['p_Cpos_F']+ tabla[m]['p_Cneg_F'])
-        media = t/len(tabla)
-        desviacion = 0
-        distribucion_inversa = {}
-        for d in tabla:
-            desviacion += pow(((tabla[d]['p_Cpos_F']+ tabla[d]['p_Cneg_F']) - media),2)
-        desviacion = desviacion/len(tabla)   
-        for d in tabla: 
-            f = (tabla[d]['p_Cpos_F']+ tabla[d]['p_Cneg_F'])
-            distribucion_inversa[d] = norm.ppf(f,loc = media, scale = desviacion)
+            md.append(tabla[m]['p_F'])
+        media = np.mean(md) 
+        #print("media")
+        #print(media)
 
+        #print("desviacion")
+        #print(st.sem(md))
+
+        #cdf (x, loc = 0, escala = 1)Función de distribución acumulativa.
+        #ppf (q, loc = 0, escala = 1)Función de punto porcentual (inversa de cdf- percentiles).
+        distribucion_inversa = {}
+        for d in tabla: 
+            #distribucion_inversa[d] = st.norm.ppf(tabla[d]['p_F'],loc = np.mean(md), scale = st.sem(md))
+            distribucion = st.norm.cdf(tabla[d]['p_F'],loc = np.mean(md), scale = st.sem(md))
+            distribucion_inversa[d] = ndtri(distribucion)
+        print("distribucion_inversa")
+        print(distribucion_inversa)
         NormalSeparation = {}
         for f in tabla:
-            if (f != 'sumTotalTermFreq') and (f != 'docCount'):
-                p_F_Cpos = tabla[f]['p_Cpos_F']/tabla[f]['prob']
-                p_F_Cneg = tabla[f]['p_Cneg_F']/tabla[f]['prob']
-                NormalSeparation[f]=(distribucion_inversa[f]*tabla[f]['p_Cpos_F'])-(distribucion_inversa[f]*tabla[f]['p_Cneg_F'])
+            p_F_Cpos = tabla[f]['p_Cpos_F']/tabla[f]['prob']
+            p_F_Cneg = tabla[f]['p_Cneg_F']/tabla[f]['prob']
+            NormalSeparation[f]=(distribucion_inversa[f]*tabla[f]['p_Cpos_F'])-(distribucion_inversa[f]*tabla[f]['p_Cneg_F'])
         print("NormalSeparation")
         print(NormalSeparation)
         salida = sorted(NormalSeparation, key=NormalSeparation.get, reverse=True)
