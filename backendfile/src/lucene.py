@@ -248,9 +248,12 @@ query = parser.parse(query)'''
     
     def tabla_Term(self, resultadopos, resultadoneg):
         sumTotalTermFreq = resultadopos['sumTotalTermFreq'] + resultadoneg['sumTotalTermFreq']
+        p_Cpos = resultadopos['docCount']/(resultadopos['docCount']+resultadoneg['docCount'])
+        p_Cneg = resultadoneg['docCount']/(resultadoneg['docCount']+resultadopos['docCount'])
+
         prob = {}
         # ya tenemos los positivos
-        totalTerm = resultadopos
+        totalTerm = resultadopos.copy()
         # incluimos los negativos, obtengo el vector de todos los terminos y su frecuencia.
         for k in resultadoneg:
             if k in resultadopos:
@@ -260,49 +263,65 @@ query = parser.parse(query)'''
 
         p_Cpos_F = {}
         p_Cneg_F = {}
+        p_F_Cpos = {}
+        p_F_Cneg = {}
         tabla = {}
         for k in totalTerm:
             prob[k] = totalTerm[k]/sumTotalTermFreq
             if k in resultadopos:
-                p_Cpos_F[k] = resultadopos[k]
+                p_Cpos_F[k] = (resultadopos[k]/totalTerm[k])/prob[k]
+                p_F_Cpos[k] = (resultadopos[k]/totalTerm[k])/p_Cpos
             else: 
                 p_Cpos_F[k] = 0
+                p_F_Cpos[k] = 0
             if k in resultadoneg:
-                p_Cneg_F[k] = resultadoneg[k]
+                p_Cneg_F[k] = (resultadoneg[k]/totalTerm[k])/prob[k]
+                p_F_Cneg[k] = (resultadoneg[k]/totalTerm[k])/p_Cneg
             else: 
                 p_Cneg_F[k] = 0
-            #p_F_Cpos = p_Cpos_F/p_Cpos
-            #p_F_Cneg = p_Cneg_F/p_Cneg  
-            #print("prob", k, 'is', prob[k])
-            tabla[k] = {'prob': prob[k], 'p_Cpos_F': p_Cpos_F[k], 'p_Cneg_F':  p_Cneg_F[k], 'p_F': p_Cpos_F[k]+p_Cneg_F[k]}
+                p_F_Cneg[k] = 0
+            tabla[k] = {'prob': prob[k], 'p_Cpos_F': p_Cpos_F[k], 'p_Cneg_F':  p_Cneg_F[k], 'p_F_Cpos': p_F_Cpos[k], 'p_F_Cneg':  p_F_Cneg[k], 'sum_F': totalTerm[k]}
+        print("tabla")
+        print(tabla)
+        del tabla['sumTotalTermFreq']
+        del tabla['docCount']
         return tabla
-
-    def filterfreq(self, resultadopos, resultadoneg, sum):
-        for k in resultadoneg:
-            if k in resultadopos:
-                del resultadopos[k]
-        print(resultadopos)
-        salida = sorted(resultadopos, key=resultadopos.get, reverse=True)
-        print(salida)
-        salida = salida[:int(sum)]
-        return salida
 
     def filterInfGain(self, resultadopos, resultadoneg, sum):
         p_Cpos = resultadopos['docCount']/(resultadopos['docCount']+resultadoneg['docCount'])
         p_Cneg = resultadoneg['docCount']/(resultadoneg['docCount']+resultadopos['docCount'])
 
         tabla = self.tabla_Term(resultadopos, resultadoneg)
-        CrossEntropy = {}
+        InfGain = {}
         for f in tabla:
-            if (f != 'sumTotalTermFreq') and (f != 'docCount'):
-                p_F_Cpos = tabla[f]['p_Cpos_F']/p_Cpos
-                p_F_Cpos = 1 - p_F_Cpos
-                p_F_Cneg = tabla[f]['p_Cneg_F']/p_Cneg 
-                p_F_Cneg = 1- p_F_Cneg
-                CrossEntropy[f]=(tabla[f]['prob']*((tabla[f]['p_Cpos_F']*math.log(p_F_Cpos))+(tabla[f]['p_Cneg_F']*math.log(p_F_Cneg)))) + (1-tabla[f]['prob']*((1-tabla[f]['p_Cpos_F']*math.log(p_F_Cpos))+(1-tabla[f]['p_Cneg_F']*math.log(p_F_Cneg))))
-        print("CrossEntropy")
-        print(CrossEntropy)
-        salida = sorted(CrossEntropy, key=CrossEntropy.get, reverse=True)
+            p_F = tabla[f]['prob']# P(F) 
+            not_p_F = 1 - tabla[f]['prob']# P(F⁻)
+            p_Cpos_F = tabla[f]['p_Cpos_F'] # P(Ci|F)
+            if f in resultadoneg: 
+                not_p_Cpos_F = resultadoneg[f]/not_p_F # P(Ci|F⁻)
+                not_logpos = math.log(not_p_Cpos_F/p_Cpos)
+            else: 
+                not_p_Cpos_F = 0
+                not_logpos = 0
+            p_Cneg_F = tabla[f]['p_Cneg_F'] # P(Ci|F)
+            if f in resultadopos: 
+                not_p_Cneg_F = resultadopos[f]/not_p_F # P(Ci|F⁻)
+                not_logneg = math.log(not_p_Cneg_F/p_Cneg)
+            else: 
+                not_p_Cneg_F = 0
+                not_logpos = 0
+            # log 0 no exit, error cuando p_Cneg_F es 0
+            if p_Cpos_F==0: logpos=0
+            else: logpos = math.log(p_Cpos_F/p_Cpos)
+            if p_Cneg_F==0:logneg = 0
+            else: logneg = math.log(p_Cneg_F/p_Cneg)
+
+            sumatoria = (p_Cpos_F * logpos) + (p_Cneg_F * logneg)
+            not_sumatoria = (not_p_Cpos_F * not_logpos) + (not_p_Cneg_F * not_logneg)
+            InfGain[f]= (p_F * sumatoria)+(not_p_F * not_sumatoria)
+        print("InfGain")
+        print(InfGain)
+        salida = sorted(InfGain, key=InfGain.get, reverse=True)
         print('salida sorted')
         print(salida)
         salida = salida[:int(sum)]
@@ -315,10 +334,15 @@ query = parser.parse(query)'''
         tabla = self.tabla_Term(resultadopos, resultadoneg)
         CrossEntropy = {}
         for f in tabla:
-            if (f != 'sumTotalTermFreq') and (f != 'docCount'):
-                p_F_Cpos = tabla[f]['p_Cpos_F']/p_Cpos
-                p_F_Cneg = tabla[f]['p_Cneg_F']/p_Cneg 
-                CrossEntropy[f]=tabla[f]['prob']*((tabla[f]['p_Cpos_F']*math.log(p_F_Cpos))+(tabla[f]['p_Cneg_F']*math.log(p_F_Cneg)))
+            p_F = tabla[f]['prob'] # P(F)
+            p_Cpos_F = tabla[f]['p_Cpos_F'] # P(Ci|F)
+            p_Cneg_F = tabla[f]['p_Cneg_F'] # P(Ci|F)
+            # log 0 no exit, error cuando p_Cneg_F es 0
+            if p_Cpos_F==0: logpos=0
+            else: logpos = math.log(p_Cpos_F/p_Cpos)
+            if p_Cneg_F==0:logneg = 0
+            else: logneg = math.log(p_Cneg_F/p_Cneg)
+            CrossEntropy[f]=p_F*( (p_Cpos_F*logpos)+(p_Cneg_F*logneg) )
         print("CrossEntropy")
         print(CrossEntropy)
         salida = sorted(CrossEntropy, key=CrossEntropy.get, reverse=True)
@@ -335,12 +359,15 @@ query = parser.parse(query)'''
         tabla = self.tabla_Term(resultadopos, resultadoneg)
         mutualInfo = {}
         for f in tabla:
-            if (f != 'sumTotalTermFreq') and (f != 'docCount'):
-                #p_F_Cpos = tabla[f]['p_Cpos_F']/p_Cpos
-                #p_F_Cneg = tabla[f]['p_Cneg_F']/p_Cneg 
-                p_F_Cpos = tabla[f]['p_Cpos_F']/tabla[f]['prob']
-                p_F_Cneg = tabla[f]['p_Cneg_F']/tabla[f]['prob']
-                mutualInfo[f]=(p_Cpos*math.log(p_F_Cpos))+(p_Cneg*math.log(p_F_Cneg))
+            p_F = tabla[f]['prob'] # P(F)
+            p_F_Cpos = tabla[f]['p_F_Cpos'] # P(F|Ci)
+            p_F_Cneg =  tabla[f]['p_F_Cneg'] # P(F|Ci)
+            # log 0 no exit, error cuando p_Cneg_F es 0
+            if p_F_Cpos==0: logpos=0
+            else: logpos = math.log(p_F_Cpos/p_F)
+            if p_F_Cneg==0:logneg = 0
+            else: logneg = math.log(p_F_Cneg/p_F)
+            mutualInfo[f]=(p_Cpos*logpos)+(p_Cneg*logneg)
         print("mutualInfo")
         print(mutualInfo)
         salida = sorted(mutualInfo, key=mutualInfo.get, reverse=True)
@@ -349,22 +376,37 @@ query = parser.parse(query)'''
         salida = salida[:int(sum)]
         return salida
 
-    def filterOddsRatio(self, resultadopos, resultadoneg, sum):
-        # prob de ci, la probabilidad de una clase, es el numero de documentos de esa clase entre el total de documentos.
-        p_Cpos = resultadopos['docCount']/(resultadopos['docCount']+resultadoneg['docCount'])
-        p_Cneg = resultadoneg['docCount']/(resultadoneg['docCount']+resultadopos['docCount'])
+    def filterfreq(self, resultadopos, resultadoneg, sum):
+        totalTerms = resultadopos.copy()
+        for k in resultadoneg:
+            if k in resultadopos:
+                del totalTerms[k]
+        print(totalTerms)
+        salida = sorted(totalTerms, key=totalTerms.get, reverse=True)
+        print(salida)
+        salida = salida[:int(sum)]
+        return salida
 
+    def filterOddsRatio(self, resultadopos, resultadoneg, sum):
+        
         tabla = self.tabla_Term(resultadopos, resultadoneg)
         OddsRatio = {}
         for f in tabla:
-            if (f != 'sumTotalTermFreq') and (f != 'docCount'):
-                # P(F|pos) = is the conditional probability of feature F occurring given the class value ‘positive’
-                # numero de veces que aparece un termino en el positivo entre el totalterminofrecuencia de los positivos
-                condProbFpos = tabla[f]['p_Cpos_F']/resultadopos['sumTotalTermFreq']
-                condProbFneg = tabla[f]['p_Cneg_F']/resultadoneg['sumTotalTermFreq']
-                OddsRatio[f]=math.log(tabla[f]['p_Cpos_F']*(1-tabla[f]['p_Cneg_F'])/(1-tabla[f]['p_Cpos_F'])*tabla[f]['p_Cneg_F'])
-                # si condProbFneg es 0, es decir, el termino no existe en negativos, no se puede calcular oddratio
-                #OddsRatio[f]=math.log((condProbFpos*(1-condProbFneg))/((1-condProbFpos)*condProbFneg))
+            # P(F|pos) = is the conditional probability of feature F occurring given the class value ‘positive’
+            # numero de veces que aparece un termino en el positivo entre el totalterminofrecuencia de los positivos
+            if f in resultadopos:
+                condProbFpos = resultadopos[f]/resultadopos['sumTotalTermFreq']
+            else:
+                condProbFpos = 0
+            if f in resultadoneg:
+                condProbFneg = resultadoneg[f]/resultadoneg['sumTotalTermFreq']
+            else:
+                condProbFneg = 0
+            # si condProbFneg es 0, es decir, el termino no existe en negativos, no se puede calcular oddratio
+            if (condProbFpos==0) or (condProbFneg==0):
+                OddsRatio[f] = 0
+            else:
+                OddsRatio[f]=math.log((condProbFpos*(1-condProbFneg))/((1-condProbFpos)*condProbFneg))
         print("mutualInfo")
         print(OddsRatio)
         salida = sorted(OddsRatio, key=OddsRatio.get, reverse=True)
@@ -376,33 +418,29 @@ query = parser.parse(query)'''
     def filterNormalSeparation(self, resultadopos, resultadoneg, sum):
        
         tabla = self.tabla_Term(resultadopos, resultadoneg)
-        del tabla['sumTotalTermFreq']
-        del tabla['docCount']
         
         md = []
         for m in tabla:
-            md.append(tabla[m]['p_F'])
-        media = np.mean(md) 
-        #print("media")
-        #print(media)
-
-        #print("desviacion")
-        #print(st.sem(md))
-
-        #cdf (x, loc = 0, escala = 1)Función de distribución acumulativa.
-        #ppf (q, loc = 0, escala = 1)Función de punto porcentual (inversa de cdf- percentiles).
+            md.append(tabla[m]['sum_F'])
+        
         distribucion_inversa = {}
         for d in tabla: 
-            #distribucion_inversa[d] = st.norm.ppf(tabla[d]['p_F'],loc = np.mean(md), scale = st.sem(md))
-            distribucion = st.norm.cdf(tabla[d]['p_F'],loc = np.mean(md), scale = st.sem(md))
+            #distribucion_inversa[d] = st.norm.ppf(tabla[d]['sum_F'],loc = np.mean(md), scale = st.sem(md))
+            distribucion = st.norm.cdf(tabla[d]['sum_F'],loc = np.mean(md), scale = st.sem(md))
             distribucion_inversa[d] = ndtri(distribucion)
         print("distribucion_inversa")
         print(distribucion_inversa)
         NormalSeparation = {}
         for f in tabla:
-            p_F_Cpos = tabla[f]['p_Cpos_F']/tabla[f]['prob']
-            p_F_Cneg = tabla[f]['p_Cneg_F']/tabla[f]['prob']
-            NormalSeparation[f]=(distribucion_inversa[f]*tabla[f]['p_Cpos_F'])-(distribucion_inversa[f]*tabla[f]['p_Cneg_F'])
+            if f in resultadopos:
+                condProbFpos = resultadopos[f]/resultadopos['sumTotalTermFreq']
+            else:
+                condProbFpos = 0
+            if f in resultadoneg:
+                condProbFneg = resultadoneg[f]/resultadoneg['sumTotalTermFreq']
+            else:
+                condProbFneg = 0
+            NormalSeparation[f]=(distribucion_inversa[f]*condProbFpos)-(distribucion_inversa[f]*condProbFneg)
         print("NormalSeparation")
         print(NormalSeparation)
         salida = sorted(NormalSeparation, key=NormalSeparation.get, reverse=True)
@@ -411,8 +449,30 @@ query = parser.parse(query)'''
         salida = salida[:int(sum)]
         return salida
 
-    def filterFisherIndex(self, resultadopos, resultadoneg, sum):
-        return "no hacer"
+    def filterDiferencia(self, resultadopos, resultadoneg, sum):
+        tabla = self.tabla_Term(resultadopos, resultadoneg)
+
+        # el peso de termino es mejor que otro si aparece muchas veces en los positivos y no aparece en los negativos
+        Diferencia = {}
+        for f in tabla:
+            if f in resultadopos:
+                #nº veces clase positiva / nº total termino en la clase positiva
+                Pesopos = resultadopos[f]/resultadopos['sumTotalTermFreq']
+            else:
+                Pesopos = 0
+            if f in resultadoneg:
+                Pesoneg = resultadoneg[f]/resultadoneg['sumTotalTermFreq']
+            else:
+                Pesoneg = 0
+            #resto negativo al positivo.
+            Diferencia[f] = Pesopos - Pesoneg
+        print("Diferencia")
+        print(Diferencia)
+        salida = sorted(Diferencia, key=Diferencia.get, reverse=True)
+        print('salida sorted')
+        print(salida)
+        salida = salida[:int(sum)]
+        return salida
 
     def filter(self, typefilter, terms_freqs_positive, terms_freqs_negative, sum, email):
         if typefilter == "Freq":
@@ -427,8 +487,8 @@ query = parser.parse(query)'''
             return self.filterOddsRatio(terms_freqs_positive,terms_freqs_negative, sum)
         elif typefilter == "NormalSeparation":
             return self.filterNormalSeparation(terms_freqs_positive,terms_freqs_negative, sum)
-        elif typefilter == "FisherIndex":
-            return self.filterFisherIndex(terms_freqs_positive,terms_freqs_negative, sum)
+        elif typefilter == "Diferencia":
+            return self.filterDiferencia(terms_freqs_positive,terms_freqs_negative, sum)
         else:
             return "No existe el filtro seleccionado "
 
