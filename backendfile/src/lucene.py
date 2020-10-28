@@ -19,6 +19,8 @@ from org.apache.lucene.search import IndexSearcher, BooleanClause, TermQuery
 from org.apache.lucene.util import BytesRefIterator
 from org.apache.lucene import index, util
 from org.apache.lucene.classification.utils import ConfusionMatrixGenerator
+from org.apache.lucene.analysis import  StopwordAnalyzerBase
+from org.apache.lucene.analysis.core import StopFilter, StopAnalyzer
 
 lucene.initVM()
 
@@ -87,7 +89,10 @@ class Lucene():
         directory = SimpleFSDirectory(Paths.get(path))
         #analyzer = EnglishAnalyzer() # No hacer steaming. hay que hacer la consulta con los terminos originales.
         analyzer = StandardAnalyzer()
-        analyzer = LimitTokenCountAnalyzer(analyzer, 1000000)
+
+        #analyzer = LimitTokenCountAnalyzer(analyzer, 1000000)
+        #analyzer = StopFilter(True, analyzer, StopAnalyzer(Paths.get('./english_stopwords.txt')))
+
         config = IndexWriterConfig(analyzer)
         writer = IndexWriter(directory, config)
 
@@ -110,6 +115,8 @@ class Lucene():
         tft.setStoreTermVectorPositions(True)
         tft.freeze()
 
+        docid = 1
+
         for line in text:
             if line.find(b'AB  -') != -1:
                 abstract = line.decode('utf-8')
@@ -122,6 +129,9 @@ class Lucene():
             if (line.find(b'PY  -') != -1) or (line.find(b'N1  -') != -1): 
                 start = False
                 # si no tenemos palabras clave, no se guardará el doc
+                doc.add(Field("docid", (filename+'_'+str(docid)), StringField.TYPE_NOT_STORED)
+                )
+                docid += 1
                 doc.add(
                     Field("abstract", abstract, tft)
                 )
@@ -155,10 +165,11 @@ query = "hello stackoverflow"
 parser = MultiFieldQueryParser(Version.LUCENE_CURRENT, fields, analyzer)
 parser.setDefaultOperator(QueryParserBase.AND_OPERATOR)
 query = parser.parse(query)'''
-        query = MultiFieldQueryParser.parse(QueryParserBase.escape(word), ["titulo","abstract","golden_words"],
+        query = MultiFieldQueryParser.parse(word, ["titulo","abstract","golden_words"],
                                                 [SHOULD, SHOULD, SHOULD],
                                                 analyzer)
         #query = MultiFieldQueryParser(["titulo","abstract","golden_words"], analyzer).setDefaultOperator(QueryParserBase.AND_OPERATOR).parse(QueryParserBase.escape(word))
+        print(query)
         scoreDocs = searcher.search(query, 1000).scoreDocs
         for sd in scoreDocs:
             d = searcher.doc(sd.doc)
@@ -168,13 +179,39 @@ query = parser.parse(query)'''
                     "golden_words": d.get("golden_words")
                 })
         return result
+    
+    def searchDocID(self, filepath, word):
+        directory = SimpleFSDirectory(Paths.get(filepath+"/lucene"))
+        searcher = IndexSearcher(DirectoryReader.open(directory))
+        analyzer = EnglishAnalyzer()
+        result = []
+        # El termino buscado debería estar en uno de los tres campos: abstract, titulo o golden_words
+        SHOULD = BooleanClause.Occur.SHOULD
+        # QueryParserBase.setDefaultOperator(QueryParser.Operator op)
+        ''' fields = ["FieldA", "FieldB"]
+query = "hello stackoverflow"
+
+parser = MultiFieldQueryParser(Version.LUCENE_CURRENT, fields, analyzer)
+parser.setDefaultOperator(QueryParserBase.AND_OPERATOR)
+query = parser.parse(query)'''
+        query = MultiFieldQueryParser.parse(QueryParserBase.escape(word), ["titulo","abstract","golden_words"],
+                                                [SHOULD, SHOULD, SHOULD],
+                                                analyzer)
+        #query = MultiFieldQueryParser(["titulo","abstract","golden_words"], analyzer).setDefaultOperator(QueryParserBase.AND_OPERATOR).parse(QueryParserBase.escape(word))
+        scoreDocs = searcher.search(query, 1000).scoreDocs
+        for sd in scoreDocs:
+            d = searcher.doc(sd.doc)
+            result.append({
+                    "docid":  d.get("docid")
+                })
+        return result
 
     def selectTIS(self, filepath):
         store = SimpleFSDirectory(Paths.get(filepath))
         reader = None
         try:
             reader = DirectoryReader.open(store)
-            term_enum = MultiTerms.getTerms(reader, "golden_words").iterator()
+            term_enum = MultiTerms.getTerms(reader, "docid").iterator()
             
             docids = [term.utf8ToString()
                       for term in BytesRefIterator.cast_(term_enum)]
@@ -184,6 +221,7 @@ query = parser.parse(query)'''
             # devuelve los terminos
             #terminos = MultiTerms.getTerms(reader,"golden_words")
             indexReader = DirectoryReader.open(NIOFSDirectory.open(Paths.get(filepath)))
+     
             docCount = indexReader.numDocs()
             '''terms_freqs = {}
             for doc in range(docCount):
@@ -239,6 +277,11 @@ query = parser.parse(query)'''
             print(terms)
             print("freq2")
             print(freqs)
+            # quitamos palabras vacías
+            stops = set(line.strip() for line in open('english_stopwords.txt'))
+            for s in stops:
+                if s in terms_freqs2:
+                    del terms_freqs2[s]
             print("terms_freqs2")
             print(terms_freqs2)
             
@@ -310,7 +353,7 @@ query = parser.parse(query)'''
             else: 
                 not_p_Cneg_F = 0
                 not_logpos = 0
-            # log 0 no exit, error cuando p_Cneg_F es 0
+            # error cuando p_Cneg_F es 0
             if p_Cpos_F==0: logpos=0
             else: logpos = math.log(p_Cpos_F/p_Cpos)
             if p_Cneg_F==0:logneg = 0
@@ -337,7 +380,7 @@ query = parser.parse(query)'''
             p_F = tabla[f]['prob'] # P(F)
             p_Cpos_F = tabla[f]['p_Cpos_F'] # P(Ci|F)
             p_Cneg_F = tabla[f]['p_Cneg_F'] # P(Ci|F)
-            # log 0 no exit, error cuando p_Cneg_F es 0
+            # error cuando p_Cneg_F es 0
             if p_Cpos_F==0: logpos=0
             else: logpos = math.log(p_Cpos_F/p_Cpos)
             if p_Cneg_F==0:logneg = 0
@@ -362,7 +405,7 @@ query = parser.parse(query)'''
             p_F = tabla[f]['prob'] # P(F)
             p_F_Cpos = tabla[f]['p_F_Cpos'] # P(F|Ci)
             p_F_Cneg =  tabla[f]['p_F_Cneg'] # P(F|Ci)
-            # log 0 no exit, error cuando p_Cneg_F es 0
+            # error cuando p_Cneg_F es 0
             if p_F_Cpos==0: logpos=0
             else: logpos = math.log(p_F_Cpos/p_F)
             if p_F_Cneg==0:logneg = 0

@@ -17,6 +17,8 @@ export class FilterComponent {
   loading = false;
   query = null;
   wanted = "";
+  andleng = 0;
+  loadand = true;
 
   constructor(
       private accountService: AccountService,
@@ -59,6 +61,7 @@ export class FilterComponent {
 
   onSubmit(){
     this.loading = true;
+    this.loadand = true;
     if (this.filter.typefilter == null){
       console.log("tienes que elegir un filtro");
     }
@@ -75,16 +78,28 @@ export class FilterComponent {
       this.filterService.selectFilter(this.filter)
       .pipe(first())
       .subscribe(x => this.query = x);
+      this.andleng = this.filter.sum - 1; //cantidad AND
+    }
+  }
+
+  andOperator(){
+    this.loadand = true;
+    this.andleng = this.filter.sum - 1; //cantidad AND
+    for (let i = 0; i < this.andleng; i++){
+      console.log(this.query[i]);
+        this.query[i] = this.query[i] + " AND ";
+        this.loadand = false;      
     }
   }
 
   applyFilter(){
-    this.wanted = "";
     this.query.forEach(element => {
       this.wanted += element + " ";
     });
+    console.log(this.wanted)
     // PROBISIONAL, para ver los archivos buscados.
     this.lookingfiles.wanted = this.wanted;
+    this.wanted = "";
     this.filterService.applyFilter(this.lookingfiles).subscribe((data) => {
       //for(let element of Object.keys(data)){
         //this.data[element]= {id:element, titulo: data[element]['titulo'], abstract: data[element]['abstract'], golden_words: data[element]['golden_words']}
