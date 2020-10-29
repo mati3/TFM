@@ -102,7 +102,7 @@ export class FilterComponent {
     this.wanted = "";
     this.filterService.applyFilter(this.lookingfiles).subscribe((data) => {
       //for(let element of Object.keys(data)){
-        //this.data[element]= {id:element, titulo: data[element]['titulo'], abstract: data[element]['abstract'], golden_words: data[element]['golden_words']}
+        //this.data[element]= {id:element, titulo: data[element]['titulo'], abstract: data[element]['abstract'], key_words: data[element]['key_words']}
       //};
       //this.totalRecords =  Object.keys(data).length;
     });

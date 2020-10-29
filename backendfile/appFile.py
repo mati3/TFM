@@ -5,6 +5,7 @@ from flask import jsonify
 from src.dbclientes import dbClientes
 from pymongo import MongoClient
 import os
+from time import time
 import shutil
 from werkzeug.utils import secure_filename
 from flask_caching import Cache
@@ -114,40 +115,17 @@ def upload(correo_id, typefile):
     if (filepos and allowed_file(filepos.filename)) or (fileneg and allowed_file(fileneg.filename)):
         filenamepos = secure_filename(filepos.filename)
         filenameneg = secure_filename(fileneg.filename)
+        # Guardo nombres en mongodb
+        response = client.insertFiles(correo_id,typefile,filenamepos, filenameneg)
+
         # el directorio para el usuario actual
         myfolder = app.config['UPLOAD_FOLDER']+'/'+correo_id
         # si no existe el directorio lo creamos
         createDirectory(myfolder)
         # guardar archivo en directorio para el usuario actual
-        filepos.save(os.path.join(myfolder+'/'+typefile, filenamepos))
-        fileneg.save(os.path.join(myfolder+'/'+typefile, filenameneg))
-        response = client.insertFiles(correo_id,typefile,filenamepos, filenameneg)
-        # concatenamos los archivos y lo indexamos
-        response = concat_file(filenamepos, filenameneg, myfolder+'/'+typefile)
-                
-        return jsonify(response), 200
-    response = 'response post NO indexing'
-    return jsonify(response), 200
-
-# index TIS for filter
-@app.route('/indexTIS/<string:correo_id>', methods = ['POST'])
-def indexTIS(correo_id):
-    response = ''  
-    # check if the post request has the file part
-    if ('filepositive' not in request.files) or ('filenegative' not in request.files):
-        response='no file positive or negative in request', 500
-        return jsonify(response)
-    filepos = request.files['filepositive']
-    fileneg = request.files['filenegative']
-    if (filepos.filename == '') or (fileneg.filename == ''):
-        response ='no selected file positive or negative'
-        return jsonify(response), 500
-    if (filepos and allowed_file(filepos.filename)) or (fileneg and allowed_file(fileneg.filename)):
-        filenamepos = secure_filename(filepos.filename)
-        filenameneg = secure_filename(fileneg.filename)        
-        filepath =  app.config['UPLOAD_FOLDER']+'/'+ correo_id+'/filesTIS'
-        lc.indexTIS(filepath, filepos, filenamepos)
-        response = lc.indexTIS(filepath, fileneg, filenameneg )        
+        filepath =  app.config['UPLOAD_FOLDER']+'/'+ correo_id+'/'+typefile
+        response += lc.index(filepath, filepos, fileneg, typefile)
+        
         return jsonify(response), 200
     response = 'response post NO indexing'
     return jsonify(response), 200
@@ -173,8 +151,13 @@ def search():
     correo = body['id']['email']
     count = filepos.find(".txt")
     count2 = fileneg.find(".txt")
-    pathfile = app.config['UPLOAD_FOLDER']+'/'+correo+'/'+typefile+'/'+filepos[:count]+fileneg[:count2]
+    pathfile = app.config['UPLOAD_FOLDER']+'/'+correo+'/'+typefile+'/lucene_'+filepos[:count]
     resultado = lc.search(pathfile,body['wanted'])
+    pathfile = app.config['UPLOAD_FOLDER']+'/'+correo+'/'+typefile+'/lucene_'+fileneg[:count2]
+    aux = lc.search(pathfile,body['wanted'])
+
+    for i in aux:
+        resultado.append(i)
     return jsonify(resultado), 200
 
 @app.route('/tis', methods = ['GET', 'POST'])
@@ -194,13 +177,16 @@ def selectTIS():
     correo = body['id']['email']
     count = filepos.find(".txt")
     count2 = fileneg.find(".txt")
-    pathfilepos = app.config['UPLOAD_FOLDER']+'/'+correo+'/filesTIS/lucene_'+filepos
-    pathfileneg = app.config['UPLOAD_FOLDER']+'/'+correo+'/filesTIS/lucene_'+fileneg
+    pathfilepos = app.config['UPLOAD_FOLDER']+'/'+correo+'/filesTIS/lucene_'+filepos[:count]
+    print("pathfilepos")
+    print(pathfilepos)
+    pathfileneg = app.config['UPLOAD_FOLDER']+'/'+correo+'/filesTIS/lucene_'+fileneg[:count2]
+    print("pathfileneg")
+    print(pathfileneg)
     resultadopos = lc.selectTIS(pathfilepos)
     print("end positive")
     resultadoneg = lc.selectTIS(pathfileneg)
     print(" end negative ")
-    #resultado = lc.filterfreq(resultadopos, resultadoneg)
     resultado = {'terms_freqs_positive': resultadopos, 'terms_freqs_negative': resultadoneg}
     return jsonify(resultado), 200
 
@@ -247,8 +233,15 @@ def applyFilter():
         typefile = 'filesFVS'
         count = filepos.find(".txt")
         count2 = fileneg.find(".txt")
-        pathfile = app.config['UPLOAD_FOLDER']+'/'+correo+'/'+typefile+'/'+filepos[:count]+fileneg[:count2]
-        resultado.append(lc.search(pathfile,body['wanted']))
+        #pathfile = app.config['UPLOAD_FOLDER']+'/'+correo+'/'+typefile+'/'+filepos[:count]+fileneg[:count2]
+        #resultado.append(lc.search(pathfile,body['wanted']))
+        pathfile = app.config['UPLOAD_FOLDER']+'/'+correo+'/'+typefile+'/lucene_'+filepos[:count]
+        resultado = lc.search(pathfile,body['wanted'])
+        pathfile = app.config['UPLOAD_FOLDER']+'/'+correo+'/'+typefile+'/lucene_'+fileneg[:count2]
+        aux = lc.search(pathfile,body['wanted'])
+
+        for i in aux:
+            resultado.append(i)
     return jsonify(resultado), 200
 
 def allowed_file(filename):
@@ -312,7 +305,13 @@ def concat_file(file1, file2, myfolder):
         docs = docs.replace("TY  ER  -","")
         contador = contador + 1
     os.remove(myfolder+'/'+filename+'.txt')
-    return lc.indexar(filepath)
+    start = time()
+    response = lc.indexar(filepath)   
+    end = time()
+    elapsed_time = end - start
+    print("indexar")
+    print("Elapsed time: %0.10f seconds." % elapsed_time)  
+    return response
 
 def createDirectory(myfolder):
     try: 
@@ -322,12 +321,6 @@ def createDirectory(myfolder):
         os.mkdir(myfolder+'/filesFVS')
         os.mkdir(myfolder+'/filesFDS')
         os.mkdir(myfolder+'/filesTIS')
-        os.mkdir(myfolder+'/filesFVS/index')
-        os.mkdir(myfolder+'/filesFDS/index')
-        os.mkdir(myfolder+'/filesTIS/index')
-        os.mkdir(myfolder+'/filesFVS/index/lucene')
-        os.mkdir(myfolder+'/filesFDS/index/lucene')
-        os.mkdir(myfolder+'/filesTIS/index/lucene')
 
 @app.after_request
 def after_request(response):

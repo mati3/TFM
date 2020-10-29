@@ -1,6 +1,8 @@
 import os
 import operator
 from datetime import datetime, timedelta
+from werkzeug.utils import secure_filename
+from werkzeug.datastructures import FileStorage
 from itertools import *
 import math
 import numpy as np, scipy.stats as st
@@ -26,110 +28,42 @@ lucene.initVM()
 
 class Lucene():
 
-    def indexar(self, filepath):
-        directory = SimpleFSDirectory(Paths.get(filepath+"/lucene"))
-        analyzer = EnglishAnalyzer()
-        analyzer = LimitTokenCountAnalyzer(analyzer, 1000000)
-        config = IndexWriterConfig(analyzer)
-        writer = IndexWriter(directory, config)
+    def createDirectory(self, myfolder):
+        try: 
+            os.stat(myfolder)
+        except:
+            os.mkdir(myfolder)
 
-        # 'AB  -' -> es Abstract
-        # 'KW  -' -> son las palabras claves
-        # 'ST  -' -> es el titulo
-        lista = os.listdir(filepath)
-        if "lucene" in lista: lista.remove("lucene") 
-        for file in lista:
-            doc = Document()
-            with open(filepath+'/'+file) as fp:
-                text = fp.readlines()
-                #print('******** FILE ********')
-                #print(file)
+    def addDocument(self, writer, file, filename, tft):
+        docid = 1
+        docs =file.read()
+        # por todos los documentos
+        for line in docs:
+            primero = docs.find(b"- JOUR")
+            ultimo = docs.find(b"ER  -")
+            cadena = docs[primero:ultimo]
+            # para cada documento
+            if (cadena != -1) and (primero != -1) and (ultimo != -1):
+                doc = Document()
+                text = cadena.decode('utf-8').strip().split('\n')
                 abstract = ''
                 titulo = ''
                 golden = ''
                 start = False
-            for line in text:
-                if line.find('AB  -') != -1:
-                    #print(' ********* Abstract ***********')
-                    #print(line)
-                    abstract = line
-                if line.find('ST  -') != -1:
-                    #print(' ********* TITULO *********')
-                    #print(line)
-                    titulo = line
-                # 'N1  -' or 'PY  -'
-                if line.find('KW  -') != -1:
-                    start = True
-                    #print(' ********* GOLDEN WORDS *********')
-                if (line.find('PY  -') != -1) or (line.find('N1  -') != -1):  #or line.find('N1  -')
-                    start = False
-                if start:
-                    #print(line)
-                    golden = golden + line
-            doc.add(
-                Field("abstract", abstract, TextField.TYPE_STORED)
-            )
-            doc.add(
-                Field("titulo", titulo, TextField.TYPE_STORED)
-            )
-            doc.add(
-                Field("golden_words", golden, TextField.TYPE_STORED)
-            )
-            writer.addDocument(doc)
-            writer.commit()
-        writer.close()
-        return 'files upload ok'
-
-    def indexTIS(self, filepath, file, filename):
-        path = filepath+"/lucene_"+filename
-        try: 
-            os.stat(path)
-        except:
-            os.mkdir(path)
-        directory = SimpleFSDirectory(Paths.get(path))
-        #analyzer = EnglishAnalyzer() # No hacer steaming. hay que hacer la consulta con los terminos originales.
-        analyzer = StandardAnalyzer()
-
-        #analyzer = LimitTokenCountAnalyzer(analyzer, 1000000)
-        #analyzer = StopFilter(True, analyzer, StopAnalyzer(Paths.get('./english_stopwords.txt')))
-
-        config = IndexWriterConfig(analyzer)
-        writer = IndexWriter(directory, config)
-
-        doc = Document()
-        text = file.readlines()
-        #print('******** FILE ********')
-        #print(file)
-        abstract = ''
-        titulo = ''
-        golden = ''
-        start = False
-        
-        # creo una instancia de FieldType para establecer storeTermVector
-        # proposito poder sacar las frecuencias.
-        tft = FieldType()
-        tft.setStored(True)
-        tft.setTokenized(True)
-        tft.setIndexOptions(IndexOptions.DOCS_AND_FREQS_AND_POSITIONS_AND_OFFSETS)
-        tft.setStoreTermVectors(True)
-        tft.setStoreTermVectorPositions(True)
-        tft.freeze()
-
-        docid = 1
-
-        for line in text:
-            if line.find(b'AB  -') != -1:
-                abstract = line.decode('utf-8')
-            if line.find(b'ST  -') != -1:
-                titulo = line.decode('utf-8')
-            # 'N1  -' or 'PY  -'
-            if line.find(b'KW  -') != -1:
-                start = True
-                #print(' ********* GOLDEN WORDS *********')
-            if (line.find(b'PY  -') != -1) or (line.find(b'N1  -') != -1): 
-                start = False
-                # si no tenemos palabras clave, no se guardará el doc
-                doc.add(Field("docid", (filename+'_'+str(docid)), StringField.TYPE_NOT_STORED)
+                for line in text:
+                    if line.find('AB  -') != -1:
+                        abstract = line
+                    if line.find('ST  -') != -1:
+                        titulo = line
+                    # 'N1  -' or 'PY  -'
+                    if line.find('KW  -') != -1:
+                        start = True
+                    if (line.find('PY  -') != -1) or (line.find('N1  -') != -1):  #or line.find('N1  -')
+                        start = False
+                    if start:
+                        golden = golden + line
+                doc.add(
+                    Field("docid", (filename+'_'+str(docid)), StringField.TYPE_NOT_STORED)
                 )
                 docid += 1
                 doc.add(
@@ -139,44 +73,89 @@ class Lucene():
                     Field("titulo", titulo, tft)
                 )
                 doc.add(
-                    Field("golden_words", golden, tft)
+                    Field("key_words", golden, tft)
                 )
                 writer.addDocument(doc)
                 writer.commit()
-                doc = Document()
-            if start:
-                golden = golden + line.decode('utf-8')
+
+            # elimino del total, el documento indexado.
+            docs = docs.replace(cadena,b"")
+            docs = docs.replace(b"TY  ER  -",b"")
+        file.close()
+
+    def index(self, filepath, filepos, fileneg, typefile):
+        filenamepos = secure_filename(filepos.filename)
+        filenamepos = filenamepos[:(filenamepos.find(".txt"))]
+        filenameneg = secure_filename(fileneg.filename)
+        filenameneg = filenameneg[:(filenameneg.find(".txt"))]
+
+        pathpos = filepath+"/lucene_"+filenamepos
+        pathneg = filepath+"/lucene_"+filenameneg
+
+        self.createDirectory(pathpos)
+        self.createDirectory(pathneg)
+
+        directorypos = SimpleFSDirectory(Paths.get(pathpos))
+        directoryneg = SimpleFSDirectory(Paths.get(pathneg))
+
+        if typefile == 'filesTIS':
             
-        writer.close()
+            # creo una instancia de FieldType para establecer storeTermVector
+            # proposito poder sacar las frecuencias.
+            tft = FieldType()
+            tft.setStored(True)
+            tft.setTokenized(True)
+            tft.setIndexOptions(IndexOptions.DOCS_AND_FREQS_AND_POSITIONS_AND_OFFSETS)
+            tft.setStoreTermVectors(True)
+            tft.setStoreTermVectorPositions(True)
+            tft.freeze()
+
+            analyzer = StandardAnalyzer()
+            config = IndexWriterConfig(analyzer)
+            writer = IndexWriter(directorypos, config)
+            self.addDocument(writer,filepos,filenamepos, tft) ########
+            writer.close()
+
+            analyzer = StandardAnalyzer()
+            config = IndexWriterConfig(analyzer)
+            writer = IndexWriter(directoryneg, config)
+            self.addDocument(writer,fileneg,filenameneg, tft) ########
+            writer.close()
+
+        else: #los analizadores son EnglishAnalyzer no hay tft.
+
+            analyzer = EnglishAnalyzer()
+            config = IndexWriterConfig(analyzer)
+            writer = IndexWriter(directorypos, config)
+            self.addDocument(writer,filepos,filenamepos, TextField.TYPE_STORED) ########
+            writer.close()
+            
+            analyzer = EnglishAnalyzer()
+            config = IndexWriterConfig(analyzer)
+            writer = IndexWriter(directoryneg, config)
+            self.addDocument(writer,fileneg,filenameneg, TextField.TYPE_STORED) ########
+            writer.close()
 
         return 'files upload ok'
 
     def search(self, filepath, word):
-        directory = SimpleFSDirectory(Paths.get(filepath+"/lucene"))
+        directory = SimpleFSDirectory(Paths.get(filepath))
         searcher = IndexSearcher(DirectoryReader.open(directory))
         analyzer = EnglishAnalyzer()
         result = []
-        # El termino buscado debería estar en uno de los tres campos: abstract, titulo o golden_words
+        # El termino buscado debería estar en uno de los tres campos: abstract, titulo o key_words
         SHOULD = BooleanClause.Occur.SHOULD
-        # QueryParserBase.setDefaultOperator(QueryParser.Operator op)
-        ''' fields = ["FieldA", "FieldB"]
-query = "hello stackoverflow"
-
-parser = MultiFieldQueryParser(Version.LUCENE_CURRENT, fields, analyzer)
-parser.setDefaultOperator(QueryParserBase.AND_OPERATOR)
-query = parser.parse(query)'''
-        query = MultiFieldQueryParser.parse(word, ["titulo","abstract","golden_words"],
+        query = MultiFieldQueryParser.parse(word, ["titulo","abstract","key_words"],
                                                 [SHOULD, SHOULD, SHOULD],
                                                 analyzer)
-        #query = MultiFieldQueryParser(["titulo","abstract","golden_words"], analyzer).setDefaultOperator(QueryParserBase.AND_OPERATOR).parse(QueryParserBase.escape(word))
-        print(query)
+        
         scoreDocs = searcher.search(query, 1000).scoreDocs
         for sd in scoreDocs:
             d = searcher.doc(sd.doc)
             result.append({
                     "titulo":  d.get("titulo"),
                     "abstract": d.get("abstract"),
-                    "golden_words": d.get("golden_words")
+                    "key_words": d.get("key_words")
                 })
         return result
     
@@ -185,19 +164,11 @@ query = parser.parse(query)'''
         searcher = IndexSearcher(DirectoryReader.open(directory))
         analyzer = EnglishAnalyzer()
         result = []
-        # El termino buscado debería estar en uno de los tres campos: abstract, titulo o golden_words
+        # El termino buscado debería estar en uno de los tres campos: abstract, titulo o key_words
         SHOULD = BooleanClause.Occur.SHOULD
-        # QueryParserBase.setDefaultOperator(QueryParser.Operator op)
-        ''' fields = ["FieldA", "FieldB"]
-query = "hello stackoverflow"
-
-parser = MultiFieldQueryParser(Version.LUCENE_CURRENT, fields, analyzer)
-parser.setDefaultOperator(QueryParserBase.AND_OPERATOR)
-query = parser.parse(query)'''
-        query = MultiFieldQueryParser.parse(QueryParserBase.escape(word), ["titulo","abstract","golden_words"],
+        query = MultiFieldQueryParser.parse(QueryParserBase.escape(word), ["titulo","abstract","key_words"],
                                                 [SHOULD, SHOULD, SHOULD],
                                                 analyzer)
-        #query = MultiFieldQueryParser(["titulo","abstract","golden_words"], analyzer).setDefaultOperator(QueryParserBase.AND_OPERATOR).parse(QueryParserBase.escape(word))
         scoreDocs = searcher.search(query, 1000).scoreDocs
         for sd in scoreDocs:
             d = searcher.doc(sd.doc)
@@ -218,49 +189,25 @@ query = parser.parse(query)'''
             print("docids")
             print(docids)
 
-            # devuelve los terminos
-            #terminos = MultiTerms.getTerms(reader,"golden_words")
             indexReader = DirectoryReader.open(NIOFSDirectory.open(Paths.get(filepath)))
-     
             docCount = indexReader.numDocs()
-            '''terms_freqs = {}
-            for doc in range(docCount):
-                print("nº de documento: " + str(doc))
-                #vector de terminos
-                termss = indexReader.getTermVector(doc, "golden_words")
-                termsEnum = termss.iterator()
-                terms = []
-                freqs = []
-                #terms_freqs = []
-                for term in BytesRefIterator.cast_(termsEnum):
-                    terms.append(term.utf8ToString())
-                    freqs.append(termsEnum.totalTermFreq())
-                    terms_freqs[term.utf8ToString()]=termsEnum.totalTermFreq()    
-            print("terms")
-            print(terms)
-            print("freq")
-            print(freqs)
-            print("terms_freqs")
-            print(terms_freqs)'''
-            
-            termssW = indexReader.getTermVector((docCount-1), "golden_words")
+                       
+            termssW = indexReader.getTermVector((docCount-1), "key_words")
             termssA = indexReader.getTermVector((docCount-1), "abstract")
             termssT = indexReader.getTermVector((docCount-1), "titulo")
             termssWAT = [termssW,termssA,termssT]
-            terms = []
-            freqs = []
-            #terms_freqs2 = []
+  
             sumTotalTermFreq = 0
             # totalTermFreq, Devuelve el número total de apariciones de este término en todos los documentos (la suma de freq () para cada documento que tiene este término).
             # getSumTotalTermFreq, Devuelve la suma de totalTermFreq()todos los términos de este campo.
-            sumTotalTermFreq += MultiTerms.getTerms(reader, "golden_words").getSumTotalTermFreq()
+            sumTotalTermFreq += MultiTerms.getTerms(reader, "key_words").getSumTotalTermFreq()
             sumTotalTermFreq += MultiTerms.getTerms(reader, "abstract").getSumTotalTermFreq()
             sumTotalTermFreq += MultiTerms.getTerms(reader, "titulo").getSumTotalTermFreq()
-            print("sumTotalTermFreq: " + str(sumTotalTermFreq))
 
             terms_freqs2 = {}
             terms_freqs2['docCount'] = docCount
             terms_freqs2['sumTotalTermFreq'] = sumTotalTermFreq
+
             for termss in termssWAT:
                 termsEnum = termss.iterator()
                 for term in BytesRefIterator.cast_(termsEnum):
@@ -269,14 +216,8 @@ query = parser.parse(query)'''
                         try: 
                             float(term.utf8ToString()) or int(term.utf8ToString())
                         except:
-                            terms.append(term.utf8ToString())
-                            freqs.append(termsEnum.totalTermFreq())
                             terms_freqs2[term.utf8ToString()]=termsEnum.totalTermFreq() 
-                    #terms_freqs2.append({term.utf8ToString(), termsEnum.totalTermFreq()}) 
-            print("terms2")
-            print(terms)
-            print("freq2")
-            print(freqs)
+
             # quitamos palabras vacías
             stops = set(line.strip() for line in open('english_stopwords.txt'))
             for s in stops:
@@ -536,46 +477,6 @@ query = parser.parse(query)'''
             return "No existe el filtro seleccionado "
 
     def medidas_de_rendimiento(self, filepath, textFieldName):
-        store = SimpleFSDirectory(Paths.get(filepath))
-        reader = None
-        try:
-            reader = DirectoryReader.open(store)
-            classifier = analyzer = EnglishAnalyzer()
-            categoryFieldName = "golden_words"
-            #textFieldName = "lista de palabras"
-            confusionMatrix = ConfusionMatrixGenerator.getConfusionMatrix(reader, classifier, categoryFieldName, textFieldName, -1)
-
-            avgClassificationTime = confusionMatrix.getAvgClassificationTime()
-            accuracy = confusionMatrix.getAccuracy()
-            print("accuracy")
-            print(accuracy)
-            precision = confusionMatrix.getPrecision()
-            print("precision")
-            print(precision)
-            recall = confusionMatrix.getRecall()
-            print("recall")
-            print(recall)
-            f1Measure = confusionMatrix.getF1Measure()
-            print("f1Measure")
-            print(f1Measure)
-
-            term_enum = MultiTerms.getTerms(reader, "golden_words").iterator()
-            
-            docids = [term.utf8ToString()
-                      for term in BytesRefIterator.cast_(term_enum)]
-
-            for term in docids:
-                precision = confusionMatrix.getPrecision(term)
-                print("precision")
-                print(precision)
-                recall = confusionMatrix.getRecall(term)
-                print("recall")
-                print(recall)
-                f1Measure = confusionMatrix.getF1Measure(term)
-                print("f1Measure")
-                print(f1Measure)
-        finally:
-            if (reader != None):
-                reader.close()
+        return "tengo que recoger precisión, recall y f1"
             
         
