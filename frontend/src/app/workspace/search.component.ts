@@ -46,7 +46,7 @@ export class SearchComponent {
         this.lookingfiles.wanted = this.form.value['search'];
         this.filterService.search(this.lookingfiles).subscribe((data) => {
             for(let element of Object.keys(data)){
-                this.data[element]= {id:element, titulo: data[element]['titulo'], abstract: data[element]['abstract'], key_words: data[element]['key_words']}
+                this.data[element]= {id:element, docid: data[element]['docid'], titulo: data[element]['titulo'], abstract: data[element]['abstract'], key_words: data[element]['key_words']}
             };
             this.totalRecords =  Object.keys(data).length;
         });

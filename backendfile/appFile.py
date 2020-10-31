@@ -152,9 +152,9 @@ def search():
     count = filepos.find(".txt")
     count2 = fileneg.find(".txt")
     pathfile = app.config['UPLOAD_FOLDER']+'/'+correo+'/'+typefile+'/lucene_'+filepos[:count]
-    resultado = lc.search(pathfile,body['wanted'])
+    resultado = lc.search(pathfile,body['wanted'], False)
     pathfile = app.config['UPLOAD_FOLDER']+'/'+correo+'/'+typefile+'/lucene_'+fileneg[:count2]
-    aux = lc.search(pathfile,body['wanted'])
+    aux = lc.search(pathfile,body['wanted'], False)
 
     for i in aux:
         resultado.append(i)
@@ -226,7 +226,8 @@ def applyFilter():
         filesTIS = i['filesTIS'] 
         files = {'filesFVS':filesFVS, 'filesFDS': filesFDS, 'filesTIS': filesTIS}
 
-    resultado = []
+    resultado = {}
+    setAllFVSPos = {}
     for e in filesFVS:
         filepos = e['positive']
         fileneg = e['negative']
@@ -236,12 +237,18 @@ def applyFilter():
         #pathfile = app.config['UPLOAD_FOLDER']+'/'+correo+'/'+typefile+'/'+filepos[:count]+fileneg[:count2]
         #resultado.append(lc.search(pathfile,body['wanted']))
         pathfile = app.config['UPLOAD_FOLDER']+'/'+correo+'/'+typefile+'/lucene_'+filepos[:count]
-        resultado = lc.search(pathfile,body['wanted'])
+        resultado[filepos[:count]] = lc.search(pathfile,body['wanted'], True)
+        #setPos = lc.searchDocID(pathfile))
+        setAllFVSPos[filepos[:count]] = lc.searchDocID(pathfile)
         pathfile = app.config['UPLOAD_FOLDER']+'/'+correo+'/'+typefile+'/lucene_'+fileneg[:count2]
-        aux = lc.search(pathfile,body['wanted'])
-
-        for i in aux:
-            resultado.append(i)
+        resultado[fileneg[:count2]] = lc.search(pathfile,body['wanted'], True)
+        '''for r in searchpos:
+            resultado.append(r)
+        for i in searchneg:
+            resultado.append(i)'''
+        '''for i in setPos:
+            setAllFVSPos.append(i)'''
+    lc.medidas_de_rendimiento(setAllFVSPos,resultado)    
     return jsonify(resultado), 200
 
 def allowed_file(filename):

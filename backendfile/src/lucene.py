@@ -7,6 +7,8 @@ from itertools import *
 import math
 import numpy as np, scipy.stats as st
 from scipy.special import ndtri
+import json
+import pytrec_eval
 
 import lucene
 from java.nio.file import Paths
@@ -63,7 +65,7 @@ class Lucene():
                     if start:
                         golden = golden + line
                 doc.add(
-                    Field("docid", (filename+'_'+str(docid)), StringField.TYPE_NOT_STORED)
+                    Field("docid", (filename+'_'+str(docid)), StringField.TYPE_STORED)
                 )
                 docid += 1
                 doc.add(
@@ -138,11 +140,11 @@ class Lucene():
 
         return 'files upload ok'
 
-    def search(self, filepath, word):
+    def search(self, filepath, word, score):
         directory = SimpleFSDirectory(Paths.get(filepath))
         searcher = IndexSearcher(DirectoryReader.open(directory))
         analyzer = EnglishAnalyzer()
-        result = []
+        
         # El termino buscado debería estar en uno de los tres campos: abstract, titulo o key_words
         SHOULD = BooleanClause.Occur.SHOULD
         query = MultiFieldQueryParser.parse(word, ["titulo","abstract","key_words"],
@@ -150,32 +152,44 @@ class Lucene():
                                                 analyzer)
         
         scoreDocs = searcher.search(query, 1000).scoreDocs
-        for sd in scoreDocs:
-            d = searcher.doc(sd.doc)
-            result.append({
-                    "titulo":  d.get("titulo"),
-                    "abstract": d.get("abstract"),
-                    "key_words": d.get("key_words")
-                })
+        if score:
+            result = {}
+            for sd in scoreDocs:
+                d = searcher.doc(sd.doc)
+                result[d.get("docid")] = sd.score
+        else:
+            result = []
+            for sd in scoreDocs:
+                d = searcher.doc(sd.doc)
+                result.append({
+                        "docid":  d.get("docid"),
+                        "titulo":  d.get("titulo"),
+                        "abstract": d.get("abstract"),
+                        "key_words": d.get("key_words")
+                    })
         return result
     
-    def searchDocID(self, filepath, word):
-        directory = SimpleFSDirectory(Paths.get(filepath+"/lucene"))
-        searcher = IndexSearcher(DirectoryReader.open(directory))
-        analyzer = EnglishAnalyzer()
-        result = []
-        # El termino buscado debería estar en uno de los tres campos: abstract, titulo o key_words
-        SHOULD = BooleanClause.Occur.SHOULD
-        query = MultiFieldQueryParser.parse(QueryParserBase.escape(word), ["titulo","abstract","key_words"],
-                                                [SHOULD, SHOULD, SHOULD],
-                                                analyzer)
-        scoreDocs = searcher.search(query, 1000).scoreDocs
-        for sd in scoreDocs:
-            d = searcher.doc(sd.doc)
-            result.append({
-                    "docid":  d.get("docid")
-                })
-        return result
+    def searchDocID(self, filepath):
+        store = SimpleFSDirectory(Paths.get(filepath))
+        reader = None
+        try:
+            reader = DirectoryReader.open(store)
+            term_enum = MultiTerms.getTerms(reader, "docid").iterator()
+            
+            docids = [term.utf8ToString()
+                      for term in BytesRefIterator.cast_(term_enum)]
+            print("docids")
+            print(docids)
+
+        finally:
+            store.close()
+        #diccionario = dict(enumerate(set(docids)))
+        diccionario = {}
+        for d in docids:
+            diccionario[d] = 10.0
+        print(diccionario)
+        return diccionario
+
 
     def selectTIS(self, filepath):
         store = SimpleFSDirectory(Paths.get(filepath))
@@ -191,8 +205,8 @@ class Lucene():
 
             indexReader = DirectoryReader.open(NIOFSDirectory.open(Paths.get(filepath)))
             docCount = indexReader.numDocs()
-                       
-            termssW = indexReader.getTermVector((docCount-1), "key_words")
+            # volver a inspeccionar docCount, hacerlo en un for      
+            termssW = indexReader.getTermVector((docCount-1), "key_words")# NONE, antes tenia la restricción que si no había key_words, no guardaba el documento, ya no
             termssA = indexReader.getTermVector((docCount-1), "abstract")
             termssT = indexReader.getTermVector((docCount-1), "titulo")
             termssWAT = [termssW,termssA,termssT]
@@ -208,6 +222,8 @@ class Lucene():
             terms_freqs2['docCount'] = docCount
             terms_freqs2['sumTotalTermFreq'] = sumTotalTermFreq
 
+            print("termssWAT")
+            print(termssWAT)
             for termss in termssWAT:
                 termsEnum = termss.iterator()
                 for term in BytesRefIterator.cast_(termsEnum):
@@ -476,7 +492,18 @@ class Lucene():
         else:
             return "No existe el filtro seleccionado "
 
-    def medidas_de_rendimiento(self, filepath, textFieldName):
-        return "tengo que recoger precisión, recall y f1"
-            
+    def medidas_de_rendimiento(self, setAllFVSPos, resultado):
+        print("setAllFVSPos")
+        print(setAllFVSPos)
+        print("resultado")
+        print(resultado)
+        qrels_file = setAllFVSPos
+        results_file = resultado
+        evaluator = pytrec_eval.RelevanceEvaluator(qrels_file, {'map', 'ndcg'})
+
+        print(json.dumps(evaluator.evaluate(results_file), indent=1))
         
+        return "tengo que recoger precisión, recall y f1"        
+
+# qrel_file : ruta del archivo con la lista de documentos relevantes para cada consulta
+# results_file : ruta del archivo con la lista de documentos recuperados por su aplicación
