@@ -186,7 +186,7 @@ class Lucene():
         #diccionario = dict(enumerate(set(docids)))
         diccionario = {}
         for d in docids:
-            diccionario[d] = 10.0
+            diccionario[d] = 10
         print(diccionario)
         return diccionario
 
@@ -503,6 +503,26 @@ class Lucene():
 
         print(json.dumps(evaluator.evaluate(results_file), indent=1))
         
+        evaluator = pytrec_eval.RelevanceEvaluator(qrels_file, pytrec_eval.supported_measures)
+        results = evaluator.evaluate(results_file)
+        def print_line(measure, scope, value):
+            print('{:25s}{:8s}{:.4f}'.format(measure, scope, value))
+
+        for query_id, query_measures in results.items():
+            for measure, value in query_measures.items():
+                if measure == "runid":
+                    continue
+                print_line(measure, query_id, value)
+        for measure in query_measures.keys():
+            if measure == "runid":
+                continue
+            print_line(
+                measure,
+                'all',
+                pytrec_eval.compute_aggregated_measure(
+                    measure,
+                    [query_measures[measure]
+                    for query_measures in results.values()]))
         return "tengo que recoger precisión, recall y f1"        
 
 # qrel_file : ruta del archivo con la lista de documentos relevantes para cada consulta
