@@ -31,12 +31,48 @@ lucene.initVM()
 class Lucene():
 
     def createDirectory(self, myfolder):
+        """
+        Crea un nuevo directorio.
+
+        Comprueba si el directorio no existe lo crea.
+
+        Parameters
+        ----------
+        myfolder : string  
+        >    Ruta para el nuevo directorio.
+
+        """
         try: 
             os.stat(myfolder)
         except:
             os.mkdir(myfolder)
 
     def addDocument(self, writer, file, filename, tft):
+        """
+        Indexa una serie de documentos que se encuentran en un archivo.
+
+        Indexa una serie de documentos para consultas biomédicas, con unas caracteristicas específicas, por cada documento se guardará:
+
+        ***docid*** → Identificación del documento (nombre_del_archivo_x, estando x en el rango [1 - nº de documentos]).  
+        ***abstract*** → sección abstract del documento. En una sola línea comenzando por 'AB  -'.  
+        ***título*** → sección de título del documento. En una sola línea comenzando por 'ST  -'.  
+        ***key words*** → sección de palabras clave del documento. Comienza siempre con 'KW  -' y termina con 'N1  -' or 'PY  -'
+
+        Parameters
+        ----------
+        writer : IndexWriter
+        >    Crea y mantiene un índice.  
+
+        file : File
+        >    Archivo a indexar.  
+
+        filename : String
+        >    Nombre del archivo que contiene los documentos.  
+        
+        tft : FieldType
+        >    Instancia de FieldType para establecer storeTermVector ó TextField.TYPE_STORED, dependiendo del tipo de archivo a indexar.
+
+        """
         docid = 1
         docs =file.read()
         # por todos los documentos
@@ -86,61 +122,116 @@ class Lucene():
         file.close()
 
     def index(self, filepath, filepos, fileneg, typefile):
-        filenamepos = secure_filename(filepos.filename)
-        filenamepos = filenamepos[:(filenamepos.find(".txt"))]
-        filenameneg = secure_filename(fileneg.filename)
-        filenameneg = filenameneg[:(filenameneg.find(".txt"))]
+        """
+        Indexador.
 
-        pathpos = filepath+"/lucene_"+filenamepos
-        pathneg = filepath+"/lucene_"+filenameneg
+        Indexa un par de archivos, positivo y negativo. Respectivamente contienen documentos positivos y negativos.  
+        Si el tipo de archivo es FVS o FDS, el analizador es EnglishAnalyzer, ademas usaremos TextField.TYPE_STORED a la hora de añadir un documento.  
+        Si el tipo de archivo es TIS, el analizador es StandardAnalyzer y usaremos una instancia de FieldType para poder generar métricas.
 
-        self.createDirectory(pathpos)
-        self.createDirectory(pathneg)
+        Parameters
+        ----------
+        filepath : string
+        >    Ruta donde se guardarán los nuevos archivos indexados.  
 
-        directorypos = SimpleFSDirectory(Paths.get(pathpos))
-        directoryneg = SimpleFSDirectory(Paths.get(pathneg))
+        filepos : File
+        >    Archivo con los documentos positivos  
 
-        if typefile == 'filesTIS':
-            
-            # creo una instancia de FieldType para establecer storeTermVector
-            # proposito poder sacar las frecuencias.
-            tft = FieldType()
-            tft.setStored(True)
-            tft.setTokenized(True)
-            tft.setIndexOptions(IndexOptions.DOCS_AND_FREQS_AND_POSITIONS_AND_OFFSETS)
-            tft.setStoreTermVectors(True)
-            tft.setStoreTermVectorPositions(True)
-            tft.freeze()
+        fileneg : File
+        >    Archivo con los documentos negativos  
 
-            analyzer = StandardAnalyzer()
-            config = IndexWriterConfig(analyzer)
-            writer = IndexWriter(directorypos, config)
-            self.addDocument(writer,filepos,filenamepos, tft) ########
-            writer.close()
+        typefile : string
+        >    Tipo de archivo a indexar, puede ser filesFVS, filesFDS o filesTIS
 
-            analyzer = StandardAnalyzer()
-            config = IndexWriterConfig(analyzer)
-            writer = IndexWriter(directoryneg, config)
-            self.addDocument(writer,fileneg,filenameneg, tft) ########
-            writer.close()
+        Returns
+        -------
+        string
+            Mensaje, si todo ha ido bien: 'All indexing ok', si no se ejecuta correctamente 'something went wrong, exception in index method'
 
-        else: #los analizadores son EnglishAnalyzer no hay tft.
+        """
+        try:
+            # cambiamos espacios por '_'en el nombre del archivo
+            filenamepos = secure_filename(filepos.filename)
+            filenameneg = secure_filename(fileneg.filename)
+            # eliminamos del nombre la extensión del archivo, en nuestro caso ha de ser siempre .txt
+            filenamepos = filenamepos[:(filenamepos.find(".txt"))]
+            filenameneg = filenameneg[:(filenameneg.find(".txt"))]
+            # Ruta donde se guardarán los nuevos archivos indexados
+            pathpos = filepath+"/lucene_"+filenamepos
+            pathneg = filepath+"/lucene_"+filenameneg
+            # si los directorios no existen los creamos
+            self.createDirectory(pathpos)
+            self.createDirectory(pathneg)
 
-            analyzer = EnglishAnalyzer()
-            config = IndexWriterConfig(analyzer)
-            writer = IndexWriter(directorypos, config)
-            self.addDocument(writer,filepos,filenamepos, TextField.TYPE_STORED) ########
-            writer.close()
-            
-            analyzer = EnglishAnalyzer()
-            config = IndexWriterConfig(analyzer)
-            writer = IndexWriter(directoryneg, config)
-            self.addDocument(writer,fileneg,filenameneg, TextField.TYPE_STORED) ########
-            writer.close()
+            directorypos = SimpleFSDirectory(Paths.get(pathpos))
+            directoryneg = SimpleFSDirectory(Paths.get(pathneg))
 
-        return 'files upload ok'
+            if typefile == 'filesTIS':
+                
+                # creo una instancia de FieldType para establecer storeTermVector
+                # proposito poder sacar las frecuencias.
+                tft = FieldType()
+                tft.setStored(True)
+                tft.setTokenized(True)
+                tft.setIndexOptions(IndexOptions.DOCS_AND_FREQS_AND_POSITIONS_AND_OFFSETS)
+                tft.setStoreTermVectors(True)
+                tft.setStoreTermVectorPositions(True)
+                tft.freeze()
+
+                analyzer = StandardAnalyzer()
+                config = IndexWriterConfig(analyzer)
+                writer = IndexWriter(directorypos, config)
+                self.addDocument(writer,filepos,filenamepos, tft) ########
+                writer.close()
+
+                analyzer = StandardAnalyzer()
+                config = IndexWriterConfig(analyzer)
+                writer = IndexWriter(directoryneg, config)
+                self.addDocument(writer,fileneg,filenameneg, tft) ########
+                writer.close()
+
+            else: #los analizadores son EnglishAnalyzer, no hay tft.
+
+                analyzer = EnglishAnalyzer()
+                config = IndexWriterConfig(analyzer)
+                writer = IndexWriter(directorypos, config)
+                self.addDocument(writer,filepos,filenamepos, TextField.TYPE_STORED) ########
+                writer.close()
+                
+                analyzer = EnglishAnalyzer()
+                config = IndexWriterConfig(analyzer)
+                writer = IndexWriter(directoryneg, config)
+                self.addDocument(writer,fileneg,filenameneg, TextField.TYPE_STORED) ########
+                writer.close()
+         
+            return 'All indexing ok'
+        
+        except:
+            return 'something went wrong, exception in index method'
 
     def search(self, filepath, word, score):
+        """
+        Search.
+
+        Buscador en una ruta específica, el termino buscado debería estar en uno de los tres campos: abstract, titulo o key_words.
+
+        Parameters
+        ----------
+        filepath : string
+        >    Ruta donde buscaremos.  
+
+        word : string
+        >    String que queremos buscar en los documentos.  
+
+        score : boolean
+        >    Si es True queremos el score (peso) de cada documento. Si es False queremos los documentos.
+
+        Returns
+        -------
+        dic or list
+        >    Si buscamos los score de los documentos devolverá un diccionario tipo {documento: peso}, si buscamos los documentos devuelve una lista de documentos con los atributos docid, abstract, titulo y key_words
+
+        """
         directory = SimpleFSDirectory(Paths.get(filepath))
         searcher = IndexSearcher(DirectoryReader.open(directory))
         analyzer = EnglishAnalyzer()
@@ -169,7 +260,23 @@ class Lucene():
                     })
         return result
     
-    def searchDocID(self, filepath):
+    def positiveDocID(self, filepath):
+        """
+        Buscamos los identificares de los documentos.
+
+        Buscamos los identificadores de los documentos para trec_eval, han de tener un peso, como los documentos positivos tienen todos la misma relevancia, será 10.
+
+        Parameters
+        ----------
+        filepath : string
+        >    Ruta donde buscaremos.
+
+        Returns
+        -------
+        dic
+        >    Diccionario tipo {documento: peso}, siendo el peso de 10.
+
+        """
         store = SimpleFSDirectory(Paths.get(filepath))
         reader = None
         try:
@@ -191,7 +298,24 @@ class Lucene():
         return diccionario
 
 
-    def selectTIS(self, filepath):
+    def termsFreqsTIS(self, filepath):
+        """
+        Calcula la frecuencia de cada termino.
+
+        Calcula la frecuencia de cada termino del archivo que se encuentra en la ruta especifica.  
+        Como primeros parametros se añaden docCount (numero de documentos) y sumTotalTermFreq (suma total de la frecuencia de todos los terminos en los documentos)
+
+        Parameters
+        ----------
+        filepath : string
+        >    Ruta donde se encuentran los archivos TIS.
+
+        Returns
+        -------
+        dic
+        >    Devuelve un diccionario de tipo {termino: frecuencia}
+
+        """
         store = SimpleFSDirectory(Paths.get(filepath))
         reader = None
         try:
@@ -247,6 +371,36 @@ class Lucene():
         return terms_freqs2
     
     def tabla_Term(self, resultadopos, resultadoneg):
+        """
+        Tabla de medidas necesarias de los terminos.
+        
+        Tabla de médidas para los terminos de un par de archivos, positivo y negativo, siendo:
+
+        - F = término
+        - P(F) = probabilidad[term] = freq_pos + freq_neg / sum_total_term_freq_pos_and_neg
+        - P(Ci|F) = P(F,Ci) / P(F)
+            - P(F,Cpos) = (freq_term_en_positivos/freq_term_pos+freq_term_neg) / P(F)
+            - P(F,Cneg) =( freq_term_en_negativos/freq_term_pos+freq_term_neg) / P(F)
+
+        - P(F|Ci) = P(Ci,F) / P(Ci)
+            - P(F,Cpos) = (freq_term_en_positivos/freq_term_pos+freq_term_neg) / P(Cpos)
+            - P(F,Cneg) = (freq_term_en_negativos/freq_term_pos+freq_term_neg) / P(Cneg)
+
+
+        Parameters
+        ----------
+        resultadopos : dic
+        >    Diccionario de terminos: frecuencia de los documentos positivos  
+
+        resultadoneg : dic
+        >    Diccionario de terminos: frecuencia de los documentos negativos 
+
+        Returns
+        -------
+        dic
+        >    Diccionario de termminos, por cada termino devuelve: P(F), P(Ci|F), P(F|Ci), sum_F (frecuencia total del termino, suma de positivos y negativos).
+
+        """
         sumTotalTermFreq = resultadopos['sumTotalTermFreq'] + resultadoneg['sumTotalTermFreq']
         p_Cpos = resultadopos['docCount']/(resultadopos['docCount']+resultadoneg['docCount'])
         p_Cneg = resultadoneg['docCount']/(resultadoneg['docCount']+resultadopos['docCount'])
@@ -288,6 +442,28 @@ class Lucene():
         return tabla
 
     def filterInfGain(self, resultadopos, resultadoneg, sum):
+        """
+        Filtro InfGain.
+
+        Filtro ganancia de información.
+
+        Parameters
+        ----------
+        resultadopos : dic
+        >    Diccionario termino:frecuencia de los documentos positivos  
+
+        resultadoneg : dic
+        >    Diccionario termino:frecuencia de los documentos negativos  
+
+        sum : int
+        >    Cantidad de terminos a devolver
+
+        Returns
+        -------
+        list
+        >    lista de los mejores terminos encontrados con el filtro.
+
+        """
         p_Cpos = resultadopos['docCount']/(resultadopos['docCount']+resultadoneg['docCount'])
         p_Cneg = resultadoneg['docCount']/(resultadoneg['docCount']+resultadopos['docCount'])
 
@@ -328,6 +504,26 @@ class Lucene():
         return salida
 
     def filterCrossEntropy(self, resultadopos, resultadoneg, sum):
+        """
+        Filtro CrossEntropy.
+
+        Parameters
+        ----------
+        resultadopos : dic
+        >    Diccionario termino:frecuencia de los documentos positivos  
+
+        resultadoneg : dic
+        >    Diccionario termino:frecuencia de los documentos negativos  
+
+        sum : int
+        >    Cantidad de terminos a devolver
+
+        Returns
+        -------
+        list
+        >    lista de los mejores terminos encontrados con el filtro.
+
+        """
         p_Cpos = resultadopos['docCount']/(resultadopos['docCount']+resultadoneg['docCount'])
         p_Cneg = resultadoneg['docCount']/(resultadoneg['docCount']+resultadopos['docCount'])
 
@@ -352,6 +548,26 @@ class Lucene():
         return salida
 
     def filterMutualInfo(self, resultadopos, resultadoneg, sum):
+        """
+        Filtro MutualInfo.
+
+        Parameters
+        ----------
+        resultadopos : dic
+        >    Diccionario termino:frecuencia de los documentos positivos  
+
+        resultadoneg : dic
+        >    Diccionario termino:frecuencia de los documentos negativos  
+
+        sum : int
+        >    Cantidad de terminos a devolver
+
+        Returns
+        -------
+        list
+        >    lista de los mejores terminos encontrados con el filtro.
+
+        """
         # prob de ci, la probabilidad de una clase, es el numero de documentos de esa clase entre el total de documentos.
         p_Cpos = resultadopos['docCount']/(resultadopos['docCount']+resultadoneg['docCount'])
         p_Cneg = resultadoneg['docCount']/(resultadoneg['docCount']+resultadopos['docCount'])
@@ -377,6 +593,26 @@ class Lucene():
         return salida
 
     def filterfreq(self, resultadopos, resultadoneg, sum):
+        """
+        Filtro Frecuencias.
+
+        Parameters
+        ----------
+        resultadopos : dic
+        >    Diccionario termino:frecuencia de los documentos positivos  
+
+        resultadoneg : dic
+        >    Diccionario termino:frecuencia de los documentos negativos  
+
+        sum : int
+        >    Cantidad de terminos a devolver
+
+        Returns
+        -------
+        list
+        >    lista de los mejores terminos encontrados con el filtro.
+
+        """
         totalTerms = resultadopos.copy()
         for k in resultadoneg:
             if k in resultadopos:
@@ -388,7 +624,26 @@ class Lucene():
         return salida
 
     def filterOddsRatio(self, resultadopos, resultadoneg, sum):
-        
+        """
+        Filtro Odds Ratio.
+
+        Parameters
+        ----------
+        resultadopos : dic
+        >    Diccionario termino:frecuencia de los documentos positivos  
+
+        resultadoneg : dic
+        >    Diccionario termino:frecuencia de los documentos negativos  
+
+        sum : int
+        >    Cantidad de terminos a devolver
+
+        Returns
+        -------
+        list
+        >    lista de los mejores terminos encontrados con el filtro.
+
+        """
         tabla = self.tabla_Term(resultadopos, resultadoneg)
         OddsRatio = {}
         for f in tabla:
@@ -407,7 +662,7 @@ class Lucene():
                 OddsRatio[f] = 0
             else:
                 OddsRatio[f]=math.log((condProbFpos*(1-condProbFneg))/((1-condProbFpos)*condProbFneg))
-        print("mutualInfo")
+        print("oddsRatio")
         print(OddsRatio)
         salida = sorted(OddsRatio, key=OddsRatio.get, reverse=True)
         print('salida sorted')
@@ -416,7 +671,26 @@ class Lucene():
         return salida
 
     def filterNormalSeparation(self, resultadopos, resultadoneg, sum):
-       
+        """
+        Filtro Normal Separation.
+
+        Parameters
+        ----------
+        resultadopos : dic
+        >    Diccionario termino:frecuencia de los documentos positivos  
+
+        resultadoneg : dic
+        >    Diccionario termino:frecuencia de los documentos negativos  
+
+        sum : int
+        >    Cantidad de terminos a devolver
+
+        Returns
+        -------
+        list
+        >    lista de los mejores terminos encontrados con el filtro.
+
+        """
         tabla = self.tabla_Term(resultadopos, resultadoneg)
         
         md = []
@@ -450,6 +724,26 @@ class Lucene():
         return salida
 
     def filterDiferencia(self, resultadopos, resultadoneg, sum):
+        """
+        Filtro Diferencia.
+
+        Parameters
+        ----------
+        resultadopos : dic
+        >    Diccionario termino:frecuencia de los documentos positivos  
+
+        resultadoneg : dic
+        >    Diccionario termino:frecuencia de los documentos negativos  
+
+        sum : int
+        >    Cantidad de terminos a devolver
+
+        Returns
+        -------
+        list
+        >    lista de los mejores terminos encontrados con el filtro.
+
+        """
         tabla = self.tabla_Term(resultadopos, resultadoneg)
 
         # el peso de termino es mejor que otro si aparece muchas veces en los positivos y no aparece en los negativos
@@ -475,6 +769,30 @@ class Lucene():
         return salida
 
     def filter(self, typefilter, terms_freqs_positive, terms_freqs_negative, sum, email):
+        """
+        Filtro.
+
+        Ejecuta el tipo de filtro seleccionado.
+
+        Parameters
+        ----------
+        typefilter : string
+        >    Tipo de filtro a ejecutar  
+
+        terms_freqs_positive : dic
+        >    Diccionario termino:frecuencia de los documentos positivos  
+
+        terms_freqs_negative : dic
+        >    Diccionario termino:frecuencia de los documentos positivos  
+
+        sum : int
+        >    Cantidad de terminos a devolver
+
+        Returns
+        -------
+        list or string
+        >    lista de los mejores terminos encontrados con el filtro. En caso de no encontrar el filtro pasado devuelve mensaje de error.
+        """
         if typefilter == "Freq":
             return self.filterfreq(terms_freqs_positive,terms_freqs_negative, sum)
         elif typefilter == "InfGain":
@@ -493,6 +811,24 @@ class Lucene():
             return "No existe el filtro seleccionado "
 
     def medidas_de_rendimiento(self, setAllFVSPos, resultado):
+        """
+        
+        Medidas de rendimiento 
+
+        Parameters
+        ----------
+        setAllFVSPos : dic
+        >   description  
+        
+        resultado : dic
+        >   description 
+
+        Returns:
+        -------
+        string
+        >   description
+        
+        """
         print("setAllFVSPos")
         print(setAllFVSPos)
         print("resultado")
@@ -523,6 +859,11 @@ class Lucene():
                     measure,
                     [query_measures[measure]
                     for query_measures in results.values()]))
+        #m = pytrec_eval.evaluate(results_file, qrels_file, {'precision', 'recall'})
+        #print(json.dumps(m, indent=1))
+        #module 'pytrec_eval' has no attribute 'evaluate'
+        #pytrec_eval.plotRecallPrecision(results_file, qrels_file, perQuery=True, outputFile='./recall-precision.pdf', showPlot=False)
+        #AttributeError: module 'pytrec_eval' has no attribute 'plotRecallPrecision'
         return "tengo que recoger precisión, recall y f1"        
 
 # qrel_file : ruta del archivo con la lista de documentos relevantes para cada consulta

@@ -183,9 +183,9 @@ def selectTIS():
     pathfileneg = app.config['UPLOAD_FOLDER']+'/'+correo+'/filesTIS/lucene_'+fileneg[:count2]
     print("pathfileneg")
     print(pathfileneg)
-    resultadopos = lc.selectTIS(pathfilepos)
+    resultadopos = lc.termsFreqsTIS(pathfilepos)
     print("end positive")
-    resultadoneg = lc.selectTIS(pathfileneg)
+    resultadoneg = lc.termsFreqsTIS(pathfileneg)
     print(" end negative ")
     resultado = {'terms_freqs_positive': resultadopos, 'terms_freqs_negative': resultadoneg}
     return jsonify(resultado), 200
@@ -239,7 +239,7 @@ def applyFilter():
         pathfile = app.config['UPLOAD_FOLDER']+'/'+correo+'/'+typefile+'/lucene_'+filepos[:count]
         resultado[filepos[:count]] = lc.search(pathfile,body['wanted'], True)
         #setPos = lc.searchDocID(pathfile))
-        setAllFVSPos[filepos[:count]] = lc.searchDocID(pathfile)
+        setAllFVSPos[filepos[:count]] = lc.positiveDocID(pathfile)
         pathfile = app.config['UPLOAD_FOLDER']+'/'+correo+'/'+typefile+'/lucene_'+fileneg[:count2]
         resultado[fileneg[:count2]] = lc.search(pathfile,body['wanted'], True)
         '''for r in searchpos:
