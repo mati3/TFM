@@ -1,7 +1,8 @@
 <div class="col-md-9 offset-md-1 mt-5">
   <h1>{{'files.filter' | translate}}</h1>
-    <a routerLink="/workspace/search" class="btn btn-sm btn-success mb-2">{{ 'files.looking' | translate }}</a>
-  
+    <a routerLink="/workspace/search" class="btn btn-sm btn-success mb-2 mr-1">{{ 'files.looking' | translate }}</a>
+    <a routerLink="/workspace" class="btn btn-sm btn-success mb-2 mr-1">{{ 'nav.workspace' | translate }}</a>
+
     <table class="table table-striped">
       <thead>
         <caption>{{'files.fvs' | translate}}</caption>
@@ -86,8 +87,8 @@
     </div>
     Query: 
     <a *ngFor="let word of query">{{word}} &nbsp;</a><br />
-    <!-- AND_OPERATOR -->
 
+    <!-- AND_OPERATOR -->
     <a>Seleccione si quiere unir los terminos con el operador and:</a><br />
     <div class="form-group" >
         <button class="btn btn-primary btn-sm" (click)="andOperator()" [disabled]="!loadand" >
@@ -96,27 +97,57 @@
         </button>
     </div>
 
+    <!-- aplicar en FVS  -->
     <div class="form-group" >
-      <button class="btn btn-primary" (click)="applyFilter()" >
+      <button class="btn btn-primary" (click)="applyFilterFVS()" >
         <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
         aplicar en FVS 
       </button>
     </div>
 
-    <!-- medidas de rendimiento
-    <h4>Medidas de rendimiento</h4>
-    <div class="input-group">
-        <input type="text" class="form-control" aria-label="Text input with segmented dropdown button">
-        <div class="input-group-append">
-            <button type="button" class="btn btn-outline-secondary">Filter</button>
-            <button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="sr-only">Toggle Dropdown</span>
-            </button>
-            <div class="dropdown-menu">
-                <a class="dropdown-item" href="#">especificidad</a>
-                <a class="dropdown-item" href="#">Another Rendimiento</a>
-            </div>
-        </div>
-    </div> -->
+    <!-- medidas de rendimiento -->
+    <table *ngIf="loadmetric" class="table table-striped">
+      <a *ngFor="let metric of metricsFVS">
+        <h4>{{metric[0].tittle}}</h4>
+        <thead>
+          <tr>
+            <th style="width: 30%">Medida de rendimiento</th>
+            <th style="width: 30%">Valor</th>
+          </tr>
+        </thead> 
+        <tbody>
+          <tr *ngFor="let data of metric">
+            <td>{{data.description}}</td>
+            <td>{{data.value}}</td>
+          </tr>
+        </tbody>
+      </a>
+    </table>
 
+    <!-- aplicar en FDS  -->
+    <div class="form-group" >
+      <button class="btn btn-primary" (click)="applyFilterFDS()" >
+        <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+        aplicar en FDS 
+      </button>
+    </div>
+
+    <!-- medidas de rendimiento -->
+    <table *ngIf="loadmetric" class="table table-striped">
+      <a *ngFor="let metric of metricsFDS">
+        <h4>{{metric[0].tittle}}</h4>
+        <thead>
+          <tr>
+            <th style="width: 30%">Medida de rendimiento</th>
+            <th style="width: 30%">Valor</th>
+          </tr>
+        </thead> 
+        <tbody>
+          <tr *ngFor="let data of metric">
+            <td>{{data.description}}</td>
+            <td>{{data.value}}</td>
+          </tr>
+        </tbody>
+      </a>
+    </table>
   </div>

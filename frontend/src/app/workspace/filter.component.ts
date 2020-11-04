@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { first } from 'rxjs/operators';
-import { User, LookingFiles, Filter } from '@app/models';
+import { User, LookingFiles, Filter, Metric } from '@app/models';
 import { AccountService, FilterService } from '@app/services';
 
 @Component({ templateUrl: 'filter.component.html' })
@@ -19,6 +19,10 @@ export class FilterComponent {
   wanted = "";
   andleng = 0;
   loadand = true;
+  loadmetric = false;
+  metricsFVS = [];
+  metricsFDS = [];
+  metric = null;
 
   constructor(
       private accountService: AccountService,
@@ -92,7 +96,8 @@ export class FilterComponent {
     }
   }
 
-  applyFilter(){
+  applyFilterFVS(){
+    this.loadmetric = false;
     this.query.forEach(element => {
       this.wanted += element + " ";
     });
@@ -100,12 +105,43 @@ export class FilterComponent {
     // PROBISIONAL, para ver los archivos buscados.
     this.lookingfiles.wanted = this.wanted;
     this.wanted = "";
+    this.lookingfiles.typefile = 'filesFVS';
     this.filterService.applyFilter(this.lookingfiles).subscribe((data) => {
-      //for(let element of Object.keys(data)){
-        //this.data[element]= {id:element, titulo: data[element]['titulo'], abstract: data[element]['abstract'], key_words: data[element]['key_words']}
-      //};
-      //this.totalRecords =  Object.keys(data).length;
+      this.metricsFVS = [];
+      this.metric = [];
+      for(let element of Object.keys(data)){
+        this.metric = [];
+        for(let des in data[element]){
+          this.metric.push(new Metric(element,des,data[element][des]));
+        }
+        this.metricsFVS.push(this.metric);
+      };
     });
+    this.loadmetric = true;
+  } 
+
+  applyFilterFDS(){
+    this.loadmetric = false;
+    this.query.forEach(element => {
+      this.wanted += element + " ";
+    });
+    console.log(this.wanted)
+    // PROBISIONAL, para ver los archivos buscados.
+    this.lookingfiles.wanted = this.wanted;
+    this.wanted = "";
+    this.lookingfiles.typefile = 'filesFDS';
+    this.filterService.applyFilter(this.lookingfiles).subscribe((data) => {
+      this.metricsFDS = [];
+      this.metric = [];
+      for(let element of Object.keys(data)){
+        this.metric = [];
+        for(let des in data[element]){
+          this.metric.push(new Metric(element,des,data[element][des]));
+        }
+        this.metricsFDS.push(this.metric);
+      };
+    });
+    this.loadmetric = true;
   }
 
 }

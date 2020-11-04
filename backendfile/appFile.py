@@ -34,6 +34,8 @@ db = conn.baseDeDatos
 # create collection Clientes
 client = dbClientes(db.Clientes)
 
+Filters = {'InfGain', 'CrossEntropy' , 'MutualInfo', 'Freq' , 'OddsRatio', 'NormalSeparation', 'Diferencia'}
+
 # return 'hello world', test metod
 @app.route('/')
 @cache.cached(timeout=50)
@@ -194,7 +196,8 @@ def selectTIS():
 def filter():
     body = request.get_json()
     typefilter = body['typefilter']
-    print(typefilter)
+    if typefilter not in Filters:
+        return "No existe el filtro seleccionado "
     terms_freqs_positive = body['terms_freqs_positive']
     print(terms_freqs_positive)
     terms_freqs_negative = body['terms_freqs_negative']
@@ -226,12 +229,17 @@ def applyFilter():
         filesTIS = i['filesTIS'] 
         files = {'filesFVS':filesFVS, 'filesFDS': filesFDS, 'filesTIS': filesTIS}
 
-    resultado = {}
-    setAllFVSPos = {}
-    for e in filesFVS:
+    salida = {}
+    if body['typefile'] == 'filesFVS':
+        filesX = filesFVS
+    elif body['typefile']== 'filesFDS':
+        filesX = filesFDS
+    for e in filesX:
+        resultado = {}
+        setAllPos = {}
         filepos = e['positive']
         fileneg = e['negative']
-        typefile = 'filesFVS'
+        typefile =  body['typefile']
         count = filepos.find(".txt")
         count2 = fileneg.find(".txt")
         #pathfile = app.config['UPLOAD_FOLDER']+'/'+correo+'/'+typefile+'/'+filepos[:count]+fileneg[:count2]
@@ -239,7 +247,7 @@ def applyFilter():
         pathfile = app.config['UPLOAD_FOLDER']+'/'+correo+'/'+typefile+'/lucene_'+filepos[:count]
         resultado[filepos[:count]] = lc.search(pathfile,body['wanted'], True)
         #setPos = lc.searchDocID(pathfile))
-        setAllFVSPos[filepos[:count]] = lc.positiveDocID(pathfile)
+        setAllPos[filepos[:count]] = lc.positiveDocID(pathfile)
         pathfile = app.config['UPLOAD_FOLDER']+'/'+correo+'/'+typefile+'/lucene_'+fileneg[:count2]
         resultado[fileneg[:count2]] = lc.search(pathfile,body['wanted'], True)
         '''for r in searchpos:
@@ -248,8 +256,10 @@ def applyFilter():
             resultado.append(i)'''
         '''for i in setPos:
             setAllFVSPos.append(i)'''
-    lc.medidas_de_rendimiento(setAllFVSPos,resultado)    
-    return jsonify(resultado), 200
+        salida[filepos[:count]] = lc.medidas_de_rendimiento(setAllPos,resultado)    
+
+    print(salida)
+    return jsonify(salida), 200
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
