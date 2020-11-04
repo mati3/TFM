@@ -97,7 +97,6 @@ export class FilterComponent {
   }
 
   applyFilterFVS(){
-    this.loadmetric = false;
     this.query.forEach(element => {
       this.wanted += element + " ";
     });
@@ -121,7 +120,6 @@ export class FilterComponent {
   } 
 
   applyFilterFDS(){
-    this.loadmetric = false;
     this.query.forEach(element => {
       this.wanted += element + " ";
     });
