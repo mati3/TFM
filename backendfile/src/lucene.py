@@ -36,7 +36,7 @@ class Lucene():
 
         Comprueba si el directorio no existe lo crea.
 
-        Parameters
+        Args:
         ----------
         myfolder : string  
         >    Ruta para el nuevo directorio.
@@ -58,7 +58,7 @@ class Lucene():
         ***título*** → sección de título del documento. En una sola línea comenzando por 'ST  -'.  
         ***key words*** → sección de palabras clave del documento. Comienza siempre con 'KW  -' y termina con 'N1  -' or 'PY  -'
 
-        Parameters
+        Args:
         ----------
         writer : IndexWriter
         >    Crea y mantiene un índice.  
@@ -129,7 +129,7 @@ class Lucene():
         Si el tipo de archivo es FVS o FDS, el analizador es EnglishAnalyzer, ademas usaremos TextField.TYPE_STORED a la hora de añadir un documento.  
         Si el tipo de archivo es TIS, el analizador es StandardAnalyzer y usaremos una instancia de FieldType para poder generar métricas.
 
-        Parameters
+        Args:
         ----------
         filepath : string
         >    Ruta donde se guardarán los nuevos archivos indexados.  
@@ -143,7 +143,7 @@ class Lucene():
         typefile : string
         >    Tipo de archivo a indexar, puede ser filesFVS, filesFDS o filesTIS
 
-        Returns
+        Returns:
         -------
         string
             Mensaje, si todo ha ido bien: 'All indexing ok', si no se ejecuta correctamente 'something went wrong, exception in index method'
@@ -215,7 +215,7 @@ class Lucene():
 
         Buscador en una ruta específica, el termino buscado debería estar en uno de los tres campos: abstract, titulo o key_words.
 
-        Parameters
+        Args:
         ----------
         filepath : string
         >    Ruta donde buscaremos.  
@@ -226,10 +226,10 @@ class Lucene():
         score : boolean
         >    Si es True queremos el score (peso) de cada documento. Si es False queremos los documentos.
 
-        Returns
+        Returns:
         -------
         dic or list
-        >    Si buscamos los score de los documentos devolverá un diccionario tipo {documento: peso}, si buscamos los documentos devuelve una lista de documentos con los atributos docid, abstract, titulo y key_words
+        >    Si buscamos los score de los documentos devolverá un diccionario tipo {documento: grado  de relevancia}, si buscamos los documentos devuelve una lista de documentos con los atributos docid, abstract, titulo y key_words
 
         """
         directory = SimpleFSDirectory(Paths.get(filepath))
@@ -266,12 +266,12 @@ class Lucene():
 
         Buscamos los identificadores de los documentos para trec_eval, han de tener un peso, como los documentos positivos tienen todos la misma relevancia, será 10.
 
-        Parameters
+        Args:
         ----------
         filepath : string
         >    Ruta donde buscaremos.
 
-        Returns
+        Returns:
         -------
         dic
         >    Diccionario tipo {documento: peso}, siendo el peso de 10.
@@ -305,12 +305,12 @@ class Lucene():
         Calcula la frecuencia de cada termino del archivo que se encuentra en la ruta especifica.  
         Como primeros parametros se añaden docCount (numero de documentos) y sumTotalTermFreq (suma total de la frecuencia de todos los terminos en los documentos)
 
-        Parameters
+        Args:
         ----------
         filepath : string
         >    Ruta donde se encuentran los archivos TIS.
 
-        Returns
+        Returns:
         -------
         dic
         >    Devuelve un diccionario de tipo {termino: frecuencia}
@@ -319,29 +319,58 @@ class Lucene():
         store = SimpleFSDirectory(Paths.get(filepath))
         reader = None
         try:
-            reader = DirectoryReader.open(store)
-            term_enum = MultiTerms.getTerms(reader, "docid").iterator()
-            
-            docids = [term.utf8ToString()
-                      for term in BytesRefIterator.cast_(term_enum)]
-            print("docids")
-            print(docids)
 
             indexReader = DirectoryReader.open(NIOFSDirectory.open(Paths.get(filepath)))
             docCount = indexReader.numDocs()
+            sumTotalTermFreq = 0
+            # totalTermFreq, Devuelve el número total de apariciones de este término en todos los documentos (la suma de freq () para cada documento que tiene este término).
+            # getSumTotalTermFreq, Devuelve la suma de totalTermFreq()todos los términos de este campo.
+            sumTotalTermFreq += MultiTerms.getTerms(indexReader, "key_words").getSumTotalTermFreq()
+            sumTotalTermFreq += MultiTerms.getTerms(indexReader, "abstract").getSumTotalTermFreq()
+            sumTotalTermFreq += MultiTerms.getTerms(indexReader, "titulo").getSumTotalTermFreq()
+
+            terms_freqs = {}
+            terms_freqs['docCount'] = docCount
+            terms_freqs['sumTotalTermFreq'] = sumTotalTermFreq
+
+            for doc in range(docCount):
+                termswat = []
+                #vector de terminos
+                termsk = indexReader.getTermVector(doc, "key_words")
+                termsa = indexReader.getTermVector(doc, "abstract")
+                termst = indexReader.getTermVector(doc, "titulo")
+                if termsk is not None:
+                    termswat.append(termsk) 
+                elif termsa is not None:
+                    termswat.append(termsa) 
+                elif termst is not None:
+                    termswat.append(termst) 
+
+                for termss in termswat:
+                    termsEnum = termss.iterator()
+                    for term in BytesRefIterator.cast_(termsEnum):
+                        # descartamos los números
+                        if term.utf8ToString() != '©':
+                            try: 
+                                float(term.utf8ToString()) or int(term.utf8ToString())
+                            except:
+                                terms_freqs[term.utf8ToString()]=termsEnum.totalTermFreq()
+
+                # quitamos palabras vacías
+                stops = set(line.strip() for line in open('english_stopwords.txt'))
+                for s in stops:
+                    if s in terms_freqs:
+                        del terms_freqs[s]
+            
+            '''print("terms_freqs")
+            print(terms_freqs)
+
             # volver a inspeccionar docCount, hacerlo en un for      
             termssW = indexReader.getTermVector((docCount-1), "key_words")# NONE, antes tenia la restricción que si no había key_words, no guardaba el documento, ya no
             termssA = indexReader.getTermVector((docCount-1), "abstract")
             termssT = indexReader.getTermVector((docCount-1), "titulo")
             termssWAT = [termssW,termssA,termssT]
   
-            sumTotalTermFreq = 0
-            # totalTermFreq, Devuelve el número total de apariciones de este término en todos los documentos (la suma de freq () para cada documento que tiene este término).
-            # getSumTotalTermFreq, Devuelve la suma de totalTermFreq()todos los términos de este campo.
-            sumTotalTermFreq += MultiTerms.getTerms(reader, "key_words").getSumTotalTermFreq()
-            sumTotalTermFreq += MultiTerms.getTerms(reader, "abstract").getSumTotalTermFreq()
-            sumTotalTermFreq += MultiTerms.getTerms(reader, "titulo").getSumTotalTermFreq()
-
             terms_freqs2 = {}
             terms_freqs2['docCount'] = docCount
             terms_freqs2['sumTotalTermFreq'] = sumTotalTermFreq
@@ -364,11 +393,11 @@ class Lucene():
                 if s in terms_freqs2:
                     del terms_freqs2[s]
             print("terms_freqs2")
-            print(terms_freqs2)
+            print(terms_freqs2)'''
             
         finally:
             store.close()
-        return terms_freqs2
+        return terms_freqs
     
     def tabla_Term(self, resultadopos, resultadoneg):
         """
@@ -387,7 +416,7 @@ class Lucene():
             - P(F,Cneg) = (freq_term_en_negativos/freq_term_pos+freq_term_neg) / P(Cneg)
 
 
-        Parameters
+        Args:
         ----------
         resultadopos : dic
         >    Diccionario de terminos: frecuencia de los documentos positivos  
@@ -395,7 +424,7 @@ class Lucene():
         resultadoneg : dic
         >    Diccionario de terminos: frecuencia de los documentos negativos 
 
-        Returns
+        Returns:
         -------
         dic
         >    Diccionario de termminos, por cada termino devuelve: P(F), P(Ci|F), P(F|Ci), sum_F (frecuencia total del termino, suma de positivos y negativos).
@@ -447,7 +476,7 @@ class Lucene():
 
         Filtro ganancia de información.
 
-        Parameters
+        Args:
         ----------
         resultadopos : dic
         >    Diccionario termino:frecuencia de los documentos positivos  
@@ -458,7 +487,7 @@ class Lucene():
         sum : int
         >    Cantidad de terminos a devolver
 
-        Returns
+        Returns:
         -------
         list
         >    lista de los mejores terminos encontrados con el filtro.
@@ -507,7 +536,7 @@ class Lucene():
         """
         Filtro CrossEntropy.
 
-        Parameters
+        Args:
         ----------
         resultadopos : dic
         >    Diccionario termino:frecuencia de los documentos positivos  
@@ -518,7 +547,7 @@ class Lucene():
         sum : int
         >    Cantidad de terminos a devolver
 
-        Returns
+        Returns:
         -------
         list
         >    lista de los mejores terminos encontrados con el filtro.
@@ -551,7 +580,7 @@ class Lucene():
         """
         Filtro MutualInfo.
 
-        Parameters
+        Args:
         ----------
         resultadopos : dic
         >    Diccionario termino:frecuencia de los documentos positivos  
@@ -562,7 +591,7 @@ class Lucene():
         sum : int
         >    Cantidad de terminos a devolver
 
-        Returns
+        Returns:
         -------
         list
         >    lista de los mejores terminos encontrados con el filtro.
@@ -596,7 +625,7 @@ class Lucene():
         """
         Filtro Frecuencias.
 
-        Parameters
+        Args:
         ----------
         resultadopos : dic
         >    Diccionario termino:frecuencia de los documentos positivos  
@@ -607,7 +636,7 @@ class Lucene():
         sum : int
         >    Cantidad de terminos a devolver
 
-        Returns
+        Returns:
         -------
         list
         >    lista de los mejores terminos encontrados con el filtro.
@@ -627,7 +656,7 @@ class Lucene():
         """
         Filtro Odds Ratio.
 
-        Parameters
+        Args:
         ----------
         resultadopos : dic
         >    Diccionario termino:frecuencia de los documentos positivos  
@@ -638,7 +667,7 @@ class Lucene():
         sum : int
         >    Cantidad de terminos a devolver
 
-        Returns
+        Returns:
         -------
         list
         >    lista de los mejores terminos encontrados con el filtro.
@@ -674,7 +703,7 @@ class Lucene():
         """
         Filtro Normal Separation.
 
-        Parameters
+        Args:
         ----------
         resultadopos : dic
         >    Diccionario termino:frecuencia de los documentos positivos  
@@ -685,7 +714,7 @@ class Lucene():
         sum : int
         >    Cantidad de terminos a devolver
 
-        Returns
+        Returns:
         -------
         list
         >    lista de los mejores terminos encontrados con el filtro.
@@ -727,7 +756,7 @@ class Lucene():
         """
         Filtro Diferencia.
 
-        Parameters
+        Args:
         ----------
         resultadopos : dic
         >    Diccionario termino:frecuencia de los documentos positivos  
@@ -738,7 +767,7 @@ class Lucene():
         sum : int
         >    Cantidad de terminos a devolver
 
-        Returns
+        Returns:
         -------
         list
         >    lista de los mejores terminos encontrados con el filtro.
@@ -774,7 +803,7 @@ class Lucene():
 
         Ejecuta el tipo de filtro seleccionado.
 
-        Parameters
+        Args:
         ----------
         typefilter : string
         >    Tipo de filtro a ejecutar  
@@ -788,7 +817,7 @@ class Lucene():
         sum : int
         >    Cantidad de terminos a devolver
 
-        Returns
+        Returns:
         -------
         list or string
         >    lista de los mejores terminos encontrados con el filtro. En caso de no encontrar el filtro pasado devuelve mensaje de error.
@@ -815,7 +844,7 @@ class Lucene():
         
         Medidas de rendimiento 
 
-        Parameters
+        Args:
         ----------
         setAllFVSPos : dic
         >   description  
@@ -823,7 +852,7 @@ class Lucene():
         resultado : dic
         >   description 
 
-        Returns:
+        Returns::
         -------
         string
         >   description
@@ -841,15 +870,18 @@ class Lucene():
         
         evaluator = pytrec_eval.RelevanceEvaluator(qrels_file, pytrec_eval.supported_measures)
         results = evaluator.evaluate(results_file)
-        def print_line(measure, scope, value):
-            print('{:25s}{:8s}{:.4f}'.format(measure, scope, value))
+        '''def print_line(measure, value):
+            print('{:25s}{:.4f}'.format(measure, value))'''
 
+        dicResult = {}
         for query_id, query_measures in results.items():
             for measure, value in query_measures.items():
                 if measure == "runid":
                     continue
-                print_line(measure, query_id, value)
-        for measure in query_measures.keys():
+                if math.isnan(value):
+                    value = 0
+                dicResult[measure] = value
+        '''for measure in query_measures.keys():
             if measure == "runid":
                 continue
             print_line(
@@ -858,13 +890,14 @@ class Lucene():
                 pytrec_eval.compute_aggregated_measure(
                     measure,
                     [query_measures[measure]
-                    for query_measures in results.values()]))
+                    for query_measures in results.values()]))'''
         #m = pytrec_eval.evaluate(results_file, qrels_file, {'precision', 'recall'})
         #print(json.dumps(m, indent=1))
         #module 'pytrec_eval' has no attribute 'evaluate'
         #pytrec_eval.plotRecallPrecision(results_file, qrels_file, perQuery=True, outputFile='./recall-precision.pdf', showPlot=False)
         #AttributeError: module 'pytrec_eval' has no attribute 'plotRecallPrecision'
-        return "tengo que recoger precisión, recall y f1"        
+        
+        return dicResult        
 
 # qrel_file : ruta del archivo con la lista de documentos relevantes para cada consulta
 # results_file : ruta del archivo con la lista de documentos recuperados por su aplicación

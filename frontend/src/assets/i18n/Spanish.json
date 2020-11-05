@@ -88,5 +88,26 @@
         "tittle": "Titulo",
         "abstract": "Resumen",
         "key": "Palabras Clave"
+    },
+    "filter": {
+        "termNumber": "Introduce el número de terminos",
+        "select": "Selecciona un filtro",
+        "infGain": "Ganancia Infinita",
+        "crossEntropy": "Entropía Cruzada",
+        "mutualInfo": "Información Mutua",
+        "freq": "Filtro basado en frecuencias",
+        "oddsRatio": "Razón de probabilidades",
+        "normalSeparation": "Bi Separación Normal",
+        "difference": "Diferencia",
+        "invalid": "Comentarios de selección personalizada no válidos",
+        "query": "Aplicar para ver la Consulta",
+        "loadfile": "Has de seleccionar el par de archivos TIS !",
+        "loadnum": "Elige la cantidad de terminos a tratar !",
+        "loadfilter": "Tienes que elegir un filtro !",
+        "and": "Seleccione si quiere unir los terminos con el operador AND",
+        "applyFVS": "Aplicar en FVS",
+        "applyFDS": "Aplicar en FDS",
+        "rendimiento": "Medida de rendimiento",
+        "valor": "Valor"
     }
 }

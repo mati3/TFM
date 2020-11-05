@@ -88,5 +88,26 @@
         "tittle": "Tittle",
         "abstract": "Abstract",
         "key": "KeyWords"
+    },
+    "filter": {
+        "termNumber": "Input of terms number",
+        "select": "Select a filter",
+        "infGain": "InfGain",
+        "crossEntropy": "CrossEntropy",
+        "mutualInfo": "MutualInfo",
+        "freq": "Frequencies",
+        "oddsRatio": "OddsRatio",
+        "normalSeparation": "Bi−NormalSeparation",
+        "difference": "Difference",
+        "invalid": "Invalid custom select feedback",
+        "query": "Apply to see Query",
+        "loadfile": "You have to select the pair of TIS files !",
+        "loadnum": "Choose the number of terms to be processed !",
+        "loadfilter": "You have to choose a filter !",
+        "and": "Select if you want to join the terms with the AND operator",
+        "applyFVS": "Apply in FVS",
+        "applyFDS": "Apply in FDS",
+        "rendimiento": "Performance measure",
+        "valor": "Value"
     }
 }

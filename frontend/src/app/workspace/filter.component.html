@@ -3,6 +3,7 @@
     <a routerLink="/workspace/search" class="btn btn-sm btn-success mb-2 mr-1">{{ 'files.looking' | translate }}</a>
     <a routerLink="/workspace" class="btn btn-sm btn-success mb-2 mr-1">{{ 'nav.workspace' | translate }}</a>
 
+    <!-- Tabla de archivos FVS -->
     <table class="table table-striped">
       <thead>
         <caption>{{'files.fvs' | translate}}</caption>
@@ -19,6 +20,7 @@
       </tbody>
     </table>
   
+    <!-- Tabla de archivos FDS -->
     <table class="table table-striped">
       <thead>
         <caption>{{'files.fds' | translate}}</caption>
@@ -35,6 +37,7 @@
       </tbody>
     </table>
 
+    <!-- Tabla de archivos TIS -->
     <table class="table table-striped">
       <thead>
         <caption>{{'files.tis' | translate}}</caption>
@@ -45,51 +48,58 @@
       </thead>
       <tbody>
         <tr *ngFor="let fil of files?.filesTIS">
-          <td>{{fil.positive}}</td>
-          <td>{{fil.negative}}</td>
+          <td><span *ngIf="lookingfiles.positive == fil.positive" class="text-success"><strong>{{fil.positive}}</strong></span><span *ngIf="lookingfiles.positive != fil.positive" >{{fil.positive}}</span></td>
+          <td><span *ngIf="lookingfiles.negative == fil.negative" class="text-success"><strong>{{fil.negative}}</strong></span><span *ngIf="lookingfiles.negative != fil.negative">{{fil.negative}}</span></td>
           <td nowrap>
-            <button type="button" class="btn btn-success btn-xs" 
-              (click)="select(fil.positive, fil.negative)"  >
-              <span class="glyphicon glyphicon-upload"></span> {{ 'files.select' | translate }}
+            <button type="button" class="btn btn-success btn-xs" (click)="select(fil.positive, fil.negative)"  >
+              <span class="glyphicon glyphicon-ok"></span> {{ 'files.select' | translate }}
             </button>
           </td>
         </tr>
       </tbody>
     </table>
 
-    <!-- termNumber -->
+    <!-- termNumber números positivos a partir de 1-->
     <div class="form-group">
       <div class="md-form">
-        <label for="numberInputEx">Input of terms number</label>
-        <input type="number" class="form-control" id="numberInputEx" (change)="termNumber($event)" mdbInput>
+        <label for="numberInputEx">{{'filter.termNumber' | translate}}</label>
+        <input type="number" min="1" oninput="validity.valid||(value='');" class="form-control" id="numberInputEx" (change)="termNumber($event)" mdbInput>
       </div>
     </div>
 
     <!-- Filtros -->
     <div class="form-group">
       <select class="custom-select" (change)="changefilter($event)" required>
-        <option value="">Seleccione un filtro</option>
-        <option value="InfGain">InfGain-Ganancia infinita</option>
-        <option value="CrossEntropy">CrossEntropy-Entropía Cruzada</option>
-        <option value="MutualInfo">MutualInfo-Información Mutua</option>
-        <option value="Freq">Freq-Filtro basado en frecuencias</option>
-        <option value="OddsRatio">OddsRatio-Razón de probabilidades</option>
-        <option value="NormalSeparation">Bi−NormalSeparation-Bi Separación Normal</option>
-        <option value="Diferencia">Diferencia</option>
+        <option value="">{{'filter.select' | translate}}</option>
+        <option value="InfGain">{{'filter.infGain' | translate}}</option>
+        <option value="CrossEntropy">{{'filter.crossEntropy' | translate}}</option>
+        <option value="MutualInfo">{{'filter.mutualInfo' | translate}}</option>
+        <option value="Freq">{{'filter.freq' | translate}}</option>
+        <option value="OddsRatio">{{'filter.oddsRatio' | translate}}</option>
+        <option value="NormalSeparation">{{'filter.normalSeparation' | translate}}</option>
+        <option value="Diferencia">{{'filter.difference' | translate}}</option>
       </select>
-      <div class="invalid-feedback">Invalid custom select feedback</div>
+      <div class="invalid-feedback">{{'filter.invalid' | translate}}</div>
     </div>
+
+    <!-- Query -->
     <div class="form-group" >
-      <button class="btn btn-primary" (click)="onSubmit()" >
+      <button class="btn btn-primary" (click)="onSubmit()" [disabled]="!loadfile || !loadnum || !loadfilter">
         <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-        aplicar para ver Query
+        {{'filter.query' | translate}}
       </button>
+      <span *ngIf="!loadfile && !loading" class="alert alert-primary mr-1" role="alert">
+        {{'filter.loadfile' | translate}}</span>
+      <span *ngIf="!loadnum && !loading" class="alert alert-primary mr-1" role="alert">
+        {{'filter.loadnum' | translate}}</span>
+      <span *ngIf="!loadfilter && !loading" class="alert alert-primary mr-1" role="alert">
+        {{'filter.loadfilter' | translate}}</span>
     </div>
     Query: 
     <a *ngFor="let word of query">{{word}} &nbsp;</a><br />
 
     <!-- AND_OPERATOR -->
-    <a>Seleccione si quiere unir los terminos con el operador and:</a><br />
+    <a>{{'filter.and' | translate}}</a><br />
     <div class="form-group" >
         <button class="btn btn-primary btn-sm" (click)="andOperator()" [disabled]="!loadand" >
           <span *ngIf="loading"  class="spinner-border spinner-border-xs"></span>
@@ -99,9 +109,9 @@
 
     <!-- aplicar en FVS  -->
     <div class="form-group" >
-      <button class="btn btn-primary" (click)="applyFilterFVS()" >
+      <button class="btn btn-primary" (click)="applyFilterFVS()" [disabled]="!loadapply">
         <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-        aplicar en FVS 
+        {{'filter.applyFVS' | translate}}
       </button>
     </div>
 
@@ -111,8 +121,8 @@
         <h4>{{metric[0].tittle}}</h4>
         <thead>
           <tr>
-            <th style="width: 30%">Medida de rendimiento</th>
-            <th style="width: 30%">Valor</th>
+            <th style="width: 30%">{{'filter.rendimiento' | translate}}</th>
+            <th style="width: 30%">{{'filter.valor' | translate}}</th>
           </tr>
         </thead> 
         <tbody>
@@ -126,9 +136,9 @@
 
     <!-- aplicar en FDS  -->
     <div class="form-group" >
-      <button class="btn btn-primary" (click)="applyFilterFDS()" >
+      <button class="btn btn-primary" (click)="applyFilterFDS()" [disabled]="!loadapply">
         <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-        aplicar en FDS 
+        {{'filter.applyFDS' | translate}}
       </button>
     </div>
 
@@ -138,8 +148,8 @@
         <h4>{{metric[0].tittle}}</h4>
         <thead>
           <tr>
-            <th style="width: 30%">Medida de rendimiento</th>
-            <th style="width: 30%">Valor</th>
+            <th style="width: 30%">{{'filter.rendimiento' | translate}}</th>
+            <th style="width: 30%">{{'filter.valor' | translate}}</th>
           </tr>
         </thead> 
         <tbody>

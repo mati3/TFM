@@ -8,48 +8,62 @@ export class FilterComponent {
 
   user: User;
   files = null;
-  pos = null;
-  neg = null;
   lookingfiles = null;
-  typefilter = "";
   sum: number;
   filter: Filter;
-  loading = false;
   query = null;
-  wanted = "";
-  andleng = 0;
-  loadand = true;
-  loadmetric = false;
   metricsFVS = [];
   metricsFDS = [];
   metric = null;
 
+  loading = false;
+  loadand = true;
+  loadmetric = false;
+  loadfile = false;
+  loadfilter = false;
+  loadnum = false;
+  loadapply = false;
+
   constructor(
       private accountService: AccountService,
-      private filterService: FilterService,
+      private filterService: FilterService
       ) {
       this.user = this.accountService.userValue;
       this.lookingfiles = new LookingFiles(this.user);
       this.filter = new Filter();
   }
 
+  /**
+   * Select a filter
+   */
   changefilter(event){
     this.filter.typefilter = event.target.value;
-    console.log(this.filter.typefilter);
-    // comprobar que este filtro existe en filter enum
+    this.loadfilter = true;
   }
 
+  /**
+   * Choose the number of terms for the query
+   */
   termNumber(event){
     this.filter.sum = event.target.value;
-    console.log(this.filter.sum);
+    this.loadnum = true;
   }
 
+  /**
+   * Retrieves the names of the files associated with a user from the database
+   */
   ngOnInit() {
       this.filterService.getAllFiles(this.user.email)
           .pipe(first())
           .subscribe(files => this.files = files);
   }
 
+  /**
+   * Select pair of files TIS
+   * 
+   * @param {String} positive - File positive
+   * @param {String} negative - File negative
+   */
   select(positive, negative){
     this.lookingfiles.positive = positive;
     this.lookingfiles.negative = negative; 
@@ -61,49 +75,49 @@ export class FilterComponent {
           this.filter.terms_freqs_positive = x['terms_freqs_positive'];
           this.filter.terms_freqs_negative = x['terms_freqs_negative'];
       });
+    this.loadfile = true;
   }
 
+  /**
+   * With the pair of TIS files selected, the filter chosen and the number of terms determined (X), 
+   * choose the first X most relevant terms
+   */
   onSubmit(){
-    this.loading = true;
+    this.loadapply = true;
     this.loadand = true;
-    if (this.filter.typefilter == null){
-      console.log("tienes que elegir un filtro");
-    }
-    else if(this.filter.sum == null){// no numeros negativos, minimo 1
-      console.log(" elige la cantidad de terminos a tratar ");
-    }
-    else if ((this.lookingfiles.positive == null) || (this.lookingfiles.negative == null)){
-      console.log(" has de seleccionar el par de archivos TIS ");
-    }
-    else {
-      this.loading = false;
-      this.filter.email = this.user.email;
-      console.log(this.filter)
-      this.filterService.selectFilter(this.filter)
+    this.loading = false;
+    this.filter.email = this.user.email;
+
+    this.filterService.selectFilter(this.filter)
       .pipe(first())
       .subscribe(x => this.query = x);
-      this.andleng = this.filter.sum - 1; //cantidad AND
-    }
+    
+    this.metricsFVS = [];
+    this.metricsFDS = [];
   }
 
+  /**
+   * Add the boolean AND operator to the query
+   */
   andOperator(){
     this.loadand = true;
-    this.andleng = this.filter.sum - 1; //cantidad AND
-    for (let i = 0; i < this.andleng; i++){
-      console.log(this.query[i]);
+    for (let i = 0; i < (this.filter.sum - 1); i++){
         this.query[i] = this.query[i] + " AND ";
-        this.loadand = false;      
+        this.lookingfiles.wanted += this.query[i];
     }
+    this.lookingfiles.wanted += this.query[this.filter.sum-1];
+    this.loadand = false;  
   }
 
+  /**
+   * Apply the selected filter on the FVS file pair
+   */
   applyFilterFVS(){
-    this.query.forEach(element => {
-      this.wanted += element + " ";
-    });
-    console.log(this.wanted)
-    // PROBISIONAL, para ver los archivos buscados.
-    this.lookingfiles.wanted = this.wanted;
-    this.wanted = "";
+    if (this.lookingfiles.wanted == ""){
+      this.query.forEach(element => {
+        this.lookingfiles.wanted += element + " ";
+      });
+    }
     this.lookingfiles.typefile = 'filesFVS';
     this.filterService.applyFilter(this.lookingfiles).subscribe((data) => {
       this.metricsFVS = [];
@@ -116,17 +130,19 @@ export class FilterComponent {
         this.metricsFVS.push(this.metric);
       };
     });
+    this.lookingfiles.wanted = "";
     this.loadmetric = true;
   } 
 
+  /**
+   * Apply the selected filter on the FDS file pair
+   */
   applyFilterFDS(){
-    this.query.forEach(element => {
-      this.wanted += element + " ";
-    });
-    console.log(this.wanted)
-    // PROBISIONAL, para ver los archivos buscados.
-    this.lookingfiles.wanted = this.wanted;
-    this.wanted = "";
+    if (this.lookingfiles.wanted == ""){
+      this.query.forEach(element => {
+        this.lookingfiles.wanted += element + " ";
+      });
+    }
     this.lookingfiles.typefile = 'filesFDS';
     this.filterService.applyFilter(this.lookingfiles).subscribe((data) => {
       this.metricsFDS = [];
@@ -139,6 +155,7 @@ export class FilterComponent {
         this.metricsFDS.push(this.metric);
       };
     });
+    this.lookingfiles.wanted = "";
     this.loadmetric = true;
   }
 
