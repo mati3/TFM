@@ -1,14 +1,14 @@
 import { User } from "./user";
 
 export class LookingFiles {
-    id: User;
+    email: string;
     typefile: string;
     positive: File;
     negative: File;
     wanted: string;
 
-    constructor(id: User) {
-        this.id = id;
+    constructor(id: string) {
+        this.email = id;
         this.typefile = "";
         this.positive = null;
         this.negative = null;
