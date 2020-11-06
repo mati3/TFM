@@ -61,12 +61,6 @@ def hello_world():
 def todo():
     return  jsonify(client.getAll()), 200
 
-# recorre el directorio y devuelve lista d los clientes
-@app.route('/clientes', methods = ['GET','POST'])
-@cache.cached(timeout=50)
-def clientes():
-    return  jsonify(client.getClientes()), 200
-
 # new client
 @app.route('/newclient/<string:correo_id>', methods = ['GET','POST'])
 def newclient(correo_id):
@@ -79,20 +73,6 @@ def newclient(correo_id):
 @app.route('/delete/<string:correo_id>', methods = ['DELETE'])
 def deleteClient(correo_id):
     return  jsonify(client.deleteClient(correo_id)), 200 
-
-# devuelve los archivos Indexados de un cliente dado su id
-@app.route('/filesindex/<string:correo_id>', methods=['GET'])
-def filesindex(correo_id):
-    myfolder = app.config['UPLOAD_FOLDER']+'/'+ correo_id
-    createDirectory(myfolder)
-    filesFVS = os.listdir(app.config['UPLOAD_FOLDER']+'/'+correo_id+'/filesFVS/index')
-    if "lucene" in filesFVS: filesFVS.remove("lucene") 
-    filesFDS = os.listdir(app.config['UPLOAD_FOLDER']+'/'+correo_id+'/filesFDS/index')
-    if "lucene" in filesFDS: filesFDS.remove("lucene") 
-    filesTIS = os.listdir(app.config['UPLOAD_FOLDER']+'/'+correo_id+'/filesTIS/index')
-    if "lucene" in filesTIS: filesTIS.remove("lucene") 
-    files = {'filesFVS':filesFVS, 'filesFDS': filesFDS, 'filesTIS': filesTIS}
-    return jsonify(files), 200
 
 # devuelve los archivos de un cliente dado su id
 @app.route('/files/<string:correo_id>', methods=['GET'])

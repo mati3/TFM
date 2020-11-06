@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { first } from 'rxjs/operators';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { User, LookingFiles } from '@app/models';
-import { AccountService, AlertService, FilterService } from '@app/services';
+import { AccountService, FilterService } from '@app/services';
 
 @Component({ templateUrl: 'search.component.html' })
 export class SearchComponent {
@@ -19,7 +19,6 @@ export class SearchComponent {
         private formBuilder: FormBuilder,
         private accountService: AccountService,
         private filterService: FilterService,
-        private alertService: AlertService
         ) {
         this.user = this.accountService.userValue;
         this.lookingfiles = new LookingFiles(this.user.email);
