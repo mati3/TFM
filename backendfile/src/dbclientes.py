@@ -33,6 +33,15 @@ class dbClientes:
             salida.append(c['_id'])
         return  salida
 
+    def getCliente(self, correo_id):
+        clientes = self.client.find({},{"_id":1})
+        salida = False
+        for c in clientes:
+            if correo_id == c['_id']:
+                salida = True
+                return salida
+        return  salida
+
     def insertFiles(self, correo_id, typefile, filenamepos, filenameneg):
         clientes = self.client.find({},{"_id":correo_id})
         salida = "Usuario NO existe, operación no valida"

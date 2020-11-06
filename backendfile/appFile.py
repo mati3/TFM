@@ -34,7 +34,20 @@ db = conn.baseDeDatos
 # create collection Clientes
 client = dbClientes(db.Clientes)
 
-Filters = {'InfGain', 'CrossEntropy' , 'MutualInfo', 'Freq' , 'OddsRatio', 'NormalSeparation', 'Diferencia'}
+Filters = {
+    'InfGain', 
+    'CrossEntropy', 
+    'MutualInfo', 
+    'Freq', 
+    'OddsRatio', 
+    'NormalSeparation', 
+    'Diferencia'
+    }
+
+Typefiles = {
+    'filesFDS', 
+    'filesFVS', 
+    'filesTIS'}
 
 # return 'hello world', test metod
 @app.route('/')
@@ -97,26 +110,43 @@ def files(correo_id):
 def removefile(correo_id,typefile):
     shutil.rmtree(app.config['UPLOAD_FOLDER']+'/'+correo_id+'/'+ typefile)
     os.mkdir(app.config['UPLOAD_FOLDER']+'/'+correo_id+'/'+typefile)
-    os.mkdir(app.config['UPLOAD_FOLDER']+'/'+correo_id+'/'+typefile+'/index')
     files = client.deleteFiles(correo_id,typefile)
     return jsonify('ok'), 200
 
 # insert file in folder clients
-@app.route('/upload/<string:correo_id>/<string:typefile>', methods = ['POST'])
-def upload(correo_id, typefile):
-    response = ''   
+@app.route('/upload', methods = ['POST'])
+def upload():
+    response = '' 
+
+    if 'typefile' not in request.form:
+        return 'No has seleccionado el tipo de archivo', 400
+    typefile = request.form['typefile']
+    if typefile not in Typefiles:
+        return "No existe el tipo de archivo seleccionado "
+
+    if 'email' not in request.form:
+        return 'Es necesario que se identifique', 400
+    correo_id = request.form['email']
+    # si email no coincide con ningun usuario...
+    if not client.getCliente(correo_id):
+        return "Usuario no existente", 400
+
     # check if the post request has the file part
     if ('filepositive' not in request.files) or ('filenegative' not in request.files):
         response='no file positive or negative in request', 500
-        return jsonify(response)
+        return jsonify(response), 500
+
     filepos = request.files['filepositive']
     fileneg = request.files['filenegative']
+
     if (filepos.filename == '') or (fileneg.filename == ''):
         response ='no selected file positive or negative'
         return jsonify(response), 500
+
     if (filepos and allowed_file(filepos.filename)) or (fileneg and allowed_file(fileneg.filename)):
         filenamepos = secure_filename(filepos.filename)
         filenameneg = secure_filename(fileneg.filename)
+        
         # Guardo nombres en mongodb
         response = client.insertFiles(correo_id,typefile,filenamepos, filenameneg)
 
@@ -129,6 +159,7 @@ def upload(correo_id, typefile):
         response += lc.index(filepath, filepos, fileneg, typefile)
         
         return jsonify(response), 200
+
     response = 'response post NO indexing'
     return jsonify(response), 200
 
@@ -150,7 +181,7 @@ def search():
     filepos = body['positive']
     fileneg = body['negative']
     typefile = body['typefile']
-    correo = body['id']['email']
+    correo = body['email']
     count = filepos.find(".txt")
     count2 = fileneg.find(".txt")
     pathfile = app.config['UPLOAD_FOLDER']+'/'+correo+'/'+typefile+'/lucene_'+filepos[:count]
@@ -176,7 +207,7 @@ def selectTIS():
     filepos = body['positive']
     fileneg = body['negative']
     typefile = body['typefile']
-    correo = body['id']['email']
+    correo = body['email']
     count = filepos.find(".txt")
     count2 = fileneg.find(".txt")
     pathfilepos = app.config['UPLOAD_FOLDER']+'/'+correo+'/filesTIS/lucene_'+filepos[:count]
@@ -202,6 +233,7 @@ def filter():
     print(terms_freqs_positive)
     terms_freqs_negative = body['terms_freqs_negative']
     print(terms_freqs_negative)
+    # números positivos
     sum = body['sum']
     print(sum)
     email = body['email']
@@ -250,6 +282,7 @@ def applyFilter():
         setAllPos[filepos[:count]] = lc.positiveDocID(pathfile)
         pathfile = app.config['UPLOAD_FOLDER']+'/'+correo+'/'+typefile+'/lucene_'+fileneg[:count2]
         resultado[fileneg[:count2]] = lc.search(pathfile,body['wanted'], True)
+        # si resultado está vacío, devolver error
         '''for r in searchpos:
             resultado.append(r)
         for i in searchneg:
@@ -263,72 +296,6 @@ def applyFilter():
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-
-def concat_file2(file1, file2, myfolder):
-    count = file1.find(".txt")
-    filename = file1[:count]+file2
-    f1 = open(myfolder+'/'+file1, "r").read()
-    f2 = open(myfolder+'/'+file2, "r").read()
-    filepath = myfolder+'/index/'
-    try: 
-        os.stat(filepath)
-    except:
-        os.mkdir(filepath)
-    newfile = open(filepath+filename, "a")
-    newfile.write(f1 + f2)
-    newfile.close()
-    return lc.indexar(filepath,filename)
-
-def concat_file(file1, file2, myfolder):
-    count = file1.find(".txt")
-    count2 = file2.find(".txt")
-    filename = file1[:count]+file2[:count2]
-    f1 = open(myfolder+'/'+file1, "r").read()
-    f2 = open(myfolder+'/'+file2, "r").read()
-    filepath = myfolder+'/'+filename
-    try: 
-        os.stat(filepath)
-    except:
-        os.mkdir(filepath)
-
-    newfile = open(myfolder+'/'+filename+'.txt', "a")
-    newfile.write(f1 + f2)
-    newfile.close()
-
-    text_file = open(myfolder+'/'+filename+'.txt','r')
-    docs =text_file.read()
-    text_file.close()
-    contador = 0
-    for i in docs:
-        if contador < 100:
-            primero = docs.find("- JOUR")
-            ultimo = docs.find("ER  -")
-            cadena = docs[primero:ultimo]
-            if primero != -1 :
-                new_file = open(filepath+'/DOC_0' + str(contador) + '.txt' , 'w')
-                new_file.write(cadena)
-                new_file.close()
-        else:
-            primero = docs.find("- JOUR")
-            ultimo = docs.find("ER  -")
-            cadena = docs[primero:ultimo]
-            if primero != -1 :
-                new_file = open(filepath+'/DOC_' + str(contador) + '.txt' , 'w')
-                new_file.write(cadena)
-                new_file.close()
-
-        # elimino el documento recogido.
-        docs = docs.replace(cadena,"")
-        docs = docs.replace("TY  ER  -","")
-        contador = contador + 1
-    os.remove(myfolder+'/'+filename+'.txt')
-    start = time()
-    response = lc.indexar(filepath)   
-    end = time()
-    elapsed_time = end - start
-    print("indexar")
-    print("Elapsed time: %0.10f seconds." % elapsed_time)  
-    return response
 
 def createDirectory(myfolder):
     try: 
