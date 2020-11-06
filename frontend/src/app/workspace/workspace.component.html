@@ -4,10 +4,12 @@
   <a routerLink="search" class="btn btn-sm btn-success mb-2 mr-1">{{ 'files.looking' | translate }}</a>
   <!-- espacio de archivos por ahora selecciona-->
   <h4>{{'files.selecfiles' | translate}}</h4>
+
+    <!-- filesFVS -->
     <div>
       <form [formGroup]="myForm">
         <div class="form-group">
-          <caption class="row">{{'files.fvs' | translate}}
+          <caption class="row">{{'files.fvs' | translate}} 
             <button type="button" class="btn btn-outline-danger btn-sm float-left  ml-3" data-toggle="modal" data-target="#deleteIndex" (click)="filetype('filesFVS')">
               <span class="glyphicon glyphicon-trash"></span>{{ 'files.clearfvs' | translate }}
             </button>
@@ -30,9 +32,10 @@
         </tr>
       </thead>
       <tbody>
+        <!-- database filesFVS -->
         <tr *ngFor="let item of myfiles?.filesFVS">
           <td><strong>{{ item.positive }}</strong></td>
-          <td nowrap><strong>{{ item.negative }}</strong></td>
+          <td><strong>{{ item.negative }}</strong></td>
           <td nowrap>
             <button type="button" class="btn btn-success btn-xs" 
               (click)="upload(item,'filesFVS')"  disabled>
@@ -44,9 +47,11 @@
             </button>
           </td>
         </tr>
+        <!-- new filesFVS -->
+        <tr *ngIf="loadfilepositiveFVS"><td><strong>{{filepositive.name}}</strong></td></tr>
         <tr *ngFor="let item of filesFVS">
           <td><strong>{{ item.filepositive.name }}</strong></td>
-          <td nowrap><strong>{{ item.filenegative.name }}</strong></td>
+          <td><strong>{{ item.filenegative.name }}</strong></td>
           <td nowrap>
             <button type="button" class="btn btn-success btn-xs" 
               (click)="upload(item,'filesFVS')"  [disabled]="item.invalid" >
@@ -60,6 +65,8 @@
         </tr>
       </tbody>
     </table>
+
+    <!-- filesFDS -->
     <div>
       <form [formGroup]="myForm">
         <div class="form-group">
@@ -88,9 +95,10 @@
         </tr>
       </thead>
       <tbody>
+        <!-- database filesFDS -->
         <tr *ngFor="let item of myfiles?.filesFDS">
           <td><strong>{{ item.positive }}</strong></td>
-          <td nowrap><strong>{{ item.negative }}</strong></td>
+          <td><strong>{{ item.negative }}</strong></td>
           <td nowrap>
             <button type="button" class="btn btn-success btn-xs" 
               (click)="upload(item,'filesFVS')"  disabled>
@@ -102,9 +110,11 @@
             </button>
           </td>
         </tr>
+        <!-- new filesFDS -->
+        <tr *ngIf="loadfilepositiveFDS"><td><strong>{{filepositive.name}}</strong></td></tr>
         <tr *ngFor="let item of filesFDS">
           <td><strong>{{ item.filepositive.name }}</strong></td>
-          <td nowrap><strong>{{ item.filenegative.name }}</strong></td>
+          <td><strong>{{ item.filenegative.name }}</strong></td>
           <td nowrap>
             <button type="button" class="btn btn-success btn-xs" 
               (click)="upload(item, 'filesFDS')" [disabled]="item.invalid" >
@@ -119,6 +129,7 @@
       </tbody>
     </table>
 
+    <!-- filesTIS -->
     <div>
       <form [formGroup]="myForm">
         <div class="form-group">
@@ -145,9 +156,10 @@
         </tr>
       </thead>
       <tbody>
+        <!-- database filesTIS -->
         <tr *ngFor="let item of myfiles?.filesTIS">
           <td><strong>{{ item.positive }}</strong></td>
-          <td nowrap><strong>{{ item.negative }}</strong></td>
+          <td><strong>{{ item.negative }}</strong></td>
           <td nowrap>
             <button type="button" class="btn btn-success btn-xs" 
               (click)="upload(item,'filesFVS')"  disabled>
@@ -159,9 +171,11 @@
             </button>
           </td>
         </tr>
+        <!-- new filesTIS -->
+        <tr *ngIf="loadfilepositiveTIS"><td><strong>{{filepositive.name}}</strong></td></tr>
         <tr *ngFor="let item of filesTIS">
           <td><strong>{{ item.filepositive.name }}</strong></td>
-          <td nowrap><strong>{{ item.filenegative.name }}</strong></td>
+          <td><strong>{{ item.filenegative.name }}</strong></td>
           <td nowrap>
             <button type="button" class="btn btn-success btn-xs" 
               (click)="upload(item, 'filesTIS')" [disabled]="item.invalid" >

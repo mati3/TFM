@@ -29,7 +29,7 @@ export class FilterComponent {
       private filterService: FilterService
       ) {
       this.user = this.accountService.userValue;
-      this.lookingfiles = new LookingFiles(this.user);
+      this.lookingfiles = new LookingFiles(this.user.email);
       this.filter = new Filter();
   }
 

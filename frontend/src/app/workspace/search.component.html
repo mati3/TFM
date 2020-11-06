@@ -6,6 +6,7 @@
   <!-- espacio de archivos -->
   <h4>{{'files.selecfiles' | translate}}</h4>
   
+  <!-- Tabla de archivos FVS -->
   <table class="table table-striped">
     <thead>
       <caption>{{'files.fvs' | translate}}</caption>
@@ -16,8 +17,8 @@
     </thead>
     <tbody>
       <tr *ngFor="let fil of files?.filesFVS">
-        <td>{{fil.positive}}</td>
-        <td nowrap>{{ fil.negative }}</td>
+        <td><span *ngIf="lookingfiles.positive == fil.positive" class="text-success"><strong>{{fil.positive}}</strong></span><span *ngIf="lookingfiles.positive != fil.positive" >{{fil.positive}}</span></td>
+        <td><span *ngIf="lookingfiles.negative == fil.negative" class="text-success"><strong>{{fil.negative}}</strong></span><span *ngIf="lookingfiles.negative != fil.negative">{{fil.negative}}</span></td>
         <td nowrap>
           <button type="button" class="btn btn-success btn-xs" 
             (click)="select(fil.positive, fil.negative, 'filesFVS')"  >
@@ -28,6 +29,7 @@
     </tbody>
   </table>
  
+  <!-- Tabla de archivos FDS -->
   <table class="table table-striped">
     <thead>
       <caption>{{'files.fds' | translate}}</caption>
@@ -38,8 +40,8 @@
     </thead>
     <tbody>
       <tr *ngFor="let fil of files?.filesFDS">
-        <td>{{fil.positive}}</td>
-        <td nowrap>{{ fil.negative }}</td>
+        <td><span *ngIf="lookingfiles.positive == fil.positive" class="text-success"><strong>{{fil.positive}}</strong></span><span *ngIf="lookingfiles.positive != fil.positive" >{{fil.positive}}</span></td>
+        <td><span *ngIf="lookingfiles.negative == fil.negative" class="text-success"><strong>{{fil.negative}}</strong></span><span *ngIf="lookingfiles.negative != fil.negative">{{fil.negative}}</span></td>
         <td nowrap>
           <button type="button" class="btn btn-success btn-xs" 
             (click)="select(fil.positive, fil.negative, 'filesFDS')"  >
@@ -50,6 +52,7 @@
     </tbody>
   </table>
 
+  <!-- Tabla de archivos TIS -->
   <table class="table table-striped">
     <thead>
       <caption>{{'files.tis' | translate}}</caption>
@@ -61,13 +64,7 @@
     <tbody>
       <tr *ngFor="let fil of files?.filesTIS">
         <td>{{fil.positive}}</td>
-        <td nowrap>{{ fil.negative }}</td>
-        <td nowrap>
-<!--          <button type="button" class="btn btn-success btn-xs" 
-            (click)="select(fil.positive, fil.negative, 'filesTIS')"  >
-            <span class="glyphicon glyphicon-upload"></span> {{ 'files.select' | translate }}
-          </button>   --> 
-        </td>
+        <td>{{fil.negative }}</td>
       </tr>
     </tbody>
   </table>

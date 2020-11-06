@@ -22,10 +22,13 @@ export class SearchComponent {
         private alertService: AlertService
         ) {
         this.user = this.accountService.userValue;
-        this.lookingfiles = new LookingFiles(this.user);
+        this.lookingfiles = new LookingFiles(this.user.email);
         this.data = new Array<any>();
     }
   
+    /**
+     * Shows all user files in database
+     */
     ngOnInit() {
         this.filterService.getAllFiles(this.user.email)
             .pipe(first())
@@ -36,12 +39,22 @@ export class SearchComponent {
         });
     }
 
+    /**
+     * Select pair of files 
+     * 
+     * @param {String} positive - File positive
+     * @param {String} negative - File negative
+     * @param {String} type - Type of file
+     */
     select(positive, negative, type){
         this.lookingfiles.positive = positive;
         this.lookingfiles.negative = negative; 
         this.lookingfiles.typefile = type;
     }
 
+    /**
+     * Search the content requested by the user
+     */
     search(){
         this.lookingfiles.wanted = this.form.value['search'];
         this.filterService.search(this.lookingfiles).subscribe((data) => {
@@ -52,6 +65,9 @@ export class SearchComponent {
         });
     }
 
+    /**
+     * Pagination
+     */
     onChangePage(event){
         this.page = event;
     }
