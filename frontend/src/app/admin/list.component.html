@@ -5,9 +5,11 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th style="width: 30%">{{'profile.first_name' | translate}}</th>
-                    <th style="width: 30%">{{'profile.last_name' | translate}}</th>
-                    <th style="width: 30%">{{'profile.username' | translate}}</th>
+                    <th style="width: 20%">{{'profile.first_name' | translate}}</th>
+                    <th style="width: 20%">{{'profile.last_name' | translate}}</th>
+                    <th style="width: 20%">{{'profile.username' | translate}}</th>
+                    <th style="width: 20%">{{'profile.email' | translate}}</th>
+                    <th style="width: 20%">{{'profile.role' | translate}}</th>
                     <th style="width: 10%"></th>
                 </tr>
             </thead>
@@ -16,6 +18,8 @@
                     <td>{{user.first_name}}</td>
                     <td>{{user.last_name}}</td>
                     <td>{{user.username}}</td>
+                    <td>{{user.email}}</td>
+                    <td>{{user.role}}</td>
                     <td style="white-space: nowrap">
                         <a routerLink="edit/{{user.id}}" class="btn btn-sm btn-primary mr-1">{{'admin.edit' | translate}}</a>
                         <button (click)="deleteUser(user.id)" class="btn btn-sm btn-danger btn-delete-user mr-1" [disabled]="user.isDeleting">

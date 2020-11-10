@@ -69,10 +69,10 @@ module.exports = function (app, mysql) {
      */
     app.post('/api/users/authenticate', function (req, res) {
       var data = {
-        username: req.body.username,
+        email: req.body.email,
         password: req.body.password
       };
-      mysql.query("select * from users where username = ? and password = ?", [data.username,data.password], function (err, result, fields) {
+      mysql.query("select * from users where email = ? and password = ?", [data.email,data.password], function (err, result, fields) {
         if (err) res.send(err);
         if (!result.length) res.status(400).send('user not found');
         res.send(result);
