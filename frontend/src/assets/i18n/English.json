@@ -4,13 +4,13 @@
         "home": "Home",
         "workspace": "Workspace",
         "logout": "Logout",
-        "login": "Login",
-        "admin": "Users Admin",
+        "login": "Sign In",
+        "admin": "Administration",
         "selectl": "Select Language",
         "english": "English",
         "spanish": "Spanish",
         "profile": "My profile",
-        "register": "Register",
+        "register": "Sign Up",
         "cancel": "Cancel",
         "save": "Save"
     },
@@ -25,7 +25,8 @@
         "username": "Username",
         "password": "Password",
         "my_profile": "My Profile",
-        "email": "Email"
+        "email": "Email",
+        "role": "Role"
     },
     "home": {
         "hi": "Hello",
@@ -45,7 +46,7 @@
     "error": {
         "username": "Username is required",
         "password": "Password is required",
-        "passwordlength": "Password must be at least 6 characters",
+        "passwordlength": "Password must contain at least 6 characters",
         "first_name": "First Name is required",
         "last_name": "Last Name is required",
         "email": "Email is required"
@@ -61,18 +62,18 @@
     "files": {
         "selecfiles": "File selection",
         "workspace": "Workspace",
-        "included": "Included",
+        "included": "Positive",
         "negative": "Negative",
         "selectnegative": "Select negative file",
         "messagenegative": "First you have to select the positive file",
         "positive": "Positive",
         "selectpositive": "Select positive file",
         "tis": "TIS",
-        "cleartis": "Clear index TIS",
+        "cleartis": "Clear TIS index",
         "fvs": "FVS",
-        "clearfvs": "Clear index FVS",
+        "clearfvs": "Clear FVS index",
         "fds": "FDS",
-        "clearfds": "Clear index FDS",
+        "clearfds": "Clear FDS index",
         "filter": "Filter",
         "looking": "Search",
         "upload": "Upload",
@@ -80,11 +81,11 @@
         "remove": "Remove",
         "select": "Select",
         "removeindex": "Remove index",
-        "removemessage": "Are you sure you want to delete everything indexed?"
+        "removemessage": "Are you sure you want to delete all the indexes?"
     },
     "search": {
         "results": "Results",
-        "result": "Outcome",
+        "result": "Result",
         "tittle": "Tittle",
         "abstract": "Abstract",
         "key": "KeyWords"
@@ -92,22 +93,22 @@
     "filter": {
         "termNumber": "Input of terms number",
         "select": "Select a filter",
-        "infGain": "InfGain",
-        "crossEntropy": "CrossEntropy",
-        "mutualInfo": "MutualInfo",
+        "infGain": "Information Gain",
+        "crossEntropy": "Cross Entropy",
+        "mutualInfo": "Mutual Information",
         "freq": "Frequencies",
         "oddsRatio": "OddsRatio",
-        "normalSeparation": "Bi−NormalSeparation",
+        "normalSeparation": "Bi−Normal Separation",
         "difference": "Difference",
         "invalid": "Invalid custom select feedback",
-        "query": "Apply to see Query",
-        "loadfile": "You have to select the pair of TIS files !",
-        "loadnum": "Choose the number of terms to be processed !",
-        "loadfilter": "You have to choose a filter !",
+        "query": "Create query",
+        "loadfile": "You have to select the pair of TIS files!",
+        "loadnum": "Choose the number of terms to be processed!",
+        "loadfilter": "You have to choose a filter!",
         "and": "Select if you want to join the terms with the AND operator",
         "applyFVS": "Apply in FVS",
         "applyFDS": "Apply in FDS",
-        "rendimiento": "Performance measure",
+        "rendimiento": "Performance measures",
         "valor": "Value"
     }
 }
