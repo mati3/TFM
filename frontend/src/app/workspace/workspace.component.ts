@@ -6,23 +6,77 @@ import { first } from 'rxjs/operators';
 
 @Component({ templateUrl: 'workspace.component.html' })
 export class WorkspaceComponent {
+  /**
+   * @ignore
+   */
   myForm = new FormGroup({
     filepositive: new FormControl('', [Validators.required]),
     filenegative: new FormControl('', [Validators.required])
   });
+
+  /**
+   * @ignore
+   */
   filesFVS = [];
+
+  /**
+   * @ignore
+   */
   filesFDS = [];
+
+  /**
+   * @ignore
+   */
   filesTIS = [];
+
+  /**
+   * @ignore
+   */
   filepositive: File ;
+
+  /**
+   * @ignore
+   */
   myfiles = null;
+
+  /**
+   * @ignore
+   */
   typefile: String;
+
+  /**
+   * @ignore
+   */
   index: number;
+
+  /**
+   * @ignore
+   */
   user: User;
+
+  /**
+   * @ignore
+   */
   loadfilepositiveFVS = false;
+
+  /**
+   * @ignore
+   */
   loadfilepositiveFDS = false;
+
+  /**
+   * @ignore
+   */
   loadfilepositiveTIS = false;
+
+  /**
+   * @ignore
+   */
   lookingfiles = null;
 
+  /**
+   * @ignore
+   */
   constructor( 
     private accountService: AccountService,
     private filterService: FilterService) { 

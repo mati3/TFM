@@ -6,24 +6,89 @@ import { AccountService, FilterService } from '@app/services';
 @Component({ templateUrl: 'filter.component.html' })
 export class FilterComponent {
 
+  /**
+   * @ignore
+   */
   user: User;
+
+  /**
+   * @ignore
+   */
   files = null;
+
+  /**
+   * @ignore
+   */
   lookingfiles = null;
+
+  /**
+   * @ignore
+   */
   sum: number;
+
+  /**
+   * @ignore
+   */
   filter: Filter;
+
+  /**
+   * @ignore
+   */
   query = null;
+
+  /**
+   * @ignore
+   */
   metricsFVS = [];
+
+  /**
+   * @ignore
+   */
   metricsFDS = [];
+  
+  /**
+   * @ignore
+   */
   metric = null;
 
+  /**
+   * @ignore
+   */
   loading = false;
+
+  /**
+   * @ignore
+   */
   loadand = true;
+
+  /**
+   * @ignore
+   */
   loadmetric = false;
+
+  /**
+   * @ignore
+   */
   loadfile = false;
+
+  /**
+   * @ignore
+   */
   loadfilter = false;
+
+  /**
+   * @ignore
+   */
   loadnum = false;
+
+  /**
+   * @ignore
+   */
   loadapply = false;
 
+  /**
+   * @ignore
+   */
   constructor(
       private accountService: AccountService,
       private filterService: FilterService
@@ -35,6 +100,8 @@ export class FilterComponent {
 
   /**
    * Select a filter
+   * 
+   * @param {Event} event - Selected filter
    */
   changefilter(event){
     this.filter.typefilter = event.target.value;
@@ -43,6 +110,8 @@ export class FilterComponent {
 
   /**
    * Choose the number of terms for the query
+   * 
+   * @param {Event} event - Number of terms
    */
   termNumber(event){
     this.filter.sum = event.target.value;

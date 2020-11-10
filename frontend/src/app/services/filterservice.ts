@@ -7,6 +7,9 @@ import { environment } from '@environments/environment';
 @Injectable({ providedIn: 'root' })
 export class FilterService {
 
+    /**
+     * @ignore
+     */
     constructor(
         private http: HttpClient,
     ) {

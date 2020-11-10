@@ -5,7 +5,8 @@ enum typefilter {
     Freq = 'Freq',
     OddsRatio = 'OddsRatio',
     NormalSeparation = 'NormalSeparation',
-    FisherIndex = 'FisherIndex'
+    Difference = 'difference',
+
 }
 
 export class Filter {

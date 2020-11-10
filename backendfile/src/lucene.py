@@ -839,39 +839,28 @@ class Lucene():
         else:
             return "No existe el filtro seleccionado "
 
-    def medidas_de_rendimiento(self, setAllFVSPos, resultado):
+    def medidas_de_rendimiento(self, qrels_file, resultado):
         """
         
         Medidas de rendimiento 
 
         Args:
         ----------
-        setAllFVSPos : dic
-        >   description  
+        qrels_file : dic
+        >   Diccionario con la lista de documentos relevantes para cada consulta  
         
         resultado : dic
-        >   description 
+        >   Diccionario con la lista de documentos recuperados anteriormente
 
         Returns::
         -------
-        string
-        >   description
+        dic
+        >   Diccionario con las medidas de rendimiento de cada archivo positivo.
         
         """
-        print("setAllFVSPos")
-        print(setAllFVSPos)
-        print("resultado")
-        print(resultado)
-        qrels_file = setAllFVSPos
-        results_file = resultado
-        evaluator = pytrec_eval.RelevanceEvaluator(qrels_file, {'map', 'ndcg'})
-
-        print(json.dumps(evaluator.evaluate(results_file), indent=1))
         
         evaluator = pytrec_eval.RelevanceEvaluator(qrels_file, pytrec_eval.supported_measures)
-        results = evaluator.evaluate(results_file)
-        '''def print_line(measure, value):
-            print('{:25s}{:.4f}'.format(measure, value))'''
+        results = evaluator.evaluate(resultado)
 
         dicResult = {}
         for query_id, query_measures in results.items():
@@ -881,23 +870,5 @@ class Lucene():
                 if math.isnan(value):
                     value = 0
                 dicResult[measure] = value
-        '''for measure in query_measures.keys():
-            if measure == "runid":
-                continue
-            print_line(
-                measure,
-                'all',
-                pytrec_eval.compute_aggregated_measure(
-                    measure,
-                    [query_measures[measure]
-                    for query_measures in results.values()]))'''
-        #m = pytrec_eval.evaluate(results_file, qrels_file, {'precision', 'recall'})
-        #print(json.dumps(m, indent=1))
-        #module 'pytrec_eval' has no attribute 'evaluate'
-        #pytrec_eval.plotRecallPrecision(results_file, qrels_file, perQuery=True, outputFile='./recall-precision.pdf', showPlot=False)
-        #AttributeError: module 'pytrec_eval' has no attribute 'plotRecallPrecision'
         
-        return dicResult        
-
-# qrel_file : ruta del archivo con la lista de documentos relevantes para cada consulta
-# results_file : ruta del archivo con la lista de documentos recuperados por su aplicación
+        return dicResult

@@ -228,12 +228,12 @@ def applyFilter():
     body = request.get_json() # obtener el contenido del cuerpo de la solicitud
     if body is None:
         return "The request body is null", 400
-    if body['id']['email'] is None:
+    if body['email'] is None:
         return 'You need to identify yourself', 400
     if body['wanted'] == '':
         return 'You need to specify what looking for',400
 
-    correo = body['id']['email']
+    correo = body['email']
     files = client.getFiles(correo)
     for i in files:
         filesFVS = i['filesFVS']
@@ -254,11 +254,8 @@ def applyFilter():
         typefile =  body['typefile']
         count = filepos.find(".txt")
         count2 = fileneg.find(".txt")
-        #pathfile = app.config['UPLOAD_FOLDER']+'/'+correo+'/'+typefile+'/'+filepos[:count]+fileneg[:count2]
-        #resultado.append(lc.search(pathfile,body['wanted']))
         pathfile = app.config['UPLOAD_FOLDER']+'/'+correo+'/'+typefile+'/lucene_'+filepos[:count]
         resultado[filepos[:count]] = lc.search(pathfile,body['wanted'], True)
-        #setPos = lc.searchDocID(pathfile))
         setAllPos[filepos[:count]] = lc.positiveDocID(pathfile)
         pathfile = app.config['UPLOAD_FOLDER']+'/'+correo+'/'+typefile+'/lucene_'+fileneg[:count2]
         resultado[fileneg[:count2]] = lc.search(pathfile,body['wanted'], True)

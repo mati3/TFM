@@ -7,14 +7,44 @@ import { AccountService, FilterService } from '@app/services';
 @Component({ templateUrl: 'search.component.html' })
 export class SearchComponent {
 
+    /**
+     * @ignore
+     */
     form: FormGroup;
+
+    /**
+     * @ignore
+     */
     user: User;
+
+    /**
+     * @ignore
+     */
     lookingfiles = null;
+
+    /**
+     * @ignore
+     */
     files = null;
+
+    /**
+     * @ignore
+     */
     data: Array<any>;
+
+    /**
+     * @ignore
+     */
     totalRecords: number;
+
+    /**
+     * @ignore
+     */
     page: number = 1 ;
 
+    /**
+     * @ignore
+     */
     constructor(
         private formBuilder: FormBuilder,
         private accountService: AccountService,
