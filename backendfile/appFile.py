@@ -10,8 +10,14 @@ import shutil
 from werkzeug.utils import secure_filename
 from flask_caching import Cache
 
-from src.lucene import Lucene
+#from src.lucene import Lucene
+from src.recuperacionInformacion import Lucene
+from src.filtros import Filtros
+from src.rendimiento import Rendimiento
+
 lc = Lucene()
+ft = Filtros()
+md = Rendimiento()
 
 config = {
     "DEBUG": True,          
@@ -76,7 +82,7 @@ def deleteClient(correo_id):
 
 # devuelve los archivos de un cliente dado su id
 @app.route('/files/<string:correo_id>', methods=['GET'])
-def files(correo_id):
+def filesClient(correo_id):
     files = client.getFiles(correo_id)
     for i in files:
         filesFVS = i['filesFVS']
@@ -218,7 +224,7 @@ def filter():
     print(sum)
     email = body['email']
     print(email)
-    resultado = lc.filter(typefilter, terms_freqs_positive, terms_freqs_negative, sum, email)
+    resultado = ft.filter(typefilter, terms_freqs_positive, terms_freqs_negative, sum, email)
     # devuelvo la consulta ???
     return jsonify(resultado), 200
 
@@ -266,7 +272,7 @@ def applyFilter():
             resultado.append(i)'''
         '''for i in setPos:
             setAllFVSPos.append(i)'''
-        salida[filepos[:count]] = lc.medidas_de_rendimiento(setAllPos,resultado)    
+        salida[filepos[:count]] = md.medidas_de_rendimiento(setAllPos,resultado)    
 
     print(salida)
     return jsonify(salida), 200
