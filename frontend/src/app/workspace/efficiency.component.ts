@@ -3,8 +3,8 @@ import { first } from 'rxjs/operators';
 import { User, LookingFiles, Filter, Metric } from '@app/models';
 import { AccountService, FilterService } from '@app/services';
 
-@Component({ templateUrl: 'filter.component.html' })
-export class FilterComponent {
+@Component({ templateUrl: 'efficiency.component.html' })
+export class EfficiencyComponent {
 
   /**
    * @ignore

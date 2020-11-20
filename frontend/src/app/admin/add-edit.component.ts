@@ -99,7 +99,7 @@ export class AddEditComponent implements OnInit {
                     this.router.navigate(['..', { relativeTo: this.route }]);
                 },
                 error => {
-                    this.alertService.error(error);
+                    this.alertService.error(error.error.text);
                     this.loading = false;
                 });
     }

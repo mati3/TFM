@@ -1,6 +1,6 @@
 <div class="col-md-9 offset-md-1 mt-5">
   <h1>{{ 'files.workspace' | translate }}</h1>
-  <a routerLink="filter" class="btn btn-sm btn-success mb-2 mr-1">{{ 'files.filter' | translate }}</a>
+  <a routerLink="efficiency" class="btn btn-sm btn-success mb-2 mr-1">{{ 'files.filter' | translate }}</a>
   <a routerLink="search" class="btn btn-sm btn-success mb-2 mr-1">{{ 'files.looking' | translate }}</a>
   <!-- espacio de archivos por ahora selecciona-->
   <h4>{{'files.selecfiles' | translate}}</h4>
@@ -16,6 +16,11 @@
           </caption>
             <label class="btn btn-dark btn-rounded waves-effect btn-sm float-left mr-1">{{ 'files.selectpositive' | translate }}          
               <input formControlName="filepositive" id="file" type="file" class="form-control" (change)="onFileChange($event,'filesFVS')">
+
+              <div *ngIf="!myForm.valid" class="invalid-feedback">
+                <div *ngIf="!myForm.valid">{{'error.username' | translate}}</div>
+            </div>
+
             </label>
             <label class="btn btn-outline-dark btn-rounded waves-effect btn-sm float-left mr-1" data-toggle="tooltip" title="{{'files.messagenegative' | translate}}">{{ 'files.selectnegative' | translate }}  
               <input formControlName="filenegative" id="file" type="file" class="form-control" (change)="onFileChange($event,'filesFVS')">

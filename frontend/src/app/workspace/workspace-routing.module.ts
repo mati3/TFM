@@ -3,12 +3,12 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { WorkspaceComponent } from './workspace.component';
 import { SearchComponent } from './search.component';
-import { FilterComponent } from './filter.component';
+import { EfficiencyComponent } from './efficiency.component';
 
 const routes: Routes = [
     { path: '', component: WorkspaceComponent  },
     { path: 'search', component: SearchComponent },
-    { path: 'filter', component: FilterComponent }
+    { path: 'efficiency', component: EfficiencyComponent }
 ];
 
 @NgModule({

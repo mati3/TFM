@@ -55,7 +55,7 @@ export class LoginComponent implements OnInit {
             .subscribe(
                 user =>{
                     if (user == null){
-                        this.alertService.error("User not registered or not accepted");
+                        this.alertService.error("User not accepted");
                         this.loading = false;
                     }else {
                         this.router.navigate([this.returnUrl]);

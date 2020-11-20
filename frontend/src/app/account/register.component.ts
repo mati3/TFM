@@ -21,11 +21,11 @@ export class RegisterComponent implements OnInit {
 
     ngOnInit() {
         this.form = this.formBuilder.group({
-            first_name: ['', Validators.required],
-            last_name: ['', Validators.required],
-            username: ['', Validators.required],
-            email: ['', Validators.required],
-            password: ['', [Validators.required, Validators.minLength(6)]]
+            first_name: ['', [Validators.required, Validators.maxLength(50)]],
+            last_name: ['', [Validators.required, Validators.maxLength(50)]],
+            username: ['', [Validators.required, Validators.maxLength(50)]],
+            email: ['', [Validators.required, Validators.maxLength(25), Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]],
+            password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(50)]]
         });
     }
 

@@ -46,10 +46,12 @@
     "error": {
         "username": "Username is required",
         "password": "Password is required",
-        "passwordlength": "Password must contain at least 6 characters",
+        "passwordminlength": "Password must contain at least 6 characters",
+        "maxlength": "Has exceeded the maximum number of characters expected",
         "first_name": "First Name is required",
         "last_name": "Last Name is required",
-        "email": "Email is required"
+        "email": "Email is required",
+        "realemail": "This email is not real, please write an appropriate email"
     },
     "admin": {
         "users": "Users",

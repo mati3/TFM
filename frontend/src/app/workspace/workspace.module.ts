@@ -9,7 +9,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { WorkspaceRoutingModule } from './workspace-routing.module';
 import { WorkspaceComponent } from './workspace.component';
 import { SearchComponent } from './search.component';
-import { FilterComponent } from './filter.component';
+import { EfficiencyComponent } from './efficiency.component';
 
 @NgModule({
     imports: [
@@ -32,7 +32,7 @@ import { FilterComponent } from './filter.component';
     declarations: [
         WorkspaceComponent,
         SearchComponent,
-        FilterComponent
+        EfficiencyComponent
     ]
 })
 export class WorkspaceModule { }

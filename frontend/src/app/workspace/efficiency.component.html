@@ -96,8 +96,10 @@
         {{'filter.loadfilter' | translate}}</span>
     </div>
     Query: 
-    <a *ngFor="let word of query">{{word}} &nbsp;</a><br />
-
+    <div class="card m-3">
+      <div clas="container"><a *ngFor="let word of query">{{word}} &nbsp;</a><br /></div>
+    </div>
+    
     <!-- AND_OPERATOR -->
     <a>{{'filter.and' | translate}}</a><br />
     <div class="form-group" >
