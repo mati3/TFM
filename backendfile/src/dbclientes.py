@@ -4,9 +4,9 @@ from pymongo import MongoClient
 class dbClientes:
     def __init__(self, collection):
         self.client = collection
-        cur = self.client.find({'_id':'mati@correo.ugr.com' }) 
+        cur = self.client.find({'_id':'mati@correo.ugr.es' }) 
         if cur.count()==0: 
-            self.client.insert_one({'_id':'mati@correo.ugr.com', 'filesFDS':[],'filesFVS':[],'filesTIS':[]  })
+            self.client.insert_one({'_id':'mati@correo.ugr.es', 'filesFDS':[],'filesFVS':[],'filesTIS':[]  })
 
     def insertClient(self, correo_id):
         clientes = self.client.find({},{"FVS":1,"_id":1})
