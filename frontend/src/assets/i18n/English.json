@@ -106,6 +106,7 @@
         "query": "Create query",
         "loadfile": "You have to select the pair of TIS files!",
         "loadnum": "Choose the number of terms to be processed!",
+        "number": "Positive numbers are only allowed from 1",
         "loadfilter": "You have to choose a filter!",
         "and": "Select if you want to join the terms with the AND operator",
         "applyFVS": "Apply in FVS",

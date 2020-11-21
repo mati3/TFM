@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { first } from 'rxjs/operators';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { User, LookingFiles } from '@app/models';
-import { AccountService, FilterService } from '@app/services';
+import { AccountService, AlertService, FilterService } from '@app/services';
 
 @Component({ templateUrl: 'search.component.html' })
 export class SearchComponent {
@@ -42,6 +42,8 @@ export class SearchComponent {
      */
     page: number = 1 ;
 
+    alert = false;
+
     /**
      * @ignore
      */
@@ -49,6 +51,7 @@ export class SearchComponent {
         private formBuilder: FormBuilder,
         private accountService: AccountService,
         private filterService: FilterService,
+        private alertService: AlertService,
         ) {
         this.user = this.accountService.userValue;
         this.lookingfiles = new LookingFiles(this.user.email);
@@ -76,22 +79,47 @@ export class SearchComponent {
      * @param {String} type - Type of file
      */
     select(positive, negative, type){
+        this.alertService.clear();
+
         this.lookingfiles.positive = positive;
         this.lookingfiles.negative = negative; 
         this.lookingfiles.typefile = type;
+
+        this.data= [];
+        this.totalRecords = 0;
+        this.page = 1 ;
     }
 
     /**
      * Search the content requested by the user
      */
     search(){
+        this.data= [];
+        this.totalRecords = 0;
+        this.page = 1 ;
+        this.alertService.clear();
+
         this.lookingfiles.wanted = this.form.value['search'];
-        this.filterService.search(this.lookingfiles).subscribe((data) => {
-            for(let element of Object.keys(data)){
-                this.data[element]= {id:element, docid: data[element]['docid'], titulo: data[element]['titulo'], abstract: data[element]['abstract'], key_words: data[element]['key_words']}
-            };
-            this.totalRecords =  Object.keys(data).length;
-        });
+        if (this.lookingfiles.wanted == ""){
+            this.alertService.warn("You need to specify what looking for");
+        }else if(this.lookingfiles.positive == null || this.lookingfiles.negative== null){
+            this.alertService.warn("You need to specify the pair of files");
+        }else{
+            this.filterService.search(this.lookingfiles).subscribe((data) => {
+                for(let element of Object.keys(data)){
+                    this.data[element]= {id:element, docid: data[element]['docid'], titulo: data[element]['titulo'], abstract: data[element]['abstract'], key_words: data[element]['key_words']}
+                };
+                this.totalRecords =  Object.keys(data).length;
+                if (this.totalRecords == 0){
+                    this.alertService.info("No results");
+                    this.alert = true;
+                }
+            },
+            error => {
+                this.alertService.error(error.error);
+                console.log(error.error);
+            });
+        }
     }
 
     /**

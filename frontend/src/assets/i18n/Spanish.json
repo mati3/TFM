@@ -105,6 +105,7 @@
         "invalid": "Comentarios de selección personalizada no válidos",
         "query": "Generar consulta",
         "loadfile": "¡Has de seleccionar el par de archivos TIS!",
+        "number": "Solo se admiten números positivos a partir del 1",
         "loadnum": "¡Elija la cantidad de terminos a tratar!",
         "loadfilter": "¡Tiene que elegir un filtro !",
         "and": "Seleccione si quiere unir los terminos con el operador AND",

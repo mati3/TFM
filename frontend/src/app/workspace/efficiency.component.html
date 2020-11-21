@@ -62,7 +62,11 @@
     <!-- termNumber números positivos a partir de 1-->
     <div class="form-group">
       <div class="md-form">
-        <label for="numberInputEx">{{'filter.termNumber' | translate}}</label>
+        <label for="numberInputEx">{{'filter.termNumber' | translate}}
+          <span *ngIf="!loadnum && !loading" class="alert alert-primary mr-1" role="alert">
+          {{'filter.number' | translate}}
+          </span>
+        </label>
         <input type="number" min="1" oninput="validity.valid||(value='');" class="form-control" id="numberInputEx" (change)="termNumber($event)" mdbInput>
       </div>
     </div>
