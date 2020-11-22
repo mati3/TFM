@@ -26,7 +26,8 @@
         "password": "Password",
         "my_profile": "My Profile",
         "email": "Email",
-        "role": "Role"
+        "role": "Role",
+        "roleisadmin": "This user is Admin?"
     },
     "home": {
         "hi": "Hello",

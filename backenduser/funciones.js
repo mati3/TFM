@@ -55,10 +55,12 @@ module.exports = function (app, mysql) {
         password: req.body.password,
         username: req.body.username,
         first_name: req.body.first_name,
-        last_name: req.body.last_name
+        last_name: req.body.last_name,
+        role: req.body.role
       };
       mysql.query("INSERT INTO users SET ?", data, function (err, result) {
         if (err) res.send(err);
+        console.log(err);
         res.send(result);
         console.log(result);
       });

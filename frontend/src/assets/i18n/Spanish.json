@@ -26,7 +26,8 @@
         "password": "Contraseña",
         "my_profile": "Mi Perfil",
         "email": "Dirección de correo electronico",
-        "role": "Rol"
+        "role": "Rol",
+        "roleisadmin": "Este usuario es administrador?"
     },
     "home": {
         "hi": "Hola",
