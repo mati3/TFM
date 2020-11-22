@@ -171,9 +171,9 @@ def search():
     count = filepos.find(".txt")
     count2 = fileneg.find(".txt")
     pathfile = app.config['UPLOAD_FOLDER']+'/'+correo+'/'+typefile+'/lucene_'+filepos[:count]
-    resultado = lc.search(pathfile,body['wanted'], False)
+    resultado = lc.searchDocument(pathfile,body['wanted'])
     pathfile = app.config['UPLOAD_FOLDER']+'/'+correo+'/'+typefile+'/lucene_'+fileneg[:count2]
-    aux = lc.search(pathfile,body['wanted'], False)
+    aux = lc.searchDocument(pathfile,body['wanted'])
 
     for i in aux:
         resultado.append(i)
@@ -261,10 +261,10 @@ def applyFilter():
         count = filepos.find(".txt")
         count2 = fileneg.find(".txt")
         pathfile = app.config['UPLOAD_FOLDER']+'/'+correo+'/'+typefile+'/lucene_'+filepos[:count]
-        resultado[filepos[:count]] = lc.search(pathfile,body['wanted'], True)
+        resultado[filepos[:count]] = lc.searchScore(pathfile,body['wanted'])
         setAllPos[filepos[:count]] = lc.positiveDocID(pathfile)
         pathfile = app.config['UPLOAD_FOLDER']+'/'+correo+'/'+typefile+'/lucene_'+fileneg[:count2]
-        resultado[fileneg[:count2]] = lc.search(pathfile,body['wanted'], True)
+        resultado[fileneg[:count2]] = lc.searchScore(pathfile,body['wanted'])
         # si resultado está vacío, devolver error
         '''for r in searchpos:
             resultado.append(r)

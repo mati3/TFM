@@ -209,7 +209,7 @@ class Lucene():
         except:
             return 'something went wrong, exception in index method'
 
-    def search(self, filepath, word, score):
+    def searchScore(self, filepath, word):
         """
         Search.
 
@@ -223,13 +223,10 @@ class Lucene():
         word : string
         >    String que queremos buscar en los documentos.  
 
-        score : boolean
-        >    Si es True queremos el score (peso) de cada documento. Si es False queremos los documentos.
-
         Returns:
         -------
-        dic or list
-        >    Si buscamos los score de los documentos devolverá un diccionario tipo {documento: grado  de relevancia}, si buscamos los documentos devuelve una lista de documentos con los atributos docid, abstract, titulo y key_words
+        dic 
+        >    Diccionario tipo {documento: grado  de relevancia}
 
         """
         directory = SimpleFSDirectory(Paths.get(filepath))
@@ -243,21 +240,56 @@ class Lucene():
                                                 analyzer)
         
         scoreDocs = searcher.search(query, 1000).scoreDocs
-        if score:
-            result = {}
-            for sd in scoreDocs:
-                d = searcher.doc(sd.doc)
-                result[d.get("docid")] = sd.score
-        else:
-            result = []
-            for sd in scoreDocs:
-                d = searcher.doc(sd.doc)
-                result.append({
-                        "docid":  d.get("docid"),
-                        "titulo":  d.get("titulo"),
-                        "abstract": d.get("abstract"),
-                        "key_words": d.get("key_words")
-                    })
+        
+        result = {}
+        for sd in scoreDocs:
+            d = searcher.doc(sd.doc)
+            result[d.get("docid")] = sd.score
+        
+        return result
+
+    def searchDocument(self, filepath, word):
+        """
+        Search.
+
+        Buscador en una ruta específica, el termino buscado debería estar en uno de los tres campos: abstract, titulo o key_words.
+
+        Args:
+        ----------
+        filepath : string
+        >    Ruta donde buscaremos.  
+
+        word : string
+        >    String que queremos buscar en los documentos.  
+
+        Returns:
+        -------
+        dic or list
+        >    Lista de documentos con los atributos docid, abstract, titulo y key_words
+
+        """
+        directory = SimpleFSDirectory(Paths.get(filepath))
+        searcher = IndexSearcher(DirectoryReader.open(directory))
+        analyzer = EnglishAnalyzer()
+        
+        # El termino buscado debería estar en uno de los tres campos: abstract, titulo o key_words
+        SHOULD = BooleanClause.Occur.SHOULD
+        query = MultiFieldQueryParser.parse(word, ["titulo","abstract","key_words"],
+                                                [SHOULD, SHOULD, SHOULD],
+                                                analyzer)
+        
+        scoreDocs = searcher.search(query, 1000).scoreDocs
+       
+        result = []
+        for sd in scoreDocs:
+            d = searcher.doc(sd.doc)
+            result.append({
+                    "docid":  d.get("docid"),
+                    "titulo":  d.get("titulo"),
+                    "abstract": d.get("abstract"),
+                    "key_words": d.get("key_words")
+                })
+        
         return result
     
     def positiveDocID(self, filepath):
