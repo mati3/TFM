@@ -28,6 +28,7 @@ export class ListComponent implements OnInit {
             .pipe(first())
             .subscribe(() => {
                 this.users = this.users.filter(x => x.id !== id); 
+                this.alertService.info('User deleted');
             },
             error => {
                 this.alertService.error(error);

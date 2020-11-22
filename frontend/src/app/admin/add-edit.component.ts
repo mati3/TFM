@@ -35,7 +35,7 @@ export class AddEditComponent implements OnInit {
             first_name: ['', [Validators.required, Validators.maxLength(50)]],
             last_name: ['', [Validators.required, Validators.maxLength(50)]],
             username: ['', [Validators.required, Validators.maxLength(25)]],
-            email: ['', [Validators.required, Validators.maxLength(50), Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]],
+            email: ['', [Validators.required, Validators.maxLength(25), Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]],
             password: ['', passwordValidators],
             role:['']
         });
@@ -45,10 +45,10 @@ export class AddEditComponent implements OnInit {
                 .pipe(first())
                 .subscribe(x => {
                     this.form = this.formBuilder.group({
-                        first_name: [x[0].first_name, Validators.required],
-                        last_name: [x[0].last_name, Validators.required],
-                        username: [x[0].username, Validators.required],
-                        email: [x[0].email, Validators.required],
+                        first_name: [x[0].first_name, [Validators.required, Validators.maxLength(50)]],
+                        last_name: [x[0].last_name, [Validators.required, Validators.maxLength(50)]],
+                        username: [x[0].username, [Validators.required, Validators.maxLength(50)]],
+                        email: [x[0].email, [Validators.required, Validators.maxLength(25), Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]],
                         password: [x[0].password, passwordValidators],
                         role: [x[0].role]
                     });
@@ -89,8 +89,7 @@ export class AddEditComponent implements OnInit {
             .pipe(first())
             .subscribe(
                 data => {
-                    console.log(data.errno);
-                    if (data.errno == 1062){
+                    if (data['errno'] == 1062){
                         this.alertService.error('Existing user');
                         this.loading = false;
                     }else{
@@ -116,8 +115,13 @@ export class AddEditComponent implements OnInit {
             .pipe(first())
             .subscribe(
                 data => {
-                    this.alertService.success('Update successful', { keepAfterRouteChange: true });
-                    this.router.navigate(['..', { relativeTo: this.route }]);
+                    if (data['errno'] == 1062){
+                        this.alertService.error('Existing user');
+                        this.loading = false;
+                    }else{
+                        this.alertService.success('Update successful', { keepAfterRouteChange: true });
+                        this.router.navigate(['..', { relativeTo: this.route }]);
+                    }
                 },
                 error => {
                     this.alertService.error(error.error.text);

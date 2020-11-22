@@ -88,9 +88,9 @@ module.exports = function (app, mysql) {
     app.put("/api/user/:id", function (req, res) {
       var id = req.params.id; 
       mysql.query('UPDATE users SET ? WHERE id = ?', [req.body, id], (error, result) => {
-        if (error) throw error;
+        if (error) res.send(error);
         res.send(result);
-       // res.send('User updated successfully.');
+        console.log(result);
       });
     });
 };
