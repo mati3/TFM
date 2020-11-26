@@ -15,6 +15,7 @@ services:
     ports:
       - '4201:4200'
       - '4400:4400'
+      - '9876:9876'
 
   backenduser: #name of the second service
     build: 
