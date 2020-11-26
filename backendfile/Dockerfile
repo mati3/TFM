@@ -21,8 +21,6 @@ ENV PYTHONDONTWRITEBYTECODE 1
 # Turns off buffering for easier container logging
 ENV PYTHONUNBUFFERED 1
 
-# lupyne
-RUN pip install lupyne
 
 # Create a directory where our app will be placed
 RUN mkdir -p /usr/src/app
@@ -40,4 +38,5 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . /usr/src/app
 
 # Serve the app
-CMD gunicorn -w 10 appFile:app --bind 0.0.0.0:5000
+#CMD gunicorn -w 10 appFile:app --bind 0.0.0.0:5000
+CMD gunicorn appFile:app --bind 0.0.0.0:5000

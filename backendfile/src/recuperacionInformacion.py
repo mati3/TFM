@@ -1,30 +1,23 @@
+#   Trabajo Fin de Máster
+#   Máster en Ingeniería Informática
+#
+#   2020 - Copyright (c) - GNU v3.0
+#
+#  Matilde Cabrera <mati331@correo.ugr.es>
+
 import os
-import operator
-from datetime import datetime, timedelta
 from werkzeug.utils import secure_filename
-from werkzeug.datastructures import FileStorage
-from itertools import *
-import math
-import numpy as np, scipy.stats as st
-from scipy.special import ndtri
-import json
-import pytrec_eval
 
 import lucene
 from java.nio.file import Paths
-from org.apache.lucene.analysis.miscellaneous import LimitTokenCountAnalyzer
 from org.apache.lucene.analysis.en import EnglishAnalyzer
 from org.apache.lucene.analysis.standard import StandardAnalyzer
-from org.apache.lucene.index import Term, IndexOptions, IndexReader, FieldInfos, MultiFields, IndexWriter, IndexWriterConfig, DirectoryReader, MultiTerms
+from org.apache.lucene.index import Term, IndexOptions, IndexReader, MultiFields, IndexWriter, IndexWriterConfig, DirectoryReader, MultiTerms
 from org.apache.lucene.document import Document, Field, StringField, TextField, FieldType
 from org.apache.lucene.store import SimpleFSDirectory, NIOFSDirectory
-from org.apache.lucene.queryparser.classic import QueryParser, QueryParserBase, MultiFieldQueryParser
-from org.apache.lucene.search import IndexSearcher, BooleanClause, TermQuery
+from org.apache.lucene.queryparser.classic import MultiFieldQueryParser
+from org.apache.lucene.search import IndexSearcher, BooleanClause
 from org.apache.lucene.util import BytesRefIterator
-from org.apache.lucene import index, util
-from org.apache.lucene.classification.utils import ConfusionMatrixGenerator
-from org.apache.lucene.analysis import  StopwordAnalyzerBase
-from org.apache.lucene.analysis.core import StopFilter, StopAnalyzer
 
 lucene.initVM()
 

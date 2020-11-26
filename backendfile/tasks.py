@@ -7,5 +7,5 @@ def test(c):
 
 @task
 def start(c):
-    c.run("gunicorn -w 5 appFile:app")
+    c.run("gunicorn -w 10 appFile:app")
 

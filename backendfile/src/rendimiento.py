@@ -1,13 +1,11 @@
-import os
-import operator
-from datetime import datetime, timedelta
-from werkzeug.utils import secure_filename
-from werkzeug.datastructures import FileStorage
-from itertools import *
+#   Trabajo Fin de Máster
+#   Máster en Ingeniería Informática
+#
+#   2020 - Copyright (c) - GNU v3.0
+#
+#  Matilde Cabrera <mati331@correo.ugr.es>
+
 import math
-import numpy as np, scipy.stats as st
-from scipy.special import ndtri
-import json
 import pytrec_eval
 
 

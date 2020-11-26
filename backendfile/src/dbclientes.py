@@ -1,11 +1,16 @@
+#   Trabajo Fin de Máster
+#   Máster en Ingeniería Informática
+#
+#   2020 - Copyright (c) - GNU v3.0
+#
+#  Matilde Cabrera <mati331@correo.ugr.es>
 import json
 from pymongo import MongoClient
 
 class dbClientes:
     def __init__(self, collection):
-        self.client = collection
-        cur = self.client.find({'_id':'mati@correo.ugr.es' }) 
-        if cur.count()==0: 
+        self.client = collection 
+        if self.client.count_documents({'_id':'mati@correo.ugr.es' })==0: 
             self.client.insert_one({'_id':'mati@correo.ugr.es', 'filesFDS':[],'filesFVS':[],'filesTIS':[]  })
 
     def insertClient(self, correo_id):
@@ -43,12 +48,9 @@ class dbClientes:
         return  salida
 
     def insertFiles(self, correo_id, typefile, filenamepos, filenameneg):
-        clientes = self.client.find({},{"_id":correo_id})
-        salida = "Usuario NO existe, operación no valida"
-        for c in clientes:
-            if correo_id == c['_id'] :
-                salida = "ok"
-        if salida == "ok" :
+        if self.client.count_documents({'_id': correo_id })==0: 
+            return "Usuario NO existe, operación no valida"
+        else:
             clientes = self.client.find({},{"_id":correo_id, typefile:1})
             salida = []
             for count,f in enumerate(clientes):
@@ -57,11 +59,18 @@ class dbClientes:
                         salida.append(f2)
             salida.append({'positive':filenamepos, 'negative':filenameneg})
             self.client.update({'_id':correo_id} , {'$set': {typefile:salida} }, True)
-            salida = "archivo insertado : " + correo_id
+            #salida = "archivo insertado : " + correo_id
         return  salida   
 
     def getFiles(self, correo_id):
-        return self.client.find({"_id":correo_id},{'filesFDS':1,'filesFVS':1,'filesTIS':1 })
+        if self.client.count_documents({'_id': correo_id })==0: 
+            return "Usuario no encontrado"
+        return self.client.find_one({"_id":correo_id},{'filesFDS':1,'filesFVS':1,'filesTIS':1 })
+
 
     def deleteFiles(self, correo_id,typefile):
-        return self.client.update({'_id':correo_id} , {'$set': {typefile:[]} })
+        print("deletefiles")
+        delete = self.client.update({'_id':correo_id} , {'$set': {typefile:[]} })
+        salida = delete['updatedExisting']
+        print(salida)
+        return salida

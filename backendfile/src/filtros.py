@@ -1,14 +1,13 @@
+#   Trabajo Fin de Máster
+#   Máster en Ingeniería Informática
+#
+#   2020 - Copyright (c) - GNU v3.0
+#
+#  Matilde Cabrera <mati331@correo.ugr.es>
 
-import os
-import operator
-from datetime import datetime, timedelta
-from werkzeug.utils import secure_filename
-from werkzeug.datastructures import FileStorage
-from itertools import *
 import math
 import numpy as np, scipy.stats as st
 from scipy.special import ndtri
-import json
 
 
 class Filtros():
@@ -79,8 +78,8 @@ class Filtros():
                 p_Cneg_F[k] = 0
                 p_F_Cneg[k] = 0
             tabla[k] = {'prob': prob[k], 'p_Cpos_F': p_Cpos_F[k], 'p_Cneg_F':  p_Cneg_F[k], 'p_F_Cpos': p_F_Cpos[k], 'p_F_Cneg':  p_F_Cneg[k], 'sum_F': totalTerm[k]}
-        print("tabla")
-        print(tabla)
+        #print("tabla")
+        #print(tabla)
         del tabla['sumTotalTermFreq']
         del tabla['docCount']
         return tabla
@@ -139,11 +138,11 @@ class Filtros():
             sumatoria = (p_Cpos_F * logpos) + (p_Cneg_F * logneg)
             not_sumatoria = (not_p_Cpos_F * not_logpos) + (not_p_Cneg_F * not_logneg)
             InfGain[f]= (p_F * sumatoria)+(not_p_F * not_sumatoria)
-        print("InfGain")
-        print(InfGain)
+        #print("InfGain")
+        #print(InfGain)
         salida = sorted(InfGain, key=InfGain.get, reverse=True)
-        print('salida sorted')
-        print(salida)
+        #print('salida sorted')
+        #print(salida)
         salida = salida[:int(sum)]
         return salida
 
@@ -183,11 +182,11 @@ class Filtros():
             if p_Cneg_F==0:logneg = 0
             else: logneg = math.log(p_Cneg_F/p_Cneg)
             CrossEntropy[f]=p_F*( (p_Cpos_F*logpos)+(p_Cneg_F*logneg) )
-        print("CrossEntropy")
-        print(CrossEntropy)
+        #print("CrossEntropy")
+        #print(CrossEntropy)
         salida = sorted(CrossEntropy, key=CrossEntropy.get, reverse=True)
-        print('salida sorted')
-        print(salida)
+        #print('salida sorted')
+        #print(salida)
         salida = salida[:int(sum)]
         return salida
 
@@ -228,11 +227,11 @@ class Filtros():
             if p_F_Cneg==0:logneg = 0
             else: logneg = math.log(p_F_Cneg/p_F)
             mutualInfo[f]=(p_Cpos*logpos)+(p_Cneg*logneg)
-        print("mutualInfo")
-        print(mutualInfo)
+        #print("mutualInfo")
+        #print(mutualInfo)
         salida = sorted(mutualInfo, key=mutualInfo.get, reverse=True)
-        print('salida sorted')
-        print(salida)
+        #print('salida sorted')
+        #print(salida)
         salida = salida[:int(sum)]
         return salida
 
@@ -261,9 +260,9 @@ class Filtros():
         for k in resultadoneg:
             if k in resultadopos:
                 del totalTerms[k]
-        print(totalTerms)
+        #print(totalTerms)
         salida = sorted(totalTerms, key=totalTerms.get, reverse=True)
-        print(salida)
+        #print(salida)
         salida = salida[:int(sum)]
         return salida
 
@@ -306,11 +305,11 @@ class Filtros():
                 OddsRatio[f] = 0
             else:
                 OddsRatio[f]=math.log((condProbFpos*(1-condProbFneg))/((1-condProbFpos)*condProbFneg))
-        print("oddsRatio")
-        print(OddsRatio)
+        #print("oddsRatio")
+        #print(OddsRatio)
         salida = sorted(OddsRatio, key=OddsRatio.get, reverse=True)
-        print('salida sorted')
-        print(salida)
+        #print('salida sorted')
+        #print(salida)
         salida = salida[:int(sum)]
         return salida
 
@@ -346,8 +345,8 @@ class Filtros():
             #distribucion_inversa[d] = st.norm.ppf(tabla[d]['sum_F'],loc = np.mean(md), scale = st.sem(md))
             distribucion = st.norm.cdf(tabla[d]['sum_F'],loc = np.mean(md), scale = st.sem(md))
             distribucion_inversa[d] = ndtri(distribucion)
-        print("distribucion_inversa")
-        print(distribucion_inversa)
+        #print("distribucion_inversa")
+        #print(distribucion_inversa)
         NormalSeparation = {}
         for f in tabla:
             if f in resultadopos:
@@ -359,11 +358,11 @@ class Filtros():
             else:
                 condProbFneg = 0
             NormalSeparation[f]=(distribucion_inversa[f]*condProbFpos)-(distribucion_inversa[f]*condProbFneg)
-        print("NormalSeparation")
-        print(NormalSeparation)
+        #print("NormalSeparation")
+        #print(NormalSeparation)
         salida = sorted(NormalSeparation, key=NormalSeparation.get, reverse=True)
-        print('salida sorted')
-        print(salida)
+        #print('salida sorted')
+        #print(salida)
         salida = salida[:int(sum)]
         return salida
 
@@ -404,11 +403,11 @@ class Filtros():
                 Pesoneg = 0
             #resto negativo al positivo.
             Diferencia[f] = Pesopos - Pesoneg
-        print("Diferencia")
-        print(Diferencia)
+        #print("Diferencia")
+        #print(Diferencia)
         salida = sorted(Diferencia, key=Diferencia.get, reverse=True)
-        print('salida sorted')
-        print(salida)
+        #print('salida sorted')
+        #print(salida)
         salida = salida[:int(sum)]
         return salida
 
@@ -427,7 +426,7 @@ class Filtros():
         >    Diccionario termino:frecuencia de los documentos positivos  
 
         terms_freqs_negative : dic
-        >    Diccionario termino:frecuencia de los documentos positivos  
+        >    Diccionario termino:frecuencia de los documentos negativos  
 
         sum : int
         >    Cantidad de terminos a devolver
