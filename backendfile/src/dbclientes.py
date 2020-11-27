@@ -69,8 +69,8 @@ class dbClientes:
 
 
     def deleteFiles(self, correo_id,typefile):
-        print("deletefiles")
+        #print("deletefiles")
         delete = self.client.update({'_id':correo_id} , {'$set': {typefile:[]} })
         salida = delete['updatedExisting']
-        print(salida)
+        #print(salida)
         return salida

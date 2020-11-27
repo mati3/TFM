@@ -91,8 +91,8 @@ def deleteClient(correo_id):
 @app.route('/files/<string:correo_id>', methods=['GET'])
 def filesClient(correo_id):
     files = client.getFiles(correo_id)
-    print("files")
-    print(files)
+    #print("files")
+    #print(files)
     return jsonify(files), 200
     
 @app.route('/removefile/<string:correo_id>/<string:typefile>', methods = ['DELETE'])
@@ -226,15 +226,15 @@ def selectTIS():
     count = filepos.find(".txt")
     count2 = fileneg.find(".txt")
     pathfilepos = app.config['UPLOAD_FOLDER']+'/'+correo+'/filesTIS/lucene_'+filepos[:count]
-    print("pathfilepos")
-    print(pathfilepos)
+    #print("pathfilepos")
+    #print(pathfilepos)
     pathfileneg = app.config['UPLOAD_FOLDER']+'/'+correo+'/filesTIS/lucene_'+fileneg[:count2]
-    print("pathfileneg")
-    print(pathfileneg)
+    #print("pathfileneg")
+    #print(pathfileneg)
     resultadopos = lc.termsFreqsTIS(pathfilepos)
-    print("end positive")
+    #print("end positive")
     resultadoneg = lc.termsFreqsTIS(pathfileneg)
-    print(" end negative ")
+    #print(" end negative ")
     resultado = {'terms_freqs_positive': resultadopos, 'terms_freqs_negative': resultadoneg}
     return jsonify(resultado), 200
 
@@ -258,14 +258,14 @@ def filter():
         return "Usuario NO existe, operación no valida"
 
     terms_freqs_positive = body['terms_freqs_positive']
-    print(terms_freqs_positive)
+    #print(terms_freqs_positive)
     terms_freqs_negative = body['terms_freqs_negative']
-    print(terms_freqs_negative)
+    #print(terms_freqs_negative)
     # números positivos
     sum = body['sum']
-    print(sum)
+    #print(sum)
     email = body['email']
-    print(email)
+    #print(email)
     resultado = ft.filter(typefilter, terms_freqs_positive, terms_freqs_negative, sum, email)
     # devuelvo la consulta ???
     return jsonify(resultado), 200
@@ -308,16 +308,10 @@ def applyFilter():
         setAllPos[filepos[:count]] = lc.positiveDocID(pathfile)
         pathfile = app.config['UPLOAD_FOLDER']+'/'+correo+'/'+typefile+'/lucene_'+fileneg[:count2]
         resultado[fileneg[:count2]] = lc.searchScore(pathfile,body['wanted'])
-        # si resultado está vacío, devolver error
-        '''for r in searchpos:
-            resultado.append(r)
-        for i in searchneg:
-            resultado.append(i)'''
-        '''for i in setPos:
-            setAllFVSPos.append(i)'''
+        
         salida[filepos[:count]] = md.medidas_de_rendimiento(setAllPos,resultado)    
 
-    print(salida)
+    #print(salida)
     return jsonify(salida), 200
 
 def allowed_file(filename):

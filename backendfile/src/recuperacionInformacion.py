@@ -310,8 +310,8 @@ class Lucene():
             
             docids = [term.utf8ToString()
                       for term in BytesRefIterator.cast_(term_enum)]
-            print("docids")
-            print(docids)
+            #print("docids")
+            #print(docids)
 
         finally:
             store.close()
@@ -319,7 +319,7 @@ class Lucene():
         diccionario = {}
         for d in docids:
             diccionario[d] = 10
-        print(diccionario)
+        #print(diccionario)
         return diccionario
 
 
@@ -386,39 +386,6 @@ class Lucene():
                 for s in stops:
                     if s in terms_freqs:
                         del terms_freqs[s]
-            
-            '''print("terms_freqs")
-            print(terms_freqs)
-
-            # volver a inspeccionar docCount, hacerlo en un for      
-            termssW = indexReader.getTermVector((docCount-1), "key_words")# NONE, antes tenia la restricción que si no había key_words, no guardaba el documento, ya no
-            termssA = indexReader.getTermVector((docCount-1), "abstract")
-            termssT = indexReader.getTermVector((docCount-1), "titulo")
-            termssWAT = [termssW,termssA,termssT]
-  
-            terms_freqs2 = {}
-            terms_freqs2['docCount'] = docCount
-            terms_freqs2['sumTotalTermFreq'] = sumTotalTermFreq
-
-            print("termssWAT")
-            print(termssWAT)
-            for termss in termssWAT:
-                termsEnum = termss.iterator()
-                for term in BytesRefIterator.cast_(termsEnum):
-                    # descartamos los números
-                    if term.utf8ToString() != '©':
-                        try: 
-                            float(term.utf8ToString()) or int(term.utf8ToString())
-                        except:
-                            terms_freqs2[term.utf8ToString()]=termsEnum.totalTermFreq() 
-
-            # quitamos palabras vacías
-            stops = set(line.strip() for line in open('english_stopwords.txt'))
-            for s in stops:
-                if s in terms_freqs2:
-                    del terms_freqs2[s]
-            print("terms_freqs2")
-            print(terms_freqs2)'''
             
         finally:
             store.close()

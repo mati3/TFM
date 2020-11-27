@@ -38,5 +38,5 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . /usr/src/app
 
 # Serve the app
-#CMD gunicorn -w 10 appFile:app --bind 0.0.0.0:5000
-CMD gunicorn appFile:app --bind 0.0.0.0:5000
+CMD gunicorn -w 10 appFile:app --bind 0.0.0.0:5000
+#CMD gunicorn appFile:app --bind 0.0.0.0:5000
