@@ -1,0 +1,2702 @@
+<!doctype html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+
+    <title>filtros API documentation</title>
+    <meta name="description" content="" />
+
+  <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,300' rel='stylesheet' type='text/css'>
+  
+  <style type="text/css">
+  
+* {
+  box-sizing: border-box;
+}
+/*! normalize.css v1.1.1 | MIT License | git.io/normalize */
+
+/* ==========================================================================
+   HTML5 display definitions
+   ========================================================================== */
+
+/**
+ * Correct `block` display not defined in IE 6/7/8/9 and Firefox 3.
+ */
+
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+main,
+nav,
+section,
+summary {
+    display: block;
+}
+
+/**
+ * Correct `inline-block` display not defined in IE 6/7/8/9 and Firefox 3.
+ */
+
+audio,
+canvas,
+video {
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+}
+
+/**
+ * Prevent modern browsers from displaying `audio` without controls.
+ * Remove excess height in iOS 5 devices.
+ */
+
+audio:not([controls]) {
+    display: none;
+    height: 0;
+}
+
+/**
+ * Address styling not present in IE 7/8/9, Firefox 3, and Safari 4.
+ * Known issue: no IE 6 support.
+ */
+
+[hidden] {
+    display: none;
+}
+
+/* ==========================================================================
+   Base
+   ========================================================================== */
+
+/**
+ * 1. Prevent system color scheme's background color being used in Firefox, IE,
+ *    and Opera.
+ * 2. Prevent system color scheme's text color being used in Firefox, IE, and
+ *    Opera.
+ * 3. Correct text resizing oddly in IE 6/7 when body `font-size` is set using
+ *    `em` units.
+ * 4. Prevent iOS text size adjust after orientation change, without disabling
+ *    user zoom.
+ */
+
+html {
+    background: #fff; /* 1 */
+    color: #000; /* 2 */
+    font-size: 100%; /* 3 */
+    -webkit-text-size-adjust: 100%; /* 4 */
+    -ms-text-size-adjust: 100%; /* 4 */
+}
+
+/**
+ * Address `font-family` inconsistency between `textarea` and other form
+ * elements.
+ */
+
+html,
+button,
+input,
+select,
+textarea {
+    font-family: sans-serif;
+}
+
+/**
+ * Address margins handled incorrectly in IE 6/7.
+ */
+
+body {
+    margin: 0;
+}
+
+/* ==========================================================================
+   Links
+   ========================================================================== */
+
+/**
+ * Address `outline` inconsistency between Chrome and other browsers.
+ */
+
+a:focus {
+    outline: thin dotted;
+}
+
+/**
+ * Improve readability when focused and also mouse hovered in all browsers.
+ */
+
+a:active,
+a:hover {
+    outline: 0;
+}
+
+/* ==========================================================================
+   Typography
+   ========================================================================== */
+
+/**
+ * Address font sizes and margins set differently in IE 6/7.
+ * Address font sizes within `section` and `article` in Firefox 4+, Safari 5,
+ * and Chrome.
+ */
+
+h1 {
+    font-size: 2em;
+    margin: 0.67em 0;
+}
+
+h2 {
+    font-size: 1.5em;
+    margin: 0.83em 0;
+}
+
+h3 {
+    font-size: 1.17em;
+    margin: 1em 0;
+}
+
+h4 {
+    font-size: 1em;
+    margin: 1.33em 0;
+}
+
+h5 {
+    font-size: 0.83em;
+    margin: 1.67em 0;
+}
+
+h6 {
+    font-size: 0.67em;
+    margin: 2.33em 0;
+}
+
+/**
+ * Address styling not present in IE 7/8/9, Safari 5, and Chrome.
+ */
+
+abbr[title] {
+    border-bottom: 1px dotted;
+}
+
+/**
+ * Address style set to `bolder` in Firefox 3+, Safari 4/5, and Chrome.
+ */
+
+b,
+strong {
+    font-weight: bold;
+}
+
+blockquote {
+    margin: 1em 40px;
+}
+
+/**
+ * Address styling not present in Safari 5 and Chrome.
+ */
+
+dfn {
+    font-style: italic;
+}
+
+/**
+ * Address differences between Firefox and other browsers.
+ * Known issue: no IE 6/7 normalization.
+ */
+
+hr {
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+    height: 0;
+}
+
+/**
+ * Address styling not present in IE 6/7/8/9.
+ */
+
+mark {
+    background: #ff0;
+    color: #000;
+}
+
+/**
+ * Address margins set differently in IE 6/7.
+ */
+
+p,
+pre {
+    margin: 1em 0;
+}
+
+/**
+ * Correct font family set oddly in IE 6, Safari 4/5, and Chrome.
+ */
+
+code,
+kbd,
+pre,
+samp {
+    font-family: monospace, serif;
+    _font-family: 'courier new', monospace;
+    font-size: 1em;
+}
+
+/**
+ * Improve readability of pre-formatted text in all browsers.
+ */
+
+pre {
+    white-space: pre;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+/**
+ * Address CSS quotes not supported in IE 6/7.
+ */
+
+q {
+    quotes: none;
+}
+
+/**
+ * Address `quotes` property not supported in Safari 4.
+ */
+
+q:before,
+q:after {
+    content: '';
+    content: none;
+}
+
+/**
+ * Address inconsistent and variable font size in all browsers.
+ */
+
+small {
+    font-size: 80%;
+}
+
+/**
+ * Prevent `sub` and `sup` affecting `line-height` in all browsers.
+ */
+
+sub,
+sup {
+    font-size: 75%;
+    line-height: 0;
+    position: relative;
+    vertical-align: baseline;
+}
+
+sup {
+    top: -0.5em;
+}
+
+sub {
+    bottom: -0.25em;
+}
+
+/* ==========================================================================
+   Lists
+   ========================================================================== */
+
+/**
+ * Address margins set differently in IE 6/7.
+ */
+
+dl,
+menu,
+ol,
+ul {
+    margin: 1em 0;
+}
+
+dd {
+    margin: 0 0 0 40px;
+}
+
+/**
+ * Address paddings set differently in IE 6/7.
+ */
+
+menu,
+ol,
+ul {
+    padding: 0 0 0 40px;
+}
+
+/**
+ * Correct list images handled incorrectly in IE 7.
+ */
+
+nav ul,
+nav ol {
+    list-style: none;
+    list-style-image: none;
+}
+
+/* ==========================================================================
+   Embedded content
+   ========================================================================== */
+
+/**
+ * 1. Remove border when inside `a` element in IE 6/7/8/9 and Firefox 3.
+ * 2. Improve image quality when scaled in IE 7.
+ */
+
+img {
+    border: 0; /* 1 */
+    -ms-interpolation-mode: bicubic; /* 2 */
+}
+
+/**
+ * Correct overflow displayed oddly in IE 9.
+ */
+
+svg:not(:root) {
+    overflow: hidden;
+}
+
+/* ==========================================================================
+   Figures
+   ========================================================================== */
+
+/**
+ * Address margin not present in IE 6/7/8/9, Safari 5, and Opera 11.
+ */
+
+figure {
+    margin: 0;
+}
+
+/* ==========================================================================
+   Forms
+   ========================================================================== */
+
+/**
+ * Correct margin displayed oddly in IE 6/7.
+ */
+
+form {
+    margin: 0;
+}
+
+/**
+ * Define consistent border, margin, and padding.
+ */
+
+fieldset {
+    border: 1px solid #c0c0c0;
+    margin: 0 2px;
+    padding: 0.35em 0.625em 0.75em;
+}
+
+/**
+ * 1. Correct color not being inherited in IE 6/7/8/9.
+ * 2. Correct text not wrapping in Firefox 3.
+ * 3. Correct alignment displayed oddly in IE 6/7.
+ */
+
+legend {
+    border: 0; /* 1 */
+    padding: 0;
+    white-space: normal; /* 2 */
+    *margin-left: -7px; /* 3 */
+}
+
+/**
+ * 1. Correct font size not being inherited in all browsers.
+ * 2. Address margins set differently in IE 6/7, Firefox 3+, Safari 5,
+ *    and Chrome.
+ * 3. Improve appearance and consistency in all browsers.
+ */
+
+button,
+input,
+select,
+textarea {
+    font-size: 100%; /* 1 */
+    margin: 0; /* 2 */
+    vertical-align: baseline; /* 3 */
+    *vertical-align: middle; /* 3 */
+}
+
+/**
+ * Address Firefox 3+ setting `line-height` on `input` using `!important` in
+ * the UA stylesheet.
+ */
+
+button,
+input {
+    line-height: normal;
+}
+
+/**
+ * Address inconsistent `text-transform` inheritance for `button` and `select`.
+ * All other form control elements do not inherit `text-transform` values.
+ * Correct `button` style inheritance in Chrome, Safari 5+, and IE 6+.
+ * Correct `select` style inheritance in Firefox 4+ and Opera.
+ */
+
+button,
+select {
+    text-transform: none;
+}
+
+/**
+ * 1. Avoid the WebKit bug in Android 4.0.* where (2) destroys native `audio`
+ *    and `video` controls.
+ * 2. Correct inability to style clickable `input` types in iOS.
+ * 3. Improve usability and consistency of cursor style between image-type
+ *    `input` and others.
+ * 4. Remove inner spacing in IE 7 without affecting normal text inputs.
+ *    Known issue: inner spacing remains in IE 6.
+ */
+
+button,
+html input[type="button"], /* 1 */
+input[type="reset"],
+input[type="submit"] {
+    -webkit-appearance: button; /* 2 */
+    cursor: pointer; /* 3 */
+    *overflow: visible;  /* 4 */
+}
+
+/**
+ * Re-set default cursor for disabled elements.
+ */
+
+button[disabled],
+html input[disabled] {
+    cursor: default;
+}
+
+/**
+ * 1. Address box sizing set to content-box in IE 8/9.
+ * 2. Remove excess padding in IE 8/9.
+ * 3. Remove excess padding in IE 7.
+ *    Known issue: excess padding remains in IE 6.
+ */
+
+input[type="checkbox"],
+input[type="radio"] {
+    box-sizing: border-box; /* 1 */
+    padding: 0; /* 2 */
+    *height: 13px; /* 3 */
+    *width: 13px; /* 3 */
+}
+
+/**
+ * 1. Address `appearance` set to `searchfield` in Safari 5 and Chrome.
+ * 2. Address `box-sizing` set to `border-box` in Safari 5 and Chrome
+ *    (include `-moz` to future-proof).
+ */
+
+input[type="search"] {
+    -webkit-appearance: textfield; /* 1 */
+    -moz-box-sizing: content-box;
+    -webkit-box-sizing: content-box; /* 2 */
+    box-sizing: content-box;
+}
+
+/**
+ * Remove inner padding and search cancel button in Safari 5 and Chrome
+ * on OS X.
+ */
+
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-decoration {
+    -webkit-appearance: none;
+}
+
+/**
+ * Remove inner padding and border in Firefox 3+.
+ */
+
+button::-moz-focus-inner,
+input::-moz-focus-inner {
+    border: 0;
+    padding: 0;
+}
+
+/**
+ * 1. Remove default vertical scrollbar in IE 6/7/8/9.
+ * 2. Improve readability and alignment in all browsers.
+ */
+
+textarea {
+    overflow: auto; /* 1 */
+    vertical-align: top; /* 2 */
+}
+
+/* ==========================================================================
+   Tables
+   ========================================================================== */
+
+/**
+ * Remove most spacing between table cells.
+ */
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+  </style>
+
+  <style type="text/css">
+  
+  html, body {
+    margin: 0;
+    padding: 0;
+    min-height: 100%;
+  }
+  body {
+    background: #fff;
+    font-family: "Source Sans Pro", "Helvetica Neueue", Helvetica, sans;
+    font-weight: 300;
+    font-size: 16px;
+    line-height: 1.6em;
+  }
+  #content {
+    width: 70%;
+    max-width: 850px;
+    float: left;
+    padding: 30px 60px;
+    border-left: 1px solid #ddd;
+  }
+  #sidebar {
+    width: 25%;
+    float: left;
+    padding: 30px;
+    overflow: hidden;
+  }
+  #nav {
+    font-size: 130%;
+    margin: 0 0 15px 0;
+  }
+
+  #top {
+    display: block;
+    position: fixed;
+    bottom: 5px;
+    left: 5px;
+    font-size: .85em;
+    text-transform: uppercase;
+  }
+
+  #footer {
+    font-size: .75em;
+    padding: 5px 30px;
+    border-top: 1px solid #ddd;
+    text-align: right;
+  }
+    #footer p {
+      margin: 0 0 0 30px;
+      display: inline-block;
+    }
+
+  h1, h2, h3, h4, h5 {
+    font-weight: 300;
+  }
+  h1 {
+    font-size: 2.5em;
+    line-height: 1.1em;
+    margin: 0 0 .50em 0;
+  }
+
+  h2 {
+    font-size: 1.75em;
+    margin: 1em 0 .50em 0;
+  }
+
+  h3 {
+    margin: 25px 0 10px 0;
+  }
+
+  h4 {
+    margin: 0;
+    font-size: 105%;
+  }
+
+  a {
+    color: #058;
+    text-decoration: none;
+    transition: color .3s ease-in-out;
+  }
+
+  a:hover {
+    color: #e08524;
+    transition: color .3s ease-in-out;
+  }
+
+  pre, code, .mono, .name {
+    font-family: "Ubuntu Mono", "Cousine", "DejaVu Sans Mono", monospace;
+  }
+
+  .title .name {
+    font-weight: bold;
+  }
+  .section-title {
+    margin-top: 2em;
+  }
+  .ident {
+    color: #900;
+  }
+
+  code {
+    background: #f9f9f9;
+  } 
+
+  pre {
+    background: #fefefe;
+    border: 1px solid #ddd;
+    box-shadow: 2px 2px 0 #f3f3f3;
+    margin: 0 30px;
+    padding: 15px 30px;
+  }
+
+  .codehilite {
+    margin: 0 30px 10px 30px;
+  }
+
+    .codehilite pre {
+      margin: 0;
+    }
+    .codehilite .err { background: #ff3300; color: #fff !important; } 
+
+  table#module-list {
+    font-size: 110%;
+  }
+
+    table#module-list tr td:first-child {
+      padding-right: 10px;
+      white-space: nowrap;
+    }
+
+    table#module-list td {
+      vertical-align: top;
+      padding-bottom: 8px;
+    }
+
+      table#module-list td p {
+        margin: 0 0 7px 0;
+      }
+
+  .def {
+    display: table;
+  }
+
+    .def p {
+      display: table-cell;
+      vertical-align: top;
+      text-align: left;
+    }
+
+    .def p:first-child {
+      white-space: nowrap;
+    }
+
+    .def p:last-child {
+      width: 100%;
+    }
+
+
+  #index {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+    ul#index .class_name {
+      /* font-size: 110%; */
+      font-weight: bold;
+    }
+    #index ul {
+      margin: 0;
+    }
+
+  .item {
+    margin: 0 0 15px 0;
+  }
+
+    .item .class {
+      margin: 0 0 25px 30px;
+    }
+
+      .item .class ul.class_list {
+        margin: 0 0 20px 0;
+      }
+
+    .item .name {
+      background: #fafafa;
+      margin: 0;
+      font-weight: bold;
+      padding: 5px 10px;
+      border-radius: 3px;
+      display: inline-block;
+      min-width: 40%;
+    }
+      .item .name:hover {
+        background: #f6f6f6;
+      }
+
+    .item .empty_desc {
+      margin: 0 0 5px 0;
+      padding: 0;
+    }
+
+    .item .inheritance {
+      margin: 3px 0 0 30px;
+    }
+
+    .item .inherited {
+      color: #666;
+    }
+
+    .item .desc {
+      padding: 0 8px;
+      margin: 0;
+    }
+
+      .item .desc p {
+        margin: 0 0 10px 0;
+      }
+
+    .source_cont {
+      margin: 0;
+      padding: 0;
+    }
+
+    .source_link a {
+      background: #ffc300;
+      font-weight: 400;
+      font-size: .75em;
+      text-transform: uppercase;
+      color: #fff;
+      text-shadow: 1px 1px 0 #f4b700;
+      
+      padding: 3px 8px;
+      border-radius: 2px;
+      transition: background .3s ease-in-out;
+    }
+      .source_link a:hover {
+        background: #FF7200;
+        text-shadow: none;
+        transition: background .3s ease-in-out;
+      }
+
+    .source {
+      display: none;
+      max-height: 600px;
+      overflow-y: scroll;
+      margin-bottom: 15px;
+    }
+
+      .source .codehilite {
+        margin: 0;
+      }
+
+  .desc h1, .desc h2, .desc h3 {
+    font-size: 100% !important;
+  }
+  .clear {
+    clear: both;
+  }
+
+  @media all and (max-width: 950px) {
+    #sidebar {
+      width: 35%;
+    }
+    #content {
+      width: 65%;
+    }
+  }
+  @media all and (max-width: 650px) {
+    #top {
+      display: none;
+    }
+    #sidebar {
+      float: none;
+      width: auto;
+    }
+    #content {
+      float: none;
+      width: auto;
+      padding: 30px;
+    }
+
+    #index ul {
+      padding: 0;
+      margin-bottom: 15px;
+    }
+    #index ul li {
+      display: inline-block;
+      margin-right: 30px;
+    }
+    #footer {
+      text-align: left;
+    }
+    #footer p {
+      display: block;
+      margin: inherit;
+    }
+  }
+
+  /*****************************/
+
+  </style>
+
+
+  <style type="text/css">
+  
+/* ==========================================================================
+   EXAMPLE Media Queries for Responsive Design.
+   These examples override the primary ('mobile first') styles.
+   Modify as content requires.
+   ========================================================================== */
+
+@media only screen and (min-width: 35em) {
+    /* Style adjustments for viewports that meet the condition */
+}
+
+@media print,
+       (-o-min-device-pixel-ratio: 5/4),
+       (-webkit-min-device-pixel-ratio: 1.25),
+       (min-resolution: 120dpi) {
+    /* Style adjustments for high resolution devices */
+}
+
+/* ==========================================================================
+   Print styles.
+   Inlined to avoid required HTTP connection: h5bp.com/r
+   ========================================================================== */
+
+@media print {
+    * {
+        background: transparent !important;
+        color: #000 !important; /* Black prints faster: h5bp.com/s */
+        box-shadow: none !important;
+        text-shadow: none !important;
+    }
+
+    a,
+    a:visited {
+        text-decoration: underline;
+    }
+
+    a[href]:after {
+        content: " (" attr(href) ")";
+    }
+
+    abbr[title]:after {
+        content: " (" attr(title) ")";
+    }
+
+    /*
+     * Don't show links for images, or javascript/internal links
+     */
+
+    .ir a:after,
+    a[href^="javascript:"]:after,
+    a[href^="#"]:after {
+        content: "";
+    }
+
+    pre,
+    blockquote {
+        border: 1px solid #999;
+        page-break-inside: avoid;
+    }
+
+    thead {
+        display: table-header-group; /* h5bp.com/t */
+    }
+
+    tr,
+    img {
+        page-break-inside: avoid;
+    }
+
+    img {
+        max-width: 100% !important;
+    }
+
+    @page {
+        margin: 0.5cm;
+    }
+
+    p,
+    h2,
+    h3 {
+        orphans: 3;
+        widows: 3;
+    }
+
+    h2,
+    h3 {
+        page-break-after: avoid;
+    }
+}
+
+  </style>
+
+  <script type="text/javascript">
+  function toggle(id, $link) {
+    $node = document.getElementById(id);
+    if (!$node)
+    return;
+    if (!$node.style.display || $node.style.display == 'none') {
+    $node.style.display = 'block';
+    $link.innerHTML = 'Hide source &nequiv;';
+    } else {
+    $node.style.display = 'none';
+    $link.innerHTML = 'Show source &equiv;';
+    }
+  }
+  </script>
+</head>
+<body>
+<a href="#" id="top">Top</a>
+
+<div id="container">
+    
+  
+  <div id="sidebar">
+    <h1>Index</h1>
+    <ul id="index">
+    <li class="set"><h3><a href="#header-variables">Module variables</a></h3>
+      
+  <ul>
+    <li class="mono"><a href="#filtros.ndtri">ndtri</a></li>
+  </ul>
+
+    </li>
+
+
+    <li class="set"><h3><a href="#header-classes">Classes</a></h3>
+      <ul>
+        <li class="mono">
+        <span class="class_name"><a href="#filtros.Filtros">Filtros</a></span>
+        
+          
+  <ul>
+    <li class="mono"><a href="#filtros.Filtros.filter">filter</a></li>
+    <li class="mono"><a href="#filtros.Filtros.filterCrossEntropy">filterCrossEntropy</a></li>
+    <li class="mono"><a href="#filtros.Filtros.filterDiferencia">filterDiferencia</a></li>
+    <li class="mono"><a href="#filtros.Filtros.filterInfGain">filterInfGain</a></li>
+    <li class="mono"><a href="#filtros.Filtros.filterMutualInfo">filterMutualInfo</a></li>
+    <li class="mono"><a href="#filtros.Filtros.filterNormalSeparation">filterNormalSeparation</a></li>
+    <li class="mono"><a href="#filtros.Filtros.filterOddsRatio">filterOddsRatio</a></li>
+    <li class="mono"><a href="#filtros.Filtros.filterfreq">filterfreq</a></li>
+    <li class="mono"><a href="#filtros.Filtros.tabla_Term">tabla_Term</a></li>
+  </ul>
+
+        </li>
+      </ul>
+    </li>
+
+    </ul>
+  </div>
+
+    <article id="content">
+      
+  
+
+  
+
+
+  <header id="section-intro">
+  <h1 class="title"><span class="name">filtros</span> module</h1>
+  
+  
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-filtros', this);">Show source &equiv;</a></p>
+  <div id="source-filtros" class="source">
+    <pre><code>#   Trabajo Fin de Máster
+#   Máster en Ingeniería Informática
+#
+#   2020 - Copyright (c) - GNU v3.0
+#
+#  Matilde Cabrera <mati331@correo.ugr.es>
+
+import math
+import numpy as np, scipy.stats as st
+from scipy.special import ndtri
+
+
+class Filtros():
+
+
+    def tabla_Term(self, resultadopos, resultadoneg):
+        """
+        Tabla de medidas necesarias de los terminos.
+        
+        Tabla de médidas para los terminos de un par de archivos, positivo y negativo, siendo:
+
+        - F = término
+        - P(F) = probabilidad[term] = freq_pos + freq_neg / sum_total_term_freq_pos_and_neg
+        - P(Ci|F) = P(F,Ci) / P(F)
+            - P(F,Cpos) = (freq_term_en_positivos/freq_term_pos+freq_term_neg) / P(F)
+            - P(F,Cneg) =( freq_term_en_negativos/freq_term_pos+freq_term_neg) / P(F)
+
+        - P(F|Ci) = P(Ci,F) / P(Ci)
+            - P(F,Cpos) = (freq_term_en_positivos/freq_term_pos+freq_term_neg) / P(Cpos)
+            - P(F,Cneg) = (freq_term_en_negativos/freq_term_pos+freq_term_neg) / P(Cneg)
+
+
+        Args:
+        ----------
+        resultadopos : dic
+        >    Diccionario de terminos: frecuencia de los documentos positivos  
+
+        resultadoneg : dic
+        >    Diccionario de terminos: frecuencia de los documentos negativos 
+
+        Returns:
+        -------
+        dic
+        >    Diccionario de termminos, por cada termino devuelve: P(F), P(Ci|F), P(F|Ci), sum_F (frecuencia total del termino, suma de positivos y negativos).
+
+        """
+        sumTotalTermFreq = resultadopos['sumTotalTermFreq'] + resultadoneg['sumTotalTermFreq']
+        p_Cpos = resultadopos['docCount']/(resultadopos['docCount']+resultadoneg['docCount'])
+        p_Cneg = resultadoneg['docCount']/(resultadoneg['docCount']+resultadopos['docCount'])
+
+        prob = {}
+        # ya tenemos los positivos
+        totalTerm = resultadopos.copy()
+        # incluimos los negativos, obtengo el vector de todos los terminos y su frecuencia.
+        for k in resultadoneg:
+            if k in resultadopos:
+                totalTerm[k] = resultadopos[k] + resultadoneg[k]
+            else:
+                totalTerm[k] = resultadoneg[k]
+
+        p_Cpos_F = {}
+        p_Cneg_F = {}
+        p_F_Cpos = {}
+        p_F_Cneg = {}
+        tabla = {}
+        for k in totalTerm:
+            prob[k] = totalTerm[k]/sumTotalTermFreq
+            if k in resultadopos:
+                p_Cpos_F[k] = (resultadopos[k]/totalTerm[k])/prob[k]
+                p_F_Cpos[k] = (resultadopos[k]/totalTerm[k])/p_Cpos
+            else: 
+                p_Cpos_F[k] = 0
+                p_F_Cpos[k] = 0
+            if k in resultadoneg:
+                p_Cneg_F[k] = (resultadoneg[k]/totalTerm[k])/prob[k]
+                p_F_Cneg[k] = (resultadoneg[k]/totalTerm[k])/p_Cneg
+            else: 
+                p_Cneg_F[k] = 0
+                p_F_Cneg[k] = 0
+            tabla[k] = {'prob': prob[k], 'p_Cpos_F': p_Cpos_F[k], 'p_Cneg_F':  p_Cneg_F[k], 'p_F_Cpos': p_F_Cpos[k], 'p_F_Cneg':  p_F_Cneg[k], 'sum_F': totalTerm[k]}
+        #print("tabla")
+        #print(tabla)
+        del tabla['sumTotalTermFreq']
+        del tabla['docCount']
+        return tabla
+
+    def filterInfGain(self, resultadopos, resultadoneg, sum):
+        """
+        Filtro InfGain.
+
+        Filtro ganancia de información.
+
+        Args:
+        ----------
+        resultadopos : dic
+        >    Diccionario termino:frecuencia de los documentos positivos  
+
+        resultadoneg : dic
+        >    Diccionario termino:frecuencia de los documentos negativos  
+
+        sum : int
+        >    Cantidad de terminos a devolver
+
+        Returns:
+        -------
+        list
+        >    lista de los mejores terminos encontrados con el filtro.
+
+        """
+        p_Cpos = resultadopos['docCount']/(resultadopos['docCount']+resultadoneg['docCount'])
+        p_Cneg = resultadoneg['docCount']/(resultadoneg['docCount']+resultadopos['docCount'])
+
+        tabla = self.tabla_Term(resultadopos, resultadoneg)
+        InfGain = {}
+        for f in tabla:
+            p_F = tabla[f]['prob']# P(F) 
+            not_p_F = 1 - tabla[f]['prob']# P(F⁻)
+            p_Cpos_F = tabla[f]['p_Cpos_F'] # P(Ci|F)
+            if f in resultadoneg: 
+                not_p_Cpos_F = resultadoneg[f]/not_p_F # P(Ci|F⁻)
+                not_logpos = math.log(not_p_Cpos_F/p_Cpos)
+            else: 
+                not_p_Cpos_F = 0
+                not_logpos = 0
+            p_Cneg_F = tabla[f]['p_Cneg_F'] # P(Ci|F)
+            if f in resultadopos: 
+                not_p_Cneg_F = resultadopos[f]/not_p_F # P(Ci|F⁻)
+                not_logneg = math.log(not_p_Cneg_F/p_Cneg)
+            else: 
+                not_p_Cneg_F = 0
+                not_logpos = 0
+            # error cuando p_Cneg_F es 0
+            if p_Cpos_F==0: logpos=0
+            else: logpos = math.log(p_Cpos_F/p_Cpos)
+            if p_Cneg_F==0:logneg = 0
+            else: logneg = math.log(p_Cneg_F/p_Cneg)
+
+            sumatoria = (p_Cpos_F * logpos) + (p_Cneg_F * logneg)
+            not_sumatoria = (not_p_Cpos_F * not_logpos) + (not_p_Cneg_F * not_logneg)
+            InfGain[f]= (p_F * sumatoria)+(not_p_F * not_sumatoria)
+        #print("InfGain")
+        #print(InfGain)
+        salida = sorted(InfGain, key=InfGain.get, reverse=True)
+        #print('salida sorted')
+        #print(salida)
+        salida = salida[:int(sum)]
+        return salida
+
+    def filterCrossEntropy(self, resultadopos, resultadoneg, sum):
+        """
+        Filtro CrossEntropy.
+
+        Args:
+        ----------
+        resultadopos : dic
+        >    Diccionario termino:frecuencia de los documentos positivos  
+
+        resultadoneg : dic
+        >    Diccionario termino:frecuencia de los documentos negativos  
+
+        sum : int
+        >    Cantidad de terminos a devolver
+
+        Returns:
+        -------
+        list
+        >    lista de los mejores terminos encontrados con el filtro.
+
+        """
+        p_Cpos = resultadopos['docCount']/(resultadopos['docCount']+resultadoneg['docCount'])
+        p_Cneg = resultadoneg['docCount']/(resultadoneg['docCount']+resultadopos['docCount'])
+
+        tabla = self.tabla_Term(resultadopos, resultadoneg)
+        CrossEntropy = {}
+        for f in tabla:
+            p_F = tabla[f]['prob'] # P(F)
+            p_Cpos_F = tabla[f]['p_Cpos_F'] # P(Ci|F)
+            p_Cneg_F = tabla[f]['p_Cneg_F'] # P(Ci|F)
+            # error cuando p_Cneg_F es 0
+            if p_Cpos_F==0: logpos=0
+            else: logpos = math.log(p_Cpos_F/p_Cpos)
+            if p_Cneg_F==0:logneg = 0
+            else: logneg = math.log(p_Cneg_F/p_Cneg)
+            CrossEntropy[f]=p_F*( (p_Cpos_F*logpos)+(p_Cneg_F*logneg) )
+        #print("CrossEntropy")
+        #print(CrossEntropy)
+        salida = sorted(CrossEntropy, key=CrossEntropy.get, reverse=True)
+        #print('salida sorted')
+        #print(salida)
+        salida = salida[:int(sum)]
+        return salida
+
+    def filterMutualInfo(self, resultadopos, resultadoneg, sum):
+        """
+        Filtro MutualInfo.
+
+        Args:
+        ----------
+        resultadopos : dic
+        >    Diccionario termino:frecuencia de los documentos positivos  
+
+        resultadoneg : dic
+        >    Diccionario termino:frecuencia de los documentos negativos  
+
+        sum : int
+        >    Cantidad de terminos a devolver
+
+        Returns:
+        -------
+        list
+        >    lista de los mejores terminos encontrados con el filtro.
+
+        """
+        # prob de ci, la probabilidad de una clase, es el numero de documentos de esa clase entre el total de documentos.
+        p_Cpos = resultadopos['docCount']/(resultadopos['docCount']+resultadoneg['docCount'])
+        p_Cneg = resultadoneg['docCount']/(resultadoneg['docCount']+resultadopos['docCount'])
+
+        tabla = self.tabla_Term(resultadopos, resultadoneg)
+        mutualInfo = {}
+        for f in tabla:
+            p_F = tabla[f]['prob'] # P(F)
+            p_F_Cpos = tabla[f]['p_F_Cpos'] # P(F|Ci)
+            p_F_Cneg =  tabla[f]['p_F_Cneg'] # P(F|Ci)
+            # error cuando p_Cneg_F es 0
+            if p_F_Cpos==0: logpos=0
+            else: logpos = math.log(p_F_Cpos/p_F)
+            if p_F_Cneg==0:logneg = 0
+            else: logneg = math.log(p_F_Cneg/p_F)
+            mutualInfo[f]=(p_Cpos*logpos)+(p_Cneg*logneg)
+        #print("mutualInfo")
+        #print(mutualInfo)
+        salida = sorted(mutualInfo, key=mutualInfo.get, reverse=True)
+        #print('salida sorted')
+        #print(salida)
+        salida = salida[:int(sum)]
+        return salida
+
+    def filterfreq(self, resultadopos, resultadoneg, sum):
+        """
+        Filtro Frecuencias.
+
+        Args:
+        ----------
+        resultadopos : dic
+        >    Diccionario termino:frecuencia de los documentos positivos  
+
+        resultadoneg : dic
+        >    Diccionario termino:frecuencia de los documentos negativos  
+
+        sum : int
+        >    Cantidad de terminos a devolver
+
+        Returns:
+        -------
+        list
+        >    lista de los mejores terminos encontrados con el filtro.
+
+        """
+        totalTerms = resultadopos.copy()
+        for k in resultadoneg:
+            if k in resultadopos:
+                del totalTerms[k]
+        #print(totalTerms)
+        salida = sorted(totalTerms, key=totalTerms.get, reverse=True)
+        #print(salida)
+        salida = salida[:int(sum)]
+        return salida
+
+    def filterOddsRatio(self, resultadopos, resultadoneg, sum):
+        """
+        Filtro Odds Ratio.
+
+        Args:
+        ----------
+        resultadopos : dic
+        >    Diccionario termino:frecuencia de los documentos positivos  
+
+        resultadoneg : dic
+        >    Diccionario termino:frecuencia de los documentos negativos  
+
+        sum : int
+        >    Cantidad de terminos a devolver
+
+        Returns:
+        -------
+        list
+        >    lista de los mejores terminos encontrados con el filtro.
+
+        """
+        tabla = self.tabla_Term(resultadopos, resultadoneg)
+        OddsRatio = {}
+        for f in tabla:
+            # P(F|pos) = is the conditional probability of feature F occurring given the class value ‘positive’
+            # numero de veces que aparece un termino en el positivo entre el totalterminofrecuencia de los positivos
+            if f in resultadopos:
+                condProbFpos = resultadopos[f]/resultadopos['sumTotalTermFreq']
+            else:
+                condProbFpos = 0
+            if f in resultadoneg:
+                condProbFneg = resultadoneg[f]/resultadoneg['sumTotalTermFreq']
+            else:
+                condProbFneg = 0
+            # si condProbFneg es 0, es decir, el termino no existe en negativos, no se puede calcular oddratio
+            if (condProbFpos==0) or (condProbFneg==0):
+                OddsRatio[f] = 0
+            else:
+                OddsRatio[f]=math.log((condProbFpos*(1-condProbFneg))/((1-condProbFpos)*condProbFneg))
+        #print("oddsRatio")
+        #print(OddsRatio)
+        salida = sorted(OddsRatio, key=OddsRatio.get, reverse=True)
+        #print('salida sorted')
+        #print(salida)
+        salida = salida[:int(sum)]
+        return salida
+
+    def filterNormalSeparation(self, resultadopos, resultadoneg, sum):
+        """
+        Filtro Normal Separation.
+
+        Args:
+        ----------
+        resultadopos : dic
+        >    Diccionario termino:frecuencia de los documentos positivos  
+
+        resultadoneg : dic
+        >    Diccionario termino:frecuencia de los documentos negativos  
+
+        sum : int
+        >    Cantidad de terminos a devolver
+
+        Returns:
+        -------
+        list
+        >    lista de los mejores terminos encontrados con el filtro.
+
+        """
+        tabla = self.tabla_Term(resultadopos, resultadoneg)
+        
+        md = []
+        for m in tabla:
+            md.append(tabla[m]['sum_F'])
+        
+        distribucion_inversa = {}
+        for d in tabla: 
+            #distribucion_inversa[d] = st.norm.ppf(tabla[d]['sum_F'],loc = np.mean(md), scale = st.sem(md))
+            distribucion = st.norm.cdf(tabla[d]['sum_F'],loc = np.mean(md), scale = st.sem(md))
+            distribucion_inversa[d] = ndtri(distribucion)
+        #print("distribucion_inversa")
+        #print(distribucion_inversa)
+        NormalSeparation = {}
+        for f in tabla:
+            if f in resultadopos:
+                condProbFpos = resultadopos[f]/resultadopos['sumTotalTermFreq']
+            else:
+                condProbFpos = 0
+            if f in resultadoneg:
+                condProbFneg = resultadoneg[f]/resultadoneg['sumTotalTermFreq']
+            else:
+                condProbFneg = 0
+            NormalSeparation[f]=(distribucion_inversa[f]*condProbFpos)-(distribucion_inversa[f]*condProbFneg)
+        #print("NormalSeparation")
+        #print(NormalSeparation)
+        salida = sorted(NormalSeparation, key=NormalSeparation.get, reverse=True)
+        #print('salida sorted')
+        #print(salida)
+        salida = salida[:int(sum)]
+        return salida
+
+    def filterDiferencia(self, resultadopos, resultadoneg, sum):
+        """
+        Filtro Diferencia.
+
+        Args:
+        ----------
+        resultadopos : dic
+        >    Diccionario termino:frecuencia de los documentos positivos  
+
+        resultadoneg : dic
+        >    Diccionario termino:frecuencia de los documentos negativos  
+
+        sum : int
+        >    Cantidad de terminos a devolver
+
+        Returns:
+        -------
+        list
+        >    lista de los mejores terminos encontrados con el filtro.
+
+        """
+        tabla = self.tabla_Term(resultadopos, resultadoneg)
+
+        # el peso de termino es mejor que otro si aparece muchas veces en los positivos y no aparece en los negativos
+        Diferencia = {}
+        for f in tabla:
+            if f in resultadopos:
+                #nº veces clase positiva / nº total termino en la clase positiva
+                Pesopos = resultadopos[f]/resultadopos['sumTotalTermFreq']
+            else:
+                Pesopos = 0
+            if f in resultadoneg:
+                Pesoneg = resultadoneg[f]/resultadoneg['sumTotalTermFreq']
+            else:
+                Pesoneg = 0
+            #resto negativo al positivo.
+            Diferencia[f] = Pesopos - Pesoneg
+        #print("Diferencia")
+        #print(Diferencia)
+        salida = sorted(Diferencia, key=Diferencia.get, reverse=True)
+        #print('salida sorted')
+        #print(salida)
+        salida = salida[:int(sum)]
+        return salida
+
+    def filter(self, typefilter, terms_freqs_positive, terms_freqs_negative, sum, email):
+        """
+        Filtro.
+
+        Ejecuta el tipo de filtro seleccionado.
+
+        Args:
+        ----------
+        typefilter : string
+        >    Tipo de filtro a ejecutar  
+
+        terms_freqs_positive : dic
+        >    Diccionario termino:frecuencia de los documentos positivos  
+
+        terms_freqs_negative : dic
+        >    Diccionario termino:frecuencia de los documentos negativos  
+
+        sum : int
+        >    Cantidad de terminos a devolver
+
+        Returns:
+        -------
+        list or string
+        >    lista de los mejores terminos encontrados con el filtro. En caso de no encontrar el filtro pasado devuelve mensaje de error.
+        """
+        if typefilter == "Freq":
+            return self.filterfreq(terms_freqs_positive,terms_freqs_negative, sum)
+        elif typefilter == "InfGain":
+            return self.filterInfGain(terms_freqs_positive,terms_freqs_negative, sum)
+        elif typefilter == "CrossEntropy":
+            return self.filterCrossEntropy(terms_freqs_positive,terms_freqs_negative, sum)
+        elif typefilter == "MutualInfo":
+            return self.filterMutualInfo(terms_freqs_positive,terms_freqs_negative, sum)
+        elif typefilter == "OddsRatio":
+            return self.filterOddsRatio(terms_freqs_positive,terms_freqs_negative, sum)
+        elif typefilter == "NormalSeparation":
+            return self.filterNormalSeparation(terms_freqs_positive,terms_freqs_negative, sum)
+        elif typefilter == "Diferencia":
+            return self.filterDiferencia(terms_freqs_positive,terms_freqs_negative, sum)
+        else:
+            return "No existe el filtro seleccionado "
+</code></pre>
+  </div>
+
+  </header>
+
+  <section id="section-items">
+    <h2 class="section-title" id="header-variables">Module variables</h2>
+      <div class="item">
+      <p id="filtros.ndtri" class="name">var <span class="ident">ndtri</span></p>
+      
+  
+  <div class="source_cont">
+</div>
+
+      </div>
+
+
+    <h2 class="section-title" id="header-classes">Classes</h2>
+      
+      <div class="item">
+      <p id="filtros.Filtros" class="name">class <span class="ident">Filtros</span></p>
+      
+  
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-filtros.Filtros', this);">Show source &equiv;</a></p>
+  <div id="source-filtros.Filtros" class="source">
+    <pre><code>class Filtros():
+
+
+    def tabla_Term(self, resultadopos, resultadoneg):
+        """
+        Tabla de medidas necesarias de los terminos.
+        
+        Tabla de médidas para los terminos de un par de archivos, positivo y negativo, siendo:
+
+        - F = término
+        - P(F) = probabilidad[term] = freq_pos + freq_neg / sum_total_term_freq_pos_and_neg
+        - P(Ci|F) = P(F,Ci) / P(F)
+            - P(F,Cpos) = (freq_term_en_positivos/freq_term_pos+freq_term_neg) / P(F)
+            - P(F,Cneg) =( freq_term_en_negativos/freq_term_pos+freq_term_neg) / P(F)
+
+        - P(F|Ci) = P(Ci,F) / P(Ci)
+            - P(F,Cpos) = (freq_term_en_positivos/freq_term_pos+freq_term_neg) / P(Cpos)
+            - P(F,Cneg) = (freq_term_en_negativos/freq_term_pos+freq_term_neg) / P(Cneg)
+
+
+        Args:
+        ----------
+        resultadopos : dic
+        >    Diccionario de terminos: frecuencia de los documentos positivos  
+
+        resultadoneg : dic
+        >    Diccionario de terminos: frecuencia de los documentos negativos 
+
+        Returns:
+        -------
+        dic
+        >    Diccionario de termminos, por cada termino devuelve: P(F), P(Ci|F), P(F|Ci), sum_F (frecuencia total del termino, suma de positivos y negativos).
+
+        """
+        sumTotalTermFreq = resultadopos['sumTotalTermFreq'] + resultadoneg['sumTotalTermFreq']
+        p_Cpos = resultadopos['docCount']/(resultadopos['docCount']+resultadoneg['docCount'])
+        p_Cneg = resultadoneg['docCount']/(resultadoneg['docCount']+resultadopos['docCount'])
+
+        prob = {}
+        # ya tenemos los positivos
+        totalTerm = resultadopos.copy()
+        # incluimos los negativos, obtengo el vector de todos los terminos y su frecuencia.
+        for k in resultadoneg:
+            if k in resultadopos:
+                totalTerm[k] = resultadopos[k] + resultadoneg[k]
+            else:
+                totalTerm[k] = resultadoneg[k]
+
+        p_Cpos_F = {}
+        p_Cneg_F = {}
+        p_F_Cpos = {}
+        p_F_Cneg = {}
+        tabla = {}
+        for k in totalTerm:
+            prob[k] = totalTerm[k]/sumTotalTermFreq
+            if k in resultadopos:
+                p_Cpos_F[k] = (resultadopos[k]/totalTerm[k])/prob[k]
+                p_F_Cpos[k] = (resultadopos[k]/totalTerm[k])/p_Cpos
+            else: 
+                p_Cpos_F[k] = 0
+                p_F_Cpos[k] = 0
+            if k in resultadoneg:
+                p_Cneg_F[k] = (resultadoneg[k]/totalTerm[k])/prob[k]
+                p_F_Cneg[k] = (resultadoneg[k]/totalTerm[k])/p_Cneg
+            else: 
+                p_Cneg_F[k] = 0
+                p_F_Cneg[k] = 0
+            tabla[k] = {'prob': prob[k], 'p_Cpos_F': p_Cpos_F[k], 'p_Cneg_F':  p_Cneg_F[k], 'p_F_Cpos': p_F_Cpos[k], 'p_F_Cneg':  p_F_Cneg[k], 'sum_F': totalTerm[k]}
+        #print("tabla")
+        #print(tabla)
+        del tabla['sumTotalTermFreq']
+        del tabla['docCount']
+        return tabla
+
+    def filterInfGain(self, resultadopos, resultadoneg, sum):
+        """
+        Filtro InfGain.
+
+        Filtro ganancia de información.
+
+        Args:
+        ----------
+        resultadopos : dic
+        >    Diccionario termino:frecuencia de los documentos positivos  
+
+        resultadoneg : dic
+        >    Diccionario termino:frecuencia de los documentos negativos  
+
+        sum : int
+        >    Cantidad de terminos a devolver
+
+        Returns:
+        -------
+        list
+        >    lista de los mejores terminos encontrados con el filtro.
+
+        """
+        p_Cpos = resultadopos['docCount']/(resultadopos['docCount']+resultadoneg['docCount'])
+        p_Cneg = resultadoneg['docCount']/(resultadoneg['docCount']+resultadopos['docCount'])
+
+        tabla = self.tabla_Term(resultadopos, resultadoneg)
+        InfGain = {}
+        for f in tabla:
+            p_F = tabla[f]['prob']# P(F) 
+            not_p_F = 1 - tabla[f]['prob']# P(F⁻)
+            p_Cpos_F = tabla[f]['p_Cpos_F'] # P(Ci|F)
+            if f in resultadoneg: 
+                not_p_Cpos_F = resultadoneg[f]/not_p_F # P(Ci|F⁻)
+                not_logpos = math.log(not_p_Cpos_F/p_Cpos)
+            else: 
+                not_p_Cpos_F = 0
+                not_logpos = 0
+            p_Cneg_F = tabla[f]['p_Cneg_F'] # P(Ci|F)
+            if f in resultadopos: 
+                not_p_Cneg_F = resultadopos[f]/not_p_F # P(Ci|F⁻)
+                not_logneg = math.log(not_p_Cneg_F/p_Cneg)
+            else: 
+                not_p_Cneg_F = 0
+                not_logpos = 0
+            # error cuando p_Cneg_F es 0
+            if p_Cpos_F==0: logpos=0
+            else: logpos = math.log(p_Cpos_F/p_Cpos)
+            if p_Cneg_F==0:logneg = 0
+            else: logneg = math.log(p_Cneg_F/p_Cneg)
+
+            sumatoria = (p_Cpos_F * logpos) + (p_Cneg_F * logneg)
+            not_sumatoria = (not_p_Cpos_F * not_logpos) + (not_p_Cneg_F * not_logneg)
+            InfGain[f]= (p_F * sumatoria)+(not_p_F * not_sumatoria)
+        #print("InfGain")
+        #print(InfGain)
+        salida = sorted(InfGain, key=InfGain.get, reverse=True)
+        #print('salida sorted')
+        #print(salida)
+        salida = salida[:int(sum)]
+        return salida
+
+    def filterCrossEntropy(self, resultadopos, resultadoneg, sum):
+        """
+        Filtro CrossEntropy.
+
+        Args:
+        ----------
+        resultadopos : dic
+        >    Diccionario termino:frecuencia de los documentos positivos  
+
+        resultadoneg : dic
+        >    Diccionario termino:frecuencia de los documentos negativos  
+
+        sum : int
+        >    Cantidad de terminos a devolver
+
+        Returns:
+        -------
+        list
+        >    lista de los mejores terminos encontrados con el filtro.
+
+        """
+        p_Cpos = resultadopos['docCount']/(resultadopos['docCount']+resultadoneg['docCount'])
+        p_Cneg = resultadoneg['docCount']/(resultadoneg['docCount']+resultadopos['docCount'])
+
+        tabla = self.tabla_Term(resultadopos, resultadoneg)
+        CrossEntropy = {}
+        for f in tabla:
+            p_F = tabla[f]['prob'] # P(F)
+            p_Cpos_F = tabla[f]['p_Cpos_F'] # P(Ci|F)
+            p_Cneg_F = tabla[f]['p_Cneg_F'] # P(Ci|F)
+            # error cuando p_Cneg_F es 0
+            if p_Cpos_F==0: logpos=0
+            else: logpos = math.log(p_Cpos_F/p_Cpos)
+            if p_Cneg_F==0:logneg = 0
+            else: logneg = math.log(p_Cneg_F/p_Cneg)
+            CrossEntropy[f]=p_F*( (p_Cpos_F*logpos)+(p_Cneg_F*logneg) )
+        #print("CrossEntropy")
+        #print(CrossEntropy)
+        salida = sorted(CrossEntropy, key=CrossEntropy.get, reverse=True)
+        #print('salida sorted')
+        #print(salida)
+        salida = salida[:int(sum)]
+        return salida
+
+    def filterMutualInfo(self, resultadopos, resultadoneg, sum):
+        """
+        Filtro MutualInfo.
+
+        Args:
+        ----------
+        resultadopos : dic
+        >    Diccionario termino:frecuencia de los documentos positivos  
+
+        resultadoneg : dic
+        >    Diccionario termino:frecuencia de los documentos negativos  
+
+        sum : int
+        >    Cantidad de terminos a devolver
+
+        Returns:
+        -------
+        list
+        >    lista de los mejores terminos encontrados con el filtro.
+
+        """
+        # prob de ci, la probabilidad de una clase, es el numero de documentos de esa clase entre el total de documentos.
+        p_Cpos = resultadopos['docCount']/(resultadopos['docCount']+resultadoneg['docCount'])
+        p_Cneg = resultadoneg['docCount']/(resultadoneg['docCount']+resultadopos['docCount'])
+
+        tabla = self.tabla_Term(resultadopos, resultadoneg)
+        mutualInfo = {}
+        for f in tabla:
+            p_F = tabla[f]['prob'] # P(F)
+            p_F_Cpos = tabla[f]['p_F_Cpos'] # P(F|Ci)
+            p_F_Cneg =  tabla[f]['p_F_Cneg'] # P(F|Ci)
+            # error cuando p_Cneg_F es 0
+            if p_F_Cpos==0: logpos=0
+            else: logpos = math.log(p_F_Cpos/p_F)
+            if p_F_Cneg==0:logneg = 0
+            else: logneg = math.log(p_F_Cneg/p_F)
+            mutualInfo[f]=(p_Cpos*logpos)+(p_Cneg*logneg)
+        #print("mutualInfo")
+        #print(mutualInfo)
+        salida = sorted(mutualInfo, key=mutualInfo.get, reverse=True)
+        #print('salida sorted')
+        #print(salida)
+        salida = salida[:int(sum)]
+        return salida
+
+    def filterfreq(self, resultadopos, resultadoneg, sum):
+        """
+        Filtro Frecuencias.
+
+        Args:
+        ----------
+        resultadopos : dic
+        >    Diccionario termino:frecuencia de los documentos positivos  
+
+        resultadoneg : dic
+        >    Diccionario termino:frecuencia de los documentos negativos  
+
+        sum : int
+        >    Cantidad de terminos a devolver
+
+        Returns:
+        -------
+        list
+        >    lista de los mejores terminos encontrados con el filtro.
+
+        """
+        totalTerms = resultadopos.copy()
+        for k in resultadoneg:
+            if k in resultadopos:
+                del totalTerms[k]
+        #print(totalTerms)
+        salida = sorted(totalTerms, key=totalTerms.get, reverse=True)
+        #print(salida)
+        salida = salida[:int(sum)]
+        return salida
+
+    def filterOddsRatio(self, resultadopos, resultadoneg, sum):
+        """
+        Filtro Odds Ratio.
+
+        Args:
+        ----------
+        resultadopos : dic
+        >    Diccionario termino:frecuencia de los documentos positivos  
+
+        resultadoneg : dic
+        >    Diccionario termino:frecuencia de los documentos negativos  
+
+        sum : int
+        >    Cantidad de terminos a devolver
+
+        Returns:
+        -------
+        list
+        >    lista de los mejores terminos encontrados con el filtro.
+
+        """
+        tabla = self.tabla_Term(resultadopos, resultadoneg)
+        OddsRatio = {}
+        for f in tabla:
+            # P(F|pos) = is the conditional probability of feature F occurring given the class value ‘positive’
+            # numero de veces que aparece un termino en el positivo entre el totalterminofrecuencia de los positivos
+            if f in resultadopos:
+                condProbFpos = resultadopos[f]/resultadopos['sumTotalTermFreq']
+            else:
+                condProbFpos = 0
+            if f in resultadoneg:
+                condProbFneg = resultadoneg[f]/resultadoneg['sumTotalTermFreq']
+            else:
+                condProbFneg = 0
+            # si condProbFneg es 0, es decir, el termino no existe en negativos, no se puede calcular oddratio
+            if (condProbFpos==0) or (condProbFneg==0):
+                OddsRatio[f] = 0
+            else:
+                OddsRatio[f]=math.log((condProbFpos*(1-condProbFneg))/((1-condProbFpos)*condProbFneg))
+        #print("oddsRatio")
+        #print(OddsRatio)
+        salida = sorted(OddsRatio, key=OddsRatio.get, reverse=True)
+        #print('salida sorted')
+        #print(salida)
+        salida = salida[:int(sum)]
+        return salida
+
+    def filterNormalSeparation(self, resultadopos, resultadoneg, sum):
+        """
+        Filtro Normal Separation.
+
+        Args:
+        ----------
+        resultadopos : dic
+        >    Diccionario termino:frecuencia de los documentos positivos  
+
+        resultadoneg : dic
+        >    Diccionario termino:frecuencia de los documentos negativos  
+
+        sum : int
+        >    Cantidad de terminos a devolver
+
+        Returns:
+        -------
+        list
+        >    lista de los mejores terminos encontrados con el filtro.
+
+        """
+        tabla = self.tabla_Term(resultadopos, resultadoneg)
+        
+        md = []
+        for m in tabla:
+            md.append(tabla[m]['sum_F'])
+        
+        distribucion_inversa = {}
+        for d in tabla: 
+            #distribucion_inversa[d] = st.norm.ppf(tabla[d]['sum_F'],loc = np.mean(md), scale = st.sem(md))
+            distribucion = st.norm.cdf(tabla[d]['sum_F'],loc = np.mean(md), scale = st.sem(md))
+            distribucion_inversa[d] = ndtri(distribucion)
+        #print("distribucion_inversa")
+        #print(distribucion_inversa)
+        NormalSeparation = {}
+        for f in tabla:
+            if f in resultadopos:
+                condProbFpos = resultadopos[f]/resultadopos['sumTotalTermFreq']
+            else:
+                condProbFpos = 0
+            if f in resultadoneg:
+                condProbFneg = resultadoneg[f]/resultadoneg['sumTotalTermFreq']
+            else:
+                condProbFneg = 0
+            NormalSeparation[f]=(distribucion_inversa[f]*condProbFpos)-(distribucion_inversa[f]*condProbFneg)
+        #print("NormalSeparation")
+        #print(NormalSeparation)
+        salida = sorted(NormalSeparation, key=NormalSeparation.get, reverse=True)
+        #print('salida sorted')
+        #print(salida)
+        salida = salida[:int(sum)]
+        return salida
+
+    def filterDiferencia(self, resultadopos, resultadoneg, sum):
+        """
+        Filtro Diferencia.
+
+        Args:
+        ----------
+        resultadopos : dic
+        >    Diccionario termino:frecuencia de los documentos positivos  
+
+        resultadoneg : dic
+        >    Diccionario termino:frecuencia de los documentos negativos  
+
+        sum : int
+        >    Cantidad de terminos a devolver
+
+        Returns:
+        -------
+        list
+        >    lista de los mejores terminos encontrados con el filtro.
+
+        """
+        tabla = self.tabla_Term(resultadopos, resultadoneg)
+
+        # el peso de termino es mejor que otro si aparece muchas veces en los positivos y no aparece en los negativos
+        Diferencia = {}
+        for f in tabla:
+            if f in resultadopos:
+                #nº veces clase positiva / nº total termino en la clase positiva
+                Pesopos = resultadopos[f]/resultadopos['sumTotalTermFreq']
+            else:
+                Pesopos = 0
+            if f in resultadoneg:
+                Pesoneg = resultadoneg[f]/resultadoneg['sumTotalTermFreq']
+            else:
+                Pesoneg = 0
+            #resto negativo al positivo.
+            Diferencia[f] = Pesopos - Pesoneg
+        #print("Diferencia")
+        #print(Diferencia)
+        salida = sorted(Diferencia, key=Diferencia.get, reverse=True)
+        #print('salida sorted')
+        #print(salida)
+        salida = salida[:int(sum)]
+        return salida
+
+    def filter(self, typefilter, terms_freqs_positive, terms_freqs_negative, sum, email):
+        """
+        Filtro.
+
+        Ejecuta el tipo de filtro seleccionado.
+
+        Args:
+        ----------
+        typefilter : string
+        >    Tipo de filtro a ejecutar  
+
+        terms_freqs_positive : dic
+        >    Diccionario termino:frecuencia de los documentos positivos  
+
+        terms_freqs_negative : dic
+        >    Diccionario termino:frecuencia de los documentos negativos  
+
+        sum : int
+        >    Cantidad de terminos a devolver
+
+        Returns:
+        -------
+        list or string
+        >    lista de los mejores terminos encontrados con el filtro. En caso de no encontrar el filtro pasado devuelve mensaje de error.
+        """
+        if typefilter == "Freq":
+            return self.filterfreq(terms_freqs_positive,terms_freqs_negative, sum)
+        elif typefilter == "InfGain":
+            return self.filterInfGain(terms_freqs_positive,terms_freqs_negative, sum)
+        elif typefilter == "CrossEntropy":
+            return self.filterCrossEntropy(terms_freqs_positive,terms_freqs_negative, sum)
+        elif typefilter == "MutualInfo":
+            return self.filterMutualInfo(terms_freqs_positive,terms_freqs_negative, sum)
+        elif typefilter == "OddsRatio":
+            return self.filterOddsRatio(terms_freqs_positive,terms_freqs_negative, sum)
+        elif typefilter == "NormalSeparation":
+            return self.filterNormalSeparation(terms_freqs_positive,terms_freqs_negative, sum)
+        elif typefilter == "Diferencia":
+            return self.filterDiferencia(terms_freqs_positive,terms_freqs_negative, sum)
+        else:
+            return "No existe el filtro seleccionado "
+</code></pre>
+  </div>
+</div>
+
+
+      <div class="class">
+          <h3>Ancestors (in MRO)</h3>
+          <ul class="class_list">
+          <li><a href="#filtros.Filtros">Filtros</a></li>
+          <li>builtins.object</li>
+          </ul>
+          <h3>Static methods</h3>
+            
+  <div class="item">
+    <div class="name def" id="filtros.Filtros.filter">
+    <p>def <span class="ident">filter</span>(</p><p>self, typefilter, terms_freqs_positive, terms_freqs_negative, sum, email)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><p>Filtro.</p>
+<p>Ejecuta el tipo de filtro seleccionado.</p>
+<h2>Args:</h2>
+<p>typefilter : string</p>
+<blockquote>
+<p>Tipo de filtro a ejecutar  </p>
+</blockquote>
+<p>terms_freqs_positive : dic</p>
+<blockquote>
+<p>Diccionario termino:frecuencia de los documentos positivos  </p>
+</blockquote>
+<p>terms_freqs_negative : dic</p>
+<blockquote>
+<p>Diccionario termino:frecuencia de los documentos negativos  </p>
+</blockquote>
+<p>sum : int</p>
+<blockquote>
+<p>Cantidad de terminos a devolver</p>
+</blockquote>
+<h2>Returns:</h2>
+<p>list or string</p>
+<blockquote>
+<p>lista de los mejores terminos encontrados con el filtro. En caso de no encontrar el filtro pasado devuelve mensaje de error.</p>
+</blockquote></div>
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-filtros.Filtros.filter', this);">Show source &equiv;</a></p>
+  <div id="source-filtros.Filtros.filter" class="source">
+    <pre><code>def filter(self, typefilter, terms_freqs_positive, terms_freqs_negative, sum, email):
+    """
+    Filtro.
+    Ejecuta el tipo de filtro seleccionado.
+    Args:
+    ----------
+    typefilter : string
+    >    Tipo de filtro a ejecutar  
+    terms_freqs_positive : dic
+    >    Diccionario termino:frecuencia de los documentos positivos  
+    terms_freqs_negative : dic
+    >    Diccionario termino:frecuencia de los documentos negativos  
+    sum : int
+    >    Cantidad de terminos a devolver
+    Returns:
+    -------
+    list or string
+    >    lista de los mejores terminos encontrados con el filtro. En caso de no encontrar el filtro pasado devuelve mensaje de error.
+    """
+    if typefilter == "Freq":
+        return self.filterfreq(terms_freqs_positive,terms_freqs_negative, sum)
+    elif typefilter == "InfGain":
+        return self.filterInfGain(terms_freqs_positive,terms_freqs_negative, sum)
+    elif typefilter == "CrossEntropy":
+        return self.filterCrossEntropy(terms_freqs_positive,terms_freqs_negative, sum)
+    elif typefilter == "MutualInfo":
+        return self.filterMutualInfo(terms_freqs_positive,terms_freqs_negative, sum)
+    elif typefilter == "OddsRatio":
+        return self.filterOddsRatio(terms_freqs_positive,terms_freqs_negative, sum)
+    elif typefilter == "NormalSeparation":
+        return self.filterNormalSeparation(terms_freqs_positive,terms_freqs_negative, sum)
+    elif typefilter == "Diferencia":
+        return self.filterDiferencia(terms_freqs_positive,terms_freqs_negative, sum)
+    else:
+        return "No existe el filtro seleccionado "
+</code></pre>
+  </div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="filtros.Filtros.filterCrossEntropy">
+    <p>def <span class="ident">filterCrossEntropy</span>(</p><p>self, resultadopos, resultadoneg, sum)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><p>Filtro CrossEntropy.</p>
+<h2>Args:</h2>
+<p>resultadopos : dic</p>
+<blockquote>
+<p>Diccionario termino:frecuencia de los documentos positivos  </p>
+</blockquote>
+<p>resultadoneg : dic</p>
+<blockquote>
+<p>Diccionario termino:frecuencia de los documentos negativos  </p>
+</blockquote>
+<p>sum : int</p>
+<blockquote>
+<p>Cantidad de terminos a devolver</p>
+</blockquote>
+<h2>Returns:</h2>
+<p>list</p>
+<blockquote>
+<p>lista de los mejores terminos encontrados con el filtro.</p>
+</blockquote></div>
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-filtros.Filtros.filterCrossEntropy', this);">Show source &equiv;</a></p>
+  <div id="source-filtros.Filtros.filterCrossEntropy" class="source">
+    <pre><code>def filterCrossEntropy(self, resultadopos, resultadoneg, sum):
+    """
+    Filtro CrossEntropy.
+    Args:
+    ----------
+    resultadopos : dic
+    >    Diccionario termino:frecuencia de los documentos positivos  
+    resultadoneg : dic
+    >    Diccionario termino:frecuencia de los documentos negativos  
+    sum : int
+    >    Cantidad de terminos a devolver
+    Returns:
+    -------
+    list
+    >    lista de los mejores terminos encontrados con el filtro.
+    """
+    p_Cpos = resultadopos['docCount']/(resultadopos['docCount']+resultadoneg['docCount'])
+    p_Cneg = resultadoneg['docCount']/(resultadoneg['docCount']+resultadopos['docCount'])
+    tabla = self.tabla_Term(resultadopos, resultadoneg)
+    CrossEntropy = {}
+    for f in tabla:
+        p_F = tabla[f]['prob'] # P(F)
+        p_Cpos_F = tabla[f]['p_Cpos_F'] # P(Ci|F)
+        p_Cneg_F = tabla[f]['p_Cneg_F'] # P(Ci|F)
+        # error cuando p_Cneg_F es 0
+        if p_Cpos_F==0: logpos=0
+        else: logpos = math.log(p_Cpos_F/p_Cpos)
+        if p_Cneg_F==0:logneg = 0
+        else: logneg = math.log(p_Cneg_F/p_Cneg)
+        CrossEntropy[f]=p_F*( (p_Cpos_F*logpos)+(p_Cneg_F*logneg) )
+    #print("CrossEntropy")
+    #print(CrossEntropy)
+    salida = sorted(CrossEntropy, key=CrossEntropy.get, reverse=True)
+    #print('salida sorted')
+    #print(salida)
+    salida = salida[:int(sum)]
+    return salida
+</code></pre>
+  </div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="filtros.Filtros.filterDiferencia">
+    <p>def <span class="ident">filterDiferencia</span>(</p><p>self, resultadopos, resultadoneg, sum)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><p>Filtro Diferencia.</p>
+<h2>Args:</h2>
+<p>resultadopos : dic</p>
+<blockquote>
+<p>Diccionario termino:frecuencia de los documentos positivos  </p>
+</blockquote>
+<p>resultadoneg : dic</p>
+<blockquote>
+<p>Diccionario termino:frecuencia de los documentos negativos  </p>
+</blockquote>
+<p>sum : int</p>
+<blockquote>
+<p>Cantidad de terminos a devolver</p>
+</blockquote>
+<h2>Returns:</h2>
+<p>list</p>
+<blockquote>
+<p>lista de los mejores terminos encontrados con el filtro.</p>
+</blockquote></div>
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-filtros.Filtros.filterDiferencia', this);">Show source &equiv;</a></p>
+  <div id="source-filtros.Filtros.filterDiferencia" class="source">
+    <pre><code>def filterDiferencia(self, resultadopos, resultadoneg, sum):
+    """
+    Filtro Diferencia.
+    Args:
+    ----------
+    resultadopos : dic
+    >    Diccionario termino:frecuencia de los documentos positivos  
+    resultadoneg : dic
+    >    Diccionario termino:frecuencia de los documentos negativos  
+    sum : int
+    >    Cantidad de terminos a devolver
+    Returns:
+    -------
+    list
+    >    lista de los mejores terminos encontrados con el filtro.
+    """
+    tabla = self.tabla_Term(resultadopos, resultadoneg)
+    # el peso de termino es mejor que otro si aparece muchas veces en los positivos y no aparece en los negativos
+    Diferencia = {}
+    for f in tabla:
+        if f in resultadopos:
+            #nº veces clase positiva / nº total termino en la clase positiva
+            Pesopos = resultadopos[f]/resultadopos['sumTotalTermFreq']
+        else:
+            Pesopos = 0
+        if f in resultadoneg:
+            Pesoneg = resultadoneg[f]/resultadoneg['sumTotalTermFreq']
+        else:
+            Pesoneg = 0
+        #resto negativo al positivo.
+        Diferencia[f] = Pesopos - Pesoneg
+    #print("Diferencia")
+    #print(Diferencia)
+    salida = sorted(Diferencia, key=Diferencia.get, reverse=True)
+    #print('salida sorted')
+    #print(salida)
+    salida = salida[:int(sum)]
+    return salida
+</code></pre>
+  </div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="filtros.Filtros.filterInfGain">
+    <p>def <span class="ident">filterInfGain</span>(</p><p>self, resultadopos, resultadoneg, sum)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><p>Filtro InfGain.</p>
+<p>Filtro ganancia de información.</p>
+<h2>Args:</h2>
+<p>resultadopos : dic</p>
+<blockquote>
+<p>Diccionario termino:frecuencia de los documentos positivos  </p>
+</blockquote>
+<p>resultadoneg : dic</p>
+<blockquote>
+<p>Diccionario termino:frecuencia de los documentos negativos  </p>
+</blockquote>
+<p>sum : int</p>
+<blockquote>
+<p>Cantidad de terminos a devolver</p>
+</blockquote>
+<h2>Returns:</h2>
+<p>list</p>
+<blockquote>
+<p>lista de los mejores terminos encontrados con el filtro.</p>
+</blockquote></div>
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-filtros.Filtros.filterInfGain', this);">Show source &equiv;</a></p>
+  <div id="source-filtros.Filtros.filterInfGain" class="source">
+    <pre><code>def filterInfGain(self, resultadopos, resultadoneg, sum):
+    """
+    Filtro InfGain.
+    Filtro ganancia de información.
+    Args:
+    ----------
+    resultadopos : dic
+    >    Diccionario termino:frecuencia de los documentos positivos  
+    resultadoneg : dic
+    >    Diccionario termino:frecuencia de los documentos negativos  
+    sum : int
+    >    Cantidad de terminos a devolver
+    Returns:
+    -------
+    list
+    >    lista de los mejores terminos encontrados con el filtro.
+    """
+    p_Cpos = resultadopos['docCount']/(resultadopos['docCount']+resultadoneg['docCount'])
+    p_Cneg = resultadoneg['docCount']/(resultadoneg['docCount']+resultadopos['docCount'])
+    tabla = self.tabla_Term(resultadopos, resultadoneg)
+    InfGain = {}
+    for f in tabla:
+        p_F = tabla[f]['prob']# P(F) 
+        not_p_F = 1 - tabla[f]['prob']# P(F⁻)
+        p_Cpos_F = tabla[f]['p_Cpos_F'] # P(Ci|F)
+        if f in resultadoneg: 
+            not_p_Cpos_F = resultadoneg[f]/not_p_F # P(Ci|F⁻)
+            not_logpos = math.log(not_p_Cpos_F/p_Cpos)
+        else: 
+            not_p_Cpos_F = 0
+            not_logpos = 0
+        p_Cneg_F = tabla[f]['p_Cneg_F'] # P(Ci|F)
+        if f in resultadopos: 
+            not_p_Cneg_F = resultadopos[f]/not_p_F # P(Ci|F⁻)
+            not_logneg = math.log(not_p_Cneg_F/p_Cneg)
+        else: 
+            not_p_Cneg_F = 0
+            not_logpos = 0
+        # error cuando p_Cneg_F es 0
+        if p_Cpos_F==0: logpos=0
+        else: logpos = math.log(p_Cpos_F/p_Cpos)
+        if p_Cneg_F==0:logneg = 0
+        else: logneg = math.log(p_Cneg_F/p_Cneg)
+        sumatoria = (p_Cpos_F * logpos) + (p_Cneg_F * logneg)
+        not_sumatoria = (not_p_Cpos_F * not_logpos) + (not_p_Cneg_F * not_logneg)
+        InfGain[f]= (p_F * sumatoria)+(not_p_F * not_sumatoria)
+    #print("InfGain")
+    #print(InfGain)
+    salida = sorted(InfGain, key=InfGain.get, reverse=True)
+    #print('salida sorted')
+    #print(salida)
+    salida = salida[:int(sum)]
+    return salida
+</code></pre>
+  </div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="filtros.Filtros.filterMutualInfo">
+    <p>def <span class="ident">filterMutualInfo</span>(</p><p>self, resultadopos, resultadoneg, sum)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><p>Filtro MutualInfo.</p>
+<h2>Args:</h2>
+<p>resultadopos : dic</p>
+<blockquote>
+<p>Diccionario termino:frecuencia de los documentos positivos  </p>
+</blockquote>
+<p>resultadoneg : dic</p>
+<blockquote>
+<p>Diccionario termino:frecuencia de los documentos negativos  </p>
+</blockquote>
+<p>sum : int</p>
+<blockquote>
+<p>Cantidad de terminos a devolver</p>
+</blockquote>
+<h2>Returns:</h2>
+<p>list</p>
+<blockquote>
+<p>lista de los mejores terminos encontrados con el filtro.</p>
+</blockquote></div>
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-filtros.Filtros.filterMutualInfo', this);">Show source &equiv;</a></p>
+  <div id="source-filtros.Filtros.filterMutualInfo" class="source">
+    <pre><code>def filterMutualInfo(self, resultadopos, resultadoneg, sum):
+    """
+    Filtro MutualInfo.
+    Args:
+    ----------
+    resultadopos : dic
+    >    Diccionario termino:frecuencia de los documentos positivos  
+    resultadoneg : dic
+    >    Diccionario termino:frecuencia de los documentos negativos  
+    sum : int
+    >    Cantidad de terminos a devolver
+    Returns:
+    -------
+    list
+    >    lista de los mejores terminos encontrados con el filtro.
+    """
+    # prob de ci, la probabilidad de una clase, es el numero de documentos de esa clase entre el total de documentos.
+    p_Cpos = resultadopos['docCount']/(resultadopos['docCount']+resultadoneg['docCount'])
+    p_Cneg = resultadoneg['docCount']/(resultadoneg['docCount']+resultadopos['docCount'])
+    tabla = self.tabla_Term(resultadopos, resultadoneg)
+    mutualInfo = {}
+    for f in tabla:
+        p_F = tabla[f]['prob'] # P(F)
+        p_F_Cpos = tabla[f]['p_F_Cpos'] # P(F|Ci)
+        p_F_Cneg =  tabla[f]['p_F_Cneg'] # P(F|Ci)
+        # error cuando p_Cneg_F es 0
+        if p_F_Cpos==0: logpos=0
+        else: logpos = math.log(p_F_Cpos/p_F)
+        if p_F_Cneg==0:logneg = 0
+        else: logneg = math.log(p_F_Cneg/p_F)
+        mutualInfo[f]=(p_Cpos*logpos)+(p_Cneg*logneg)
+    #print("mutualInfo")
+    #print(mutualInfo)
+    salida = sorted(mutualInfo, key=mutualInfo.get, reverse=True)
+    #print('salida sorted')
+    #print(salida)
+    salida = salida[:int(sum)]
+    return salida
+</code></pre>
+  </div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="filtros.Filtros.filterNormalSeparation">
+    <p>def <span class="ident">filterNormalSeparation</span>(</p><p>self, resultadopos, resultadoneg, sum)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><p>Filtro Normal Separation.</p>
+<h2>Args:</h2>
+<p>resultadopos : dic</p>
+<blockquote>
+<p>Diccionario termino:frecuencia de los documentos positivos  </p>
+</blockquote>
+<p>resultadoneg : dic</p>
+<blockquote>
+<p>Diccionario termino:frecuencia de los documentos negativos  </p>
+</blockquote>
+<p>sum : int</p>
+<blockquote>
+<p>Cantidad de terminos a devolver</p>
+</blockquote>
+<h2>Returns:</h2>
+<p>list</p>
+<blockquote>
+<p>lista de los mejores terminos encontrados con el filtro.</p>
+</blockquote></div>
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-filtros.Filtros.filterNormalSeparation', this);">Show source &equiv;</a></p>
+  <div id="source-filtros.Filtros.filterNormalSeparation" class="source">
+    <pre><code>def filterNormalSeparation(self, resultadopos, resultadoneg, sum):
+    """
+    Filtro Normal Separation.
+    Args:
+    ----------
+    resultadopos : dic
+    >    Diccionario termino:frecuencia de los documentos positivos  
+    resultadoneg : dic
+    >    Diccionario termino:frecuencia de los documentos negativos  
+    sum : int
+    >    Cantidad de terminos a devolver
+    Returns:
+    -------
+    list
+    >    lista de los mejores terminos encontrados con el filtro.
+    """
+    tabla = self.tabla_Term(resultadopos, resultadoneg)
+    
+    md = []
+    for m in tabla:
+        md.append(tabla[m]['sum_F'])
+    
+    distribucion_inversa = {}
+    for d in tabla: 
+        #distribucion_inversa[d] = st.norm.ppf(tabla[d]['sum_F'],loc = np.mean(md), scale = st.sem(md))
+        distribucion = st.norm.cdf(tabla[d]['sum_F'],loc = np.mean(md), scale = st.sem(md))
+        distribucion_inversa[d] = ndtri(distribucion)
+    #print("distribucion_inversa")
+    #print(distribucion_inversa)
+    NormalSeparation = {}
+    for f in tabla:
+        if f in resultadopos:
+            condProbFpos = resultadopos[f]/resultadopos['sumTotalTermFreq']
+        else:
+            condProbFpos = 0
+        if f in resultadoneg:
+            condProbFneg = resultadoneg[f]/resultadoneg['sumTotalTermFreq']
+        else:
+            condProbFneg = 0
+        NormalSeparation[f]=(distribucion_inversa[f]*condProbFpos)-(distribucion_inversa[f]*condProbFneg)
+    #print("NormalSeparation")
+    #print(NormalSeparation)
+    salida = sorted(NormalSeparation, key=NormalSeparation.get, reverse=True)
+    #print('salida sorted')
+    #print(salida)
+    salida = salida[:int(sum)]
+    return salida
+</code></pre>
+  </div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="filtros.Filtros.filterOddsRatio">
+    <p>def <span class="ident">filterOddsRatio</span>(</p><p>self, resultadopos, resultadoneg, sum)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><p>Filtro Odds Ratio.</p>
+<h2>Args:</h2>
+<p>resultadopos : dic</p>
+<blockquote>
+<p>Diccionario termino:frecuencia de los documentos positivos  </p>
+</blockquote>
+<p>resultadoneg : dic</p>
+<blockquote>
+<p>Diccionario termino:frecuencia de los documentos negativos  </p>
+</blockquote>
+<p>sum : int</p>
+<blockquote>
+<p>Cantidad de terminos a devolver</p>
+</blockquote>
+<h2>Returns:</h2>
+<p>list</p>
+<blockquote>
+<p>lista de los mejores terminos encontrados con el filtro.</p>
+</blockquote></div>
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-filtros.Filtros.filterOddsRatio', this);">Show source &equiv;</a></p>
+  <div id="source-filtros.Filtros.filterOddsRatio" class="source">
+    <pre><code>def filterOddsRatio(self, resultadopos, resultadoneg, sum):
+    """
+    Filtro Odds Ratio.
+    Args:
+    ----------
+    resultadopos : dic
+    >    Diccionario termino:frecuencia de los documentos positivos  
+    resultadoneg : dic
+    >    Diccionario termino:frecuencia de los documentos negativos  
+    sum : int
+    >    Cantidad de terminos a devolver
+    Returns:
+    -------
+    list
+    >    lista de los mejores terminos encontrados con el filtro.
+    """
+    tabla = self.tabla_Term(resultadopos, resultadoneg)
+    OddsRatio = {}
+    for f in tabla:
+        # P(F|pos) = is the conditional probability of feature F occurring given the class value ‘positive’
+        # numero de veces que aparece un termino en el positivo entre el totalterminofrecuencia de los positivos
+        if f in resultadopos:
+            condProbFpos = resultadopos[f]/resultadopos['sumTotalTermFreq']
+        else:
+            condProbFpos = 0
+        if f in resultadoneg:
+            condProbFneg = resultadoneg[f]/resultadoneg['sumTotalTermFreq']
+        else:
+            condProbFneg = 0
+        # si condProbFneg es 0, es decir, el termino no existe en negativos, no se puede calcular oddratio
+        if (condProbFpos==0) or (condProbFneg==0):
+            OddsRatio[f] = 0
+        else:
+            OddsRatio[f]=math.log((condProbFpos*(1-condProbFneg))/((1-condProbFpos)*condProbFneg))
+    #print("oddsRatio")
+    #print(OddsRatio)
+    salida = sorted(OddsRatio, key=OddsRatio.get, reverse=True)
+    #print('salida sorted')
+    #print(salida)
+    salida = salida[:int(sum)]
+    return salida
+</code></pre>
+  </div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="filtros.Filtros.filterfreq">
+    <p>def <span class="ident">filterfreq</span>(</p><p>self, resultadopos, resultadoneg, sum)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><p>Filtro Frecuencias.</p>
+<h2>Args:</h2>
+<p>resultadopos : dic</p>
+<blockquote>
+<p>Diccionario termino:frecuencia de los documentos positivos  </p>
+</blockquote>
+<p>resultadoneg : dic</p>
+<blockquote>
+<p>Diccionario termino:frecuencia de los documentos negativos  </p>
+</blockquote>
+<p>sum : int</p>
+<blockquote>
+<p>Cantidad de terminos a devolver</p>
+</blockquote>
+<h2>Returns:</h2>
+<p>list</p>
+<blockquote>
+<p>lista de los mejores terminos encontrados con el filtro.</p>
+</blockquote></div>
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-filtros.Filtros.filterfreq', this);">Show source &equiv;</a></p>
+  <div id="source-filtros.Filtros.filterfreq" class="source">
+    <pre><code>def filterfreq(self, resultadopos, resultadoneg, sum):
+    """
+    Filtro Frecuencias.
+    Args:
+    ----------
+    resultadopos : dic
+    >    Diccionario termino:frecuencia de los documentos positivos  
+    resultadoneg : dic
+    >    Diccionario termino:frecuencia de los documentos negativos  
+    sum : int
+    >    Cantidad de terminos a devolver
+    Returns:
+    -------
+    list
+    >    lista de los mejores terminos encontrados con el filtro.
+    """
+    totalTerms = resultadopos.copy()
+    for k in resultadoneg:
+        if k in resultadopos:
+            del totalTerms[k]
+    #print(totalTerms)
+    salida = sorted(totalTerms, key=totalTerms.get, reverse=True)
+    #print(salida)
+    salida = salida[:int(sum)]
+    return salida
+</code></pre>
+  </div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="filtros.Filtros.tabla_Term">
+    <p>def <span class="ident">tabla_Term</span>(</p><p>self, resultadopos, resultadoneg)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><p>Tabla de medidas necesarias de los terminos.</p>
+<p>Tabla de médidas para los terminos de un par de archivos, positivo y negativo, siendo:</p>
+<ul>
+<li>F = término</li>
+<li>P(F) = probabilidad[term] = freq_pos + freq_neg / sum_total_term_freq_pos_and_neg</li>
+<li>
+<p>P(Ci|F) = P(F,Ci) / P(F)</p>
+<ul>
+<li>P(F,Cpos) = (freq_term_en_positivos/freq_term_pos+freq_term_neg) / P(F)</li>
+<li>P(F,Cneg) =( freq_term_en_negativos/freq_term_pos+freq_term_neg) / P(F)</li>
+</ul>
+</li>
+<li>
+<p>P(F|Ci) = P(Ci,F) / P(Ci)</p>
+<ul>
+<li>P(F,Cpos) = (freq_term_en_positivos/freq_term_pos+freq_term_neg) / P(Cpos)</li>
+<li>P(F,Cneg) = (freq_term_en_negativos/freq_term_pos+freq_term_neg) / P(Cneg)</li>
+</ul>
+</li>
+</ul>
+<h2>Args:</h2>
+<p>resultadopos : dic</p>
+<blockquote>
+<p>Diccionario de terminos: frecuencia de los documentos positivos  </p>
+</blockquote>
+<p>resultadoneg : dic</p>
+<blockquote>
+<p>Diccionario de terminos: frecuencia de los documentos negativos </p>
+</blockquote>
+<h2>Returns:</h2>
+<p>dic</p>
+<blockquote>
+<p>Diccionario de termminos, por cada termino devuelve: P(F), P(Ci|F), P(F|Ci), sum_F (frecuencia total del termino, suma de positivos y negativos).</p>
+</blockquote></div>
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-filtros.Filtros.tabla_Term', this);">Show source &equiv;</a></p>
+  <div id="source-filtros.Filtros.tabla_Term" class="source">
+    <pre><code>def tabla_Term(self, resultadopos, resultadoneg):
+    """
+    Tabla de medidas necesarias de los terminos.
+    
+    Tabla de médidas para los terminos de un par de archivos, positivo y negativo, siendo:
+    - F = término
+    - P(F) = probabilidad[term] = freq_pos + freq_neg / sum_total_term_freq_pos_and_neg
+    - P(Ci|F) = P(F,Ci) / P(F)
+        - P(F,Cpos) = (freq_term_en_positivos/freq_term_pos+freq_term_neg) / P(F)
+        - P(F,Cneg) =( freq_term_en_negativos/freq_term_pos+freq_term_neg) / P(F)
+    - P(F|Ci) = P(Ci,F) / P(Ci)
+        - P(F,Cpos) = (freq_term_en_positivos/freq_term_pos+freq_term_neg) / P(Cpos)
+        - P(F,Cneg) = (freq_term_en_negativos/freq_term_pos+freq_term_neg) / P(Cneg)
+    Args:
+    ----------
+    resultadopos : dic
+    >    Diccionario de terminos: frecuencia de los documentos positivos  
+    resultadoneg : dic
+    >    Diccionario de terminos: frecuencia de los documentos negativos 
+    Returns:
+    -------
+    dic
+    >    Diccionario de termminos, por cada termino devuelve: P(F), P(Ci|F), P(F|Ci), sum_F (frecuencia total del termino, suma de positivos y negativos).
+    """
+    sumTotalTermFreq = resultadopos['sumTotalTermFreq'] + resultadoneg['sumTotalTermFreq']
+    p_Cpos = resultadopos['docCount']/(resultadopos['docCount']+resultadoneg['docCount'])
+    p_Cneg = resultadoneg['docCount']/(resultadoneg['docCount']+resultadopos['docCount'])
+    prob = {}
+    # ya tenemos los positivos
+    totalTerm = resultadopos.copy()
+    # incluimos los negativos, obtengo el vector de todos los terminos y su frecuencia.
+    for k in resultadoneg:
+        if k in resultadopos:
+            totalTerm[k] = resultadopos[k] + resultadoneg[k]
+        else:
+            totalTerm[k] = resultadoneg[k]
+    p_Cpos_F = {}
+    p_Cneg_F = {}
+    p_F_Cpos = {}
+    p_F_Cneg = {}
+    tabla = {}
+    for k in totalTerm:
+        prob[k] = totalTerm[k]/sumTotalTermFreq
+        if k in resultadopos:
+            p_Cpos_F[k] = (resultadopos[k]/totalTerm[k])/prob[k]
+            p_F_Cpos[k] = (resultadopos[k]/totalTerm[k])/p_Cpos
+        else: 
+            p_Cpos_F[k] = 0
+            p_F_Cpos[k] = 0
+        if k in resultadoneg:
+            p_Cneg_F[k] = (resultadoneg[k]/totalTerm[k])/prob[k]
+            p_F_Cneg[k] = (resultadoneg[k]/totalTerm[k])/p_Cneg
+        else: 
+            p_Cneg_F[k] = 0
+            p_F_Cneg[k] = 0
+        tabla[k] = {'prob': prob[k], 'p_Cpos_F': p_Cpos_F[k], 'p_Cneg_F':  p_Cneg_F[k], 'p_F_Cpos': p_F_Cpos[k], 'p_F_Cneg':  p_F_Cneg[k], 'sum_F': totalTerm[k]}
+    #print("tabla")
+    #print(tabla)
+    del tabla['sumTotalTermFreq']
+    del tabla['docCount']
+    return tabla
+</code></pre>
+  </div>
+</div>
+
+  </div>
+  
+      </div>
+      </div>
+
+  </section>
+
+    </article>
+  <div class="clear"> </div>
+  <footer id="footer">
+    <p>
+      Documentation generated by
+      <a href="https://github.com/BurntSushi/pdoc">pdoc 0.3.2</a>
+    </p>
+
+    <p>pdoc is in the public domain with the
+      <a href="http://unlicense.org">UNLICENSE</a></p>
+
+    <p>Design by <a href="http://nadh.in">Kailash Nadh</a></p>
+  </footer>
+</div>
+</body>
+</html>
