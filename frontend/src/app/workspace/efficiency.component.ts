@@ -136,7 +136,7 @@ export class EfficiencyComponent {
   select(positive, negative){
     this.lookingfiles.positive = positive;
     this.lookingfiles.negative = negative; 
-    this.lookingfiles.typefile = 'fileTIS';
+    this.lookingfiles.typefile = 'filesTIS';
     this.filterService.selectTIS(this.lookingfiles)
       .pipe(first())
       .subscribe(

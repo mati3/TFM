@@ -6,8 +6,14 @@ import { User, Role } from './models';
 
 @Component({ selector: 'app', templateUrl: 'app.component.html' })
 export class AppComponent {
+    /**
+     * @ignore
+     */
     user: User;
 
+    /**
+     * @ignore
+     */
     constructor(
         private accountService: AccountService,
         public translate: TranslatorService

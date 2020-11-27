@@ -7,11 +7,29 @@ import { AccountService, AlertService } from '@app/services';
 
 @Component({ templateUrl: 'login.component.html' })
 export class LoginComponent implements OnInit {
+    /**
+     * @ignore
+     */
     form: FormGroup;
+
+    /**
+     * @ignore
+     */
     loading = false;
+
+    /**
+     * @ignore
+     */
     submitted = false;
+
+    /**
+     * @ignore
+     */
     returnUrl: string;
 
+    /**
+     * @ignore
+     */
     constructor(
         private formBuilder: FormBuilder,
         private route: ActivatedRoute,
@@ -25,6 +43,9 @@ export class LoginComponent implements OnInit {
         }
      }
 
+    /**
+     * Validate the email and password variables
+     */
     ngOnInit() {
         this.form = this.formBuilder.group({
             email: ['', Validators.required],
@@ -35,18 +56,23 @@ export class LoginComponent implements OnInit {
         this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
     }
 
-    // convenience getter for easy access to form fields
+    /**
+     * Get an access to form fields
+     * 
+     * @return {Form} - Form controls
+     */
     get f() { return this.form.controls; }
 
+    /**
+     * Authenticate an user
+     * 
+     * @return {String} - If an error occurs, explanation of what happened
+     */
     onSubmit() {
         this.submitted = true;
-
-        // reset alerts on submit
         this.alertService.clear();
-
-        // stop here if form is invalid
         if (this.form.invalid) {
-            return;
+            return this.alertService.error("Invalid email or password");
         }
 
         this.loading = true;

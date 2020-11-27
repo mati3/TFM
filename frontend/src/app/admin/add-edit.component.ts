@@ -7,12 +7,34 @@ import { AccountService, AlertService } from '@app/services';
 
 @Component({ templateUrl: 'add-edit.component.html' })
 export class AddEditComponent implements OnInit {
+    /**
+     * @ignore
+     */
     form: FormGroup;
+
+    /**
+     * @ignore
+     */
     id: string;
+
+    /**
+     * @ignore
+     */
     isAddMode: boolean;
+
+    /**
+     * @ignore
+     */
     loading = false;
+
+    /**
+     * @ignore
+     */
     submitted = false;
 
+    /**
+     * @ignore
+     */
     constructor(
         private formBuilder: FormBuilder,
         private route: ActivatedRoute,
@@ -21,6 +43,9 @@ export class AddEditComponent implements OnInit {
         private alertService: AlertService
     ) {}
 
+    /**
+     * Validate the user variables
+     */
     ngOnInit() {
         this.id = this.route.snapshot.params['id'];
         this.isAddMode = !this.id;
@@ -56,18 +81,23 @@ export class AddEditComponent implements OnInit {
         }
     }
 
-    // convenience getter for easy access to form fields
+    /**
+     * Get an access to form fields
+     * 
+     * @return {Form} - Form controls
+     */
     get f() { return this.form.controls; }
 
+    /**
+     * Edit or Add an user
+     * 
+     * @return {String} - If an error occurs, explanation of what happened
+     */
     onSubmit() {
         this.submitted = true;
-
-        // reset alerts on submit
         this.alertService.clear();
-
-        // stop here if form is invalid
         if (this.form.invalid) {
-            return;
+            return this.alertService.error("Invalid user");
         }
 
         this.loading = true;
@@ -78,6 +108,9 @@ export class AddEditComponent implements OnInit {
         }
     }
 
+    /**
+     * Add an user
+     */
     private createUser() {
         if (this.form.value.role == ""){
             this.form.value.role = "User"
@@ -104,6 +137,9 @@ export class AddEditComponent implements OnInit {
                 this.form.value.role == 0;
     }
 
+    /**
+     * Edit an user
+     */
     private updateUser() {
         if (this.form.value.role == ""){
             this.form.value.role = "User"

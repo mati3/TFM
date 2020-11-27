@@ -5,9 +5,19 @@ import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({ templateUrl: 'list.component.html' })
 export class ListComponent implements OnInit {
+    /**
+     * @ignore
+     */
     users = null;
+
+    /**
+     * @ignore
+     */
     loading = false;
 
+    /**
+     * @ignore
+     */
     constructor(private accountService: AccountService,
         private route: ActivatedRoute,
         private router: Router,
@@ -15,12 +25,20 @@ export class ListComponent implements OnInit {
         private filterService: FilterService) {
         }
 
+    /**
+     * Get a list of all users
+     */
     ngOnInit() {
         this.accountService.getAll()
             .pipe(first())
             .subscribe(users => this.users = users);
     }
 
+    /**
+     * Delete an user
+     * 
+     * @param {String} id -  User identification to be deleted
+     */
     deleteUser(id: string) {
         const user = this.users.find(x => x.id === id);
         user.isDeleting = true;
@@ -38,6 +56,11 @@ export class ListComponent implements OnInit {
             .subscribe();  
     }
 
+    /**
+     * Accept an user
+     * 
+     * @param {String} id -  User identification to be accept
+     */
     acceptUser(id: string) {
         this.loading = true;
         const user = this.users.find(x => x.id === id);

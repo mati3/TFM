@@ -7,10 +7,24 @@ import { AccountService, AlertService } from '@app/services';
 
 @Component({ templateUrl: 'register.component.html' })
 export class RegisterComponent implements OnInit {
+    /**
+     * @ignore
+     */
     form: FormGroup;
+
+    /**
+     * @ignore
+     */
     loading = false;
+
+    /**
+     * @ignore
+     */
     submitted = false;
 
+    /**
+     * @ignore
+     */
     constructor(
         private formBuilder: FormBuilder,
         private route: ActivatedRoute,
@@ -19,6 +33,9 @@ export class RegisterComponent implements OnInit {
         private alertService: AlertService
     ) { }
 
+    /**
+     * Validate the user variables
+     */
     ngOnInit() {
         this.form = this.formBuilder.group({
             first_name: ['', [Validators.required, Validators.maxLength(50)]],
@@ -29,18 +46,23 @@ export class RegisterComponent implements OnInit {
         });
     }
 
-    // convenience getter for easy access to form fields
+    /**
+     * Get an access to form fields
+     * 
+     * @return {Form} - Form controls
+     */
     get f() { return this.form.controls; }
 
+    /**
+     * Register an user
+     * 
+     * @return {String} - If an error occurs, explanation of what happened
+     */
     onSubmit() {
         this.submitted = true;
-
-        // reset alerts on submit
         this.alertService.clear();
-
-        // stop here if form is invalid
         if (this.form.invalid) {
-            return;
+            return this.alertService.error("Invalid user");
         }
 
         this.loading = true;
