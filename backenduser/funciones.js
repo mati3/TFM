@@ -1,4 +1,4 @@
-module.exports = function (app, mysql) {
+module.exports = function (app, mysql, AES) {
    
     /**
      * GET all users
@@ -43,8 +43,8 @@ module.exports = function (app, mysql) {
         if (error) throw error;
         res.send(result);
         console.log(result);
+      });
     });
-});
 
     /**
      * POST -> register user
@@ -52,7 +52,7 @@ module.exports = function (app, mysql) {
     app.post("/api/user/register", function (req, res) {
        var data = {
         email: req.body.email,
-        password: req.body.password,
+        password: AES.encrypt(req.body.password, req.body.email),
         username: req.body.username,
         first_name: req.body.first_name,
         last_name: req.body.last_name,
@@ -72,9 +72,9 @@ module.exports = function (app, mysql) {
     app.post('/api/users/authenticate', function (req, res) {
       var data = {
         email: req.body.email,
-        password: req.body.password
+        password: AES.encrypt(req.body.password, req.body.email),
       };
-      mysql.query("select * from users where email = ? and password = ?", [data.email,data.password], function (err, result, fields) {
+      mysql.query("select * from users where email = ? and password = ?", [data.email, data.password], function (err, result, fields) {
         if (err) res.send(err);
         if (!result.length) res.status(400).send('user not found');
         res.send(result);
@@ -87,7 +87,27 @@ module.exports = function (app, mysql) {
      */
     app.put("/api/user/:id", function (req, res) {
       var id = req.params.id; 
-      mysql.query('UPDATE users SET ? WHERE id = ?', [req.body, id], (error, result) => {
+      passwordDB = mysql.query('select password from users where id = ?', id)
+      if (req.body.password == passwordDB){
+        var data = {
+          email: req.body.email,
+          password: req.body.password,
+          username: req.body.username,
+          first_name: req.body.first_name,
+          last_name: req.body.last_name,
+          role: req.body.role
+        };
+      }else{
+        var data = {
+          email: req.body.email,
+          password: AES.encrypt(req.body.password, req.body.email),
+          username: req.body.username,
+          first_name: req.body.first_name,
+          last_name: req.body.last_name,
+          role: req.body.role
+        };
+      }
+      mysql.query('UPDATE users SET ? WHERE id = ?', [data, id], (error, result) => {
         if (error) res.send(error);
         res.send(result);
         console.log(result);

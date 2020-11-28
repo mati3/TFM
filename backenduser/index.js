@@ -24,6 +24,7 @@ app.use(express.static('public'));
 
 //==========CONNECT DB================
 const mysql = require('mysql');
+const AES = require('mysql-aes')
 var con = mysql.createConnection({
     host: "database",
     user: "root",
@@ -34,7 +35,7 @@ var con = mysql.createConnection({
 });
 //==========RUTAS================
 
-require("./funciones.js")(app, con);
+require("./funciones.js")(app, con, AES);
 
 //===========RUN===============
 // Lanza el servidor
