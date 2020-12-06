@@ -67,3 +67,8 @@ __pycache__/
 # Folder documentation
 \*docs
 \*compodoc
+
+# certs
+\*certs
+\*.pem
+\*.cnf
