@@ -40,6 +40,7 @@ export class ListComponent implements OnInit {
      * @param {String} id -  User identification to be deleted
      */
     deleteUser(id: string) {
+        this.alertService.clear();
         const user = this.users.find(x => x.id === id);
         user.isDeleting = true;
         this.accountService.delete(id)
@@ -62,27 +63,36 @@ export class ListComponent implements OnInit {
      * @param {String} id -  User identification to be accept
      */
     acceptUser(id: string) {
+        this.alertService.clear();
         this.loading = true;
         const user = this.users.find(x => x.id === id);
-        user.isSuccess = user.accept = true;
+        user.isSuccess = user.accept = false;
         this.accountService.accept(id)
             .pipe(first())
             .subscribe(
                 data => {
-                    this.alertService.success('Update successful', { keepAfterRouteChange: true });
-                    this.router.navigate(['..', { relativeTo: this.route }]);
-                }/*,
+                    user.isSuccess = true;
+                },
                 error => {
                     this.alertService.error(error);
-                    this.isSuccess = false;
-                }*/);
+                    user.isSuccess = user.accept = false;
+                });
         this.filterService.addUser(user.email)
             .pipe(first())
             .subscribe(
-                error => {
-                this.alertService.error("");
-                user.isSuccess = false;
-            });        
-        user.isSuccess = user.accept = true;
+                data => {
+                    if (user.isSuccess){
+                        this.alertService.success('Update successful', { keepAfterRouteChange: true });
+                        this.router.navigate(['..', { relativeTo: this.route }]);
+                        user.accept = true;
+                        user.isSuccess = false;
+                    }else{
+                        this.alertService.error("Database error");
+                    }
+            },
+            error => {
+                this.alertService.error(error);
+                user.isSuccess = user.accept = false;
+            }); 
     }
 }
