@@ -6,11 +6,11 @@
 
 ## <div style="text-align: center">***Desarrollo de una herramienta experimental para crear consultas biomédicas mediante minería de textos.*** <div/>
 
-- Esta aplicación evalua la calidad de un conjunto de documentos. Tenemos tres tipos de archivos:
+- Esta aplicación evalúa la calidad de una serie de consultas que se generan a partir del método se selección de términos. Tenemos tres tipos de archivos:
 
         FVS. Conjuntos de validación.
         FDS. Conjuntos de test.
-        TIS. Conjuntos de identificación de terminos.
+        TIS. Conjuntos de identificación de términos.
 
 - En el espacio de trabajo de un usuario se pueden incluir tantos conjuntos de documentos como se quiera. Cada conjunto contiene un archivo positivo y otro negativo. 
 
@@ -24,13 +24,13 @@
 
 - Si existe una de las partes del documento que hemos nombrado, se indexará.
 
-- Para evaluar un conjunto de documentos (FDS o FVS), tendremos que seleccionar un par de archivos TIS, decidir cuantos términos formará nuestra consulta y elegír uno de los filtros.
+- Para evaluar un conjunto de documentos (FDS o FVS), tendremos que seleccionar un par de archivos TIS, decidir cuantos términos formará nuestra consulta y elegir uno de los filtros.
 
-- Una vez tengamos formada la consulta podremos evaluar el conjunto de documentos que seleccionemos. Tendremos la posivilidad de incluir a la consulta el operador booleano AND, en tal caso, todos los terminos tendran que estar en el mismo documento. 
+- Una vez tengamos formada la consulta podremos evaluar el conjunto de documentos que seleccionemos. Tendremos la posibilidad de incluir a la consulta el operador booleano AND, en tal caso, todos los términos tendrán que estar en el mismo documento. 
 
 - Si no se puede calcular alguna medida de rendimiento, la aplicación devolverá el valor 0.
 
-- Independientemente se pueden hacer busquedas de texto en pares de archivos FVS y FDS.
+- Independientemente se pueden hacer búsquedas de texto en pares de archivos FVS y FDS.
 
 - ***Autor:*** Matilde Cabrera González
 - ***Tutor:*** Juan Manuel Fernandez Luna
