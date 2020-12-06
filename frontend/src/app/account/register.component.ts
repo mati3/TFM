@@ -56,13 +56,12 @@ export class RegisterComponent implements OnInit {
     /**
      * Register an user
      * 
-     * @return {String} - If an error occurs, explanation of what happened
      */
     onSubmit() {
         this.submitted = true;
         this.alertService.clear();
         if (this.form.invalid) {
-            return this.alertService.error("Invalid user");
+            return;
         }
 
         this.loading = true;

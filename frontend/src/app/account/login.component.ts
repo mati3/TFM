@@ -65,14 +65,12 @@ export class LoginComponent implements OnInit {
 
     /**
      * Authenticate an user
-     * 
-     * @return {String} - If an error occurs, explanation of what happened
      */
     onSubmit() {
         this.submitted = true;
         this.alertService.clear();
         if (this.form.invalid) {
-            return this.alertService.error("Invalid email or password");
+            return;
         }
 
         this.loading = true;
