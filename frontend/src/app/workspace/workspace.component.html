@@ -1,4 +1,4 @@
-<div class="col-md-9 offset-md-1 mt-5">
+<div class="col-md-12 offset-mx-1 mt-5">
   <h1>{{ 'files.workspace' | translate }}</h1>
   <a routerLink="efficiency" class="btn btn-sm btn-success mb-2 mr-1">{{ 'files.filter' | translate }}</a>
   <a routerLink="search" class="btn btn-sm btn-success mb-2 mr-1">{{ 'files.looking' | translate }}</a>
@@ -28,49 +28,51 @@
         </div>
       </form>
     </div>
-  
-    <table class="table">
-      <thead>
-        <tr>
-          <th width="50%">{{ 'files.positive' | translate }}</th>
-          <th width="50%">{{ 'files.negative' | translate }}</th>
-        </tr>
-      </thead>
-      <tbody>
-        <!-- database filesFVS -->
-        <tr *ngFor="let item of myfiles?.filesFVS">
-          <td><strong>{{ item.positive }}</strong></td>
-          <td><strong>{{ item.negative }}</strong></td>
-          <td nowrap>
-            <button type="button" class="btn btn-success btn-xs" 
-              (click)="upload(item,'filesFVS')"  disabled>
-              <span class="glyphicon glyphicon-upload"></span> {{'files.upload' | translate}}
-            </button>
-            <button type="button" class="btn btn-warning btn-xs"
-              (click)="clear(item,'filesFVS')" disabled>
-              <span class="glyphicon glyphicon-trash"></span> {{'files.remove' | translate}}
-            </button>
-          </td>
-        </tr>
-        <!-- new filesFVS -->
-        <tr *ngIf="loadfilepositiveFVS"><td><strong>{{filepositive.name}}</strong></td></tr>
-        <tr *ngFor="let item of filesFVS">
-          <td><strong>{{ item.filepositive.name }}</strong></td>
-          <td><strong>{{ item.filenegative.name }}</strong></td>
-          <td nowrap>
-            <button type="button" class="btn btn-success btn-xs" 
-              (click)="upload(item,'filesFVS')"  [disabled]="item.invalid" >
-              <span class="glyphicon glyphicon-upload"></span> {{'files.upload' | translate}}
-            </button>
-            <button type="button" class="btn btn-warning btn-xs"
-              (click)="clear(item,'filesFVS')" [disabled]="item.invalid">
-              <span class="glyphicon glyphicon-trash"></span> {{'files.remove' | translate}}
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
 
+    <div class="table-responsive-lg">
+      <table class="table">
+        <thead>
+          <tr>
+            <th width="50%">{{ 'files.positive' | translate }}</th>
+            <th width="50%">{{ 'files.negative' | translate }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- database filesFVS -->
+          <tr *ngFor="let item of myfiles?.filesFVS">
+            <td><strong>{{ item.positive }}</strong></td>
+            <td><strong>{{ item.negative }}</strong></td>
+            <td nowrap>
+              <button type="button" class="btn btn-success btn-xs" 
+                (click)="upload(item,'filesFVS')"  disabled>
+                <span class="glyphicon glyphicon-upload"></span> {{'files.upload' | translate}}
+              </button>
+              <button type="button" class="btn btn-warning btn-xs"
+                (click)="clear(item,'filesFVS')" disabled>
+                <span class="glyphicon glyphicon-trash"></span> {{'files.remove' | translate}}
+              </button>
+            </td>
+          </tr>
+          <!-- new filesFVS -->
+          <tr *ngIf="loadfilepositiveFVS"><td><strong>{{filepositive.name}}</strong></td></tr>
+          <tr *ngFor="let item of filesFVS">
+            <td><strong>{{ item.filepositive.name }}</strong></td>
+            <td><strong>{{ item.filenegative.name }}</strong></td>
+            <td nowrap>
+              <button type="button" class="btn btn-success btn-xs" 
+                (click)="upload(item,'filesFVS')"  [disabled]="item.invalid" >
+                <span class="glyphicon glyphicon-upload"></span> {{'files.upload' | translate}}
+              </button>
+              <button type="button" class="btn btn-warning btn-xs"
+                (click)="clear(item,'filesFVS')" [disabled]="item.invalid">
+                <span class="glyphicon glyphicon-trash"></span> {{'files.remove' | translate}}
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    
     <!-- filesFDS -->
     <div>
       <form [formGroup]="myForm">
@@ -92,47 +94,49 @@
       </form>
     </div>
  
-    <table class="table">
-      <thead> 
-        <tr>
-          <th width="50%">{{ 'files.positive' | translate }}</th>
-          <th width="50%">{{ 'files.negative' | translate }}</th>
-        </tr>
-      </thead>
-      <tbody>
-        <!-- database filesFDS -->
-        <tr *ngFor="let item of myfiles?.filesFDS">
-          <td><strong>{{ item.positive }}</strong></td>
-          <td><strong>{{ item.negative }}</strong></td>
-          <td nowrap>
-            <button type="button" class="btn btn-success btn-xs" 
-              (click)="upload(item,'filesFVS')"  disabled>
-              <span class="glyphicon glyphicon-upload"></span> {{'files.upload' | translate}}
-            </button>
-            <button type="button" class="btn btn-warning btn-xs"
-              (click)="clear(item,'filesFVS')" disabled>
-              <span class="glyphicon glyphicon-trash"></span> {{'files.remove' | translate}}
-            </button>
-          </td>
-        </tr>
-        <!-- new filesFDS -->
-        <tr *ngIf="loadfilepositiveFDS"><td><strong>{{filepositive.name}}</strong></td></tr>
-        <tr *ngFor="let item of filesFDS">
-          <td><strong>{{ item.filepositive.name }}</strong></td>
-          <td><strong>{{ item.filenegative.name }}</strong></td>
-          <td nowrap>
-            <button type="button" class="btn btn-success btn-xs" 
-              (click)="upload(item, 'filesFDS')" [disabled]="item.invalid" >
-              <span class="glyphicon glyphicon-upload"></span> {{'files.upload' | translate}}
-            </button>
-            <button type="button" class="btn btn-warning btn-xs"
-              (click)="clear(item, 'filesFDS')" [disabled]="item.invalid">
-              <span class="glyphicon glyphicon-trash"></span> {{'files.remove' | translate}}
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="table-responsive-lg">
+      <table class="table">
+        <thead> 
+          <tr>
+            <th width="50%">{{ 'files.positive' | translate }}</th>
+            <th width="50%">{{ 'files.negative' | translate }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- database filesFDS -->
+          <tr *ngFor="let item of myfiles?.filesFDS">
+            <td><strong>{{ item.positive }}</strong></td>
+            <td><strong>{{ item.negative }}</strong></td>
+            <td nowrap>
+              <button type="button" class="btn btn-success btn-xs" 
+                (click)="upload(item,'filesFVS')"  disabled>
+                <span class="glyphicon glyphicon-upload"></span> {{'files.upload' | translate}}
+              </button>
+              <button type="button" class="btn btn-warning btn-xs"
+                (click)="clear(item,'filesFVS')" disabled>
+                <span class="glyphicon glyphicon-trash"></span> {{'files.remove' | translate}}
+              </button>
+            </td>
+          </tr>
+          <!-- new filesFDS -->
+          <tr *ngIf="loadfilepositiveFDS"><td><strong>{{filepositive.name}}</strong></td></tr>
+          <tr *ngFor="let item of filesFDS">
+            <td><strong>{{ item.filepositive.name }}</strong></td>
+            <td><strong>{{ item.filenegative.name }}</strong></td>
+            <td nowrap>
+              <button type="button" class="btn btn-success btn-xs" 
+                (click)="upload(item, 'filesFDS')" [disabled]="item.invalid" >
+                <span class="glyphicon glyphicon-upload"></span> {{'files.upload' | translate}}
+              </button>
+              <button type="button" class="btn btn-warning btn-xs"
+                (click)="clear(item, 'filesFDS')" [disabled]="item.invalid">
+                <span class="glyphicon glyphicon-trash"></span> {{'files.remove' | translate}}
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
     <!-- filesTIS -->
     <div>
@@ -153,47 +157,49 @@
       </form>
     </div>
  
-    <table class="table">
-      <thead>
-        <tr>
-          <th width="50%">{{ 'files.positive' | translate }}</th>
-          <th width="50%">{{ 'files.negative' | translate }}</th>
-        </tr>
-      </thead>
-      <tbody>
-        <!-- database filesTIS -->
-        <tr *ngFor="let item of myfiles?.filesTIS">
-          <td><strong>{{ item.positive }}</strong></td>
-          <td><strong>{{ item.negative }}</strong></td>
-          <td nowrap>
-            <button type="button" class="btn btn-success btn-xs" 
-              (click)="upload(item,'filesFVS')"  disabled>
-              <span class="glyphicon glyphicon-upload"></span> {{'files.upload' | translate}}
-            </button>
-            <button type="button" class="btn btn-warning btn-xs"
-              (click)="clear(item,'filesFVS')" disabled>
-              <span class="glyphicon glyphicon-trash"></span> {{'files.remove' | translate}}
-            </button>
-          </td>
-        </tr>
-        <!-- new filesTIS -->
-        <tr *ngIf="loadfilepositiveTIS"><td><strong>{{filepositive.name}}</strong></td></tr>
-        <tr *ngFor="let item of filesTIS">
-          <td><strong>{{ item.filepositive.name }}</strong></td>
-          <td><strong>{{ item.filenegative.name }}</strong></td>
-          <td nowrap>
-            <button type="button" class="btn btn-success btn-xs" 
-              (click)="upload(item, 'filesTIS')" [disabled]="item.invalid" >
-              <span class="glyphicon glyphicon-upload"></span> {{'files.upload' | translate}}
-            </button>
-            <button type="button" class="btn btn-warning btn-xs"
-              (click)="clear(item, 'filesTIS')" [disabled]="item.invalid">
-              <span class="glyphicon glyphicon-trash"></span> {{'files.remove' | translate}}
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="table-responsive-lg">
+      <table class="table">
+        <thead>
+          <tr>
+            <th width="50%">{{ 'files.positive' | translate }}</th>
+            <th width="50%">{{ 'files.negative' | translate }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- database filesTIS -->
+          <tr *ngFor="let item of myfiles?.filesTIS">
+            <td><strong>{{ item.positive }}</strong></td>
+            <td><strong>{{ item.negative }}</strong></td>
+            <td nowrap>
+              <button type="button" class="btn btn-success btn-xs" 
+                (click)="upload(item,'filesFVS')"  disabled>
+                <span class="glyphicon glyphicon-upload"></span> {{'files.upload' | translate}}
+              </button>
+              <button type="button" class="btn btn-warning btn-xs"
+                (click)="clear(item,'filesFVS')" disabled>
+                <span class="glyphicon glyphicon-trash"></span> {{'files.remove' | translate}}
+              </button>
+            </td>
+          </tr>
+          <!-- new filesTIS -->
+          <tr *ngIf="loadfilepositiveTIS"><td><strong>{{filepositive.name}}</strong></td></tr>
+          <tr *ngFor="let item of filesTIS">
+            <td><strong>{{ item.filepositive.name }}</strong></td>
+            <td><strong>{{ item.filenegative.name }}</strong></td>
+            <td nowrap>
+              <button type="button" class="btn btn-success btn-xs" 
+                (click)="upload(item, 'filesTIS')" [disabled]="item.invalid" >
+                <span class="glyphicon glyphicon-upload"></span> {{'files.upload' | translate}}
+              </button>
+              <button type="button" class="btn btn-warning btn-xs"
+                (click)="clear(item, 'filesTIS')" [disabled]="item.invalid">
+                <span class="glyphicon glyphicon-trash"></span> {{'files.remove' | translate}}
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
 </div>
 
