@@ -1,0 +1,103 @@
+<div class="col-md-12 offset-mx-1 mt-5">
+  <h1>{{'files.looking' | translate}}</h1>
+  <a routerLink="/workspace/efficiency" class="btn btn-sm btn-success mb-2 mr-1">{{ 'files.filter' | translate }}</a>
+  <a routerLink="/workspace" class="btn btn-sm btn-success mb-2 mr-1">{{ 'nav.workspace' | translate }}</a>
+    
+  <!-- espacio de archivos -->
+  <h4>{{'files.selecfiles' | translate}}</h4>
+  
+  <!-- Tabla de archivos FVS -->
+  <div class="table-responsive-lg">
+    <table class="table table-striped">
+      <thead>
+        <caption>{{'files.fvs' | translate}}</caption>
+          <tr>
+            <th width="50%">{{ 'files.positive' | translate }}</th>
+            <th width="50%">{{ 'files.negative' | translate }}</th>
+          </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let fil of files?.filesFVS">
+          <td><span *ngIf="lookingfiles.positive == fil.positive" class="text-success"><strong>{{fil.positive}}</strong></span><span *ngIf="lookingfiles.positive != fil.positive" >{{fil.positive}}</span></td>
+          <td><span *ngIf="lookingfiles.negative == fil.negative" class="text-success"><strong>{{fil.negative}}</strong></span><span *ngIf="lookingfiles.negative != fil.negative">{{fil.negative}}</span></td>
+          <td nowrap>
+            <button type="button" class="btn btn-success btn-xs" 
+              (click)="select(fil.positive, fil.negative, 'filesFVS')"  >
+              <span class="glyphicon glyphicon-upload"></span> {{ 'files.select' | translate }}
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+ 
+  <!-- Tabla de archivos FDS -->
+  <div class="table-responsive-lg">
+    <table class="table table-striped">
+      <thead>
+        <caption>{{'files.fds' | translate}}</caption>
+          <tr>
+            <th width="50%">{{ 'files.positive' | translate }}</th>
+            <th width="50%">{{ 'files.negative' | translate }}</th>
+          </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let fil of files?.filesFDS">
+          <td><span *ngIf="lookingfiles.positive == fil.positive" class="text-success"><strong>{{fil.positive}}</strong></span><span *ngIf="lookingfiles.positive != fil.positive" >{{fil.positive}}</span></td>
+          <td><span *ngIf="lookingfiles.negative == fil.negative" class="text-success"><strong>{{fil.negative}}</strong></span><span *ngIf="lookingfiles.negative != fil.negative">{{fil.negative}}</span></td>
+          <td nowrap>
+            <button type="button" class="btn btn-success btn-xs" 
+              (click)="select(fil.positive, fil.negative, 'filesFDS')"  >
+              <span class="glyphicon glyphicon-upload"></span> {{ 'files.select' | translate }}
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Tabla de archivos TIS -->
+  <div class="table-responsive-lg">
+    <table class="table table-striped">
+      <thead>
+        <caption>{{'files.tis' | translate}}</caption>
+          <tr>
+            <th width="50%">{{ 'files.positive' | translate }}</th>
+            <th width="50%">{{ 'files.negative' | translate }}</th>
+          </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let fil of files?.filesTIS">
+          <td>{{fil.positive}}</td>
+          <td>{{fil.negative }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Buscardor --> 
+  <div div [formGroup]="form" class="form-inline my-2 my-lg-0" (click)="search()">
+    <input class="form-control mr-sm-2" type="search" formControlName="search"  placeholder="{{'files.looking' | translate}}" aria-label="Search">
+    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">{{'files.looking' | translate}}</button>
+  </div>
+</div>
+
+<!-- Resultados -->
+<h4>{{ 'search.results' | translate }}</h4>
+<div class="card mx-3 ">
+  <div class="row pr-3">
+      <ul *ngFor="let res of data | paginate: { id: 'listing_pagination',
+      itemsPerPage: 10,
+      currentPage: page,
+      totalItems: totalRecords }">
+      <li><h5>{{'search.result' | translate}} nº: {{res.docid}}</h5></li> 
+      <li><strong>{{ 'search.tittle' | translate }}</strong></li>{{res.titulo}}
+      <li><strong>{{ 'search.abstract' | translate }}</strong></li>{{ res.abstract }}
+      <li><strong>{{ 'search.key' | translate }}</strong></li>{{ res.key_words }}
+      </ul>
+  </div>
+<!-- Pagination -->
+  <div class="card-footer text-center">
+      <pagination-controls id="listing_pagination" maxSize="5" directionLinks="true" (pageChange)="onChangePage($event)"></pagination-controls>
+  </div>
+</div>

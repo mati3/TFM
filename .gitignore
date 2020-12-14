@@ -1,0 +1,74 @@
+\*.lib-cov
+
+\*.seed
+
+\*.log
+
+\*.csv
+
+\*.dat
+
+\*.out
+
+\*.pid
+
+\*.gz
+
+\*.[oa]
+
+\*~
+
+\*.#
+
+\**/.DS_Store
+
+\# Ignore Mac DS_Store files
+
+\.DS_Store
+
+.DS_Store
+
+.rspec
+
+\*.txt
+
+\*.manifest
+
+\*.spec
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+\*.cover
+\*.py,cover
+.pytest_cache/
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+\*.py[cod]
+\*$py.class
+\*.pyc
+
+# Folder documentation
+\*docs
+\*compodoc
+
+# certs
+\*certs
+\*.pem
+\*.cnf

@@ -1,4 +1,4 @@
-version: '3.2'
+version: '2'
 
 services:
 
@@ -8,7 +8,47 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
     volumes:
-      - '.:/myapp'
-      - '/myapp/node_modules'
+      - './frontend:/myapp/frontend'
+      - '/myapp/frontend/node_modules'
+    links: 
+      - backenduser
     ports:
       - '4201:4200'
+      - '4400:4400'
+      - '9876:9876'
+
+  backenduser: #name of the second service
+    build: 
+      context: ./backenduser
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000" #specify ports forewarding
+      - "3001:3001" # port ssl
+    container_name: backUser-container
+    restart: always
+    links:
+      - database # link this service to the database service
+
+  database: # name of the third service
+    build: 
+      context: ./database
+      dockerfile: Dockerfile
+    container_name: database-container
+    restart: always
+
+  backendfile: #name of the second service
+    build: 
+      context: ./backendfile
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000" #specify ports forewarding
+    container_name: backFile-container
+    restart: always
+    links: 
+      - mongodb
+
+  mongodb:
+    image: mongo
+    container_name: mongodb
+    ports:
+        - "27017:27017"

@@ -1,0 +1,230 @@
+<div class="col-md-12 offset-mx-1 mt-5">
+  <h1>{{ 'files.workspace' | translate }}</h1>
+  <a routerLink="efficiency" class="btn btn-sm btn-success mb-2 mr-1">{{ 'files.filter' | translate }}</a>
+  <a routerLink="search" class="btn btn-sm btn-success mb-2 mr-1">{{ 'files.looking' | translate }}</a>
+  <!-- espacio de archivos por ahora selecciona-->
+  <h4>{{'files.selecfiles' | translate}}</h4>
+
+    <!-- filesFVS -->
+    <div>
+      <form [formGroup]="myForm">
+        <div class="form-group">
+          <caption class="row">{{'files.fvs' | translate}} 
+            <button type="button" class="btn btn-outline-danger btn-sm float-left  ml-3" data-toggle="modal" data-target="#deleteIndex" (click)="filetype('filesFVS')">
+              <span class="glyphicon glyphicon-trash"></span>{{ 'files.clearfvs' | translate }}
+            </button>
+          </caption>
+            <label class="btn btn-dark btn-rounded waves-effect btn-sm float-left mr-1">{{ 'files.selectpositive' | translate }}          
+              <input formControlName="filepositive" id="file" type="file" class="form-control" (change)="onFileChange($event,'filesFVS')">
+
+              <div *ngIf="!myForm.valid" class="invalid-feedback">
+                <div *ngIf="!myForm.valid">{{'error.username' | translate}}</div>
+            </div>
+
+            </label>
+            <label class="btn btn-outline-dark btn-rounded waves-effect btn-sm float-left mr-1" data-toggle="tooltip" title="{{'files.messagenegative' | translate}}">{{ 'files.selectnegative' | translate }}  
+              <input formControlName="filenegative" id="file" type="file" class="form-control" (change)="onFileChange($event,'filesFVS')">
+            </label>
+        </div>
+      </form>
+    </div>
+
+    <div class="table-responsive-lg">
+      <table class="table">
+        <thead>
+          <tr>
+            <th width="50%">{{ 'files.positive' | translate }}</th>
+            <th width="50%">{{ 'files.negative' | translate }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- database filesFVS -->
+          <tr *ngFor="let item of myfiles?.filesFVS">
+            <td><strong>{{ item.positive }}</strong></td>
+            <td><strong>{{ item.negative }}</strong></td>
+            <td nowrap>
+              <button type="button" class="btn btn-success btn-xs" 
+                (click)="upload(item,'filesFVS')"  disabled>
+                <span class="glyphicon glyphicon-upload"></span> {{'files.upload' | translate}}
+              </button>
+              <button type="button" class="btn btn-warning btn-xs"
+                (click)="clear(item,'filesFVS')" disabled>
+                <span class="glyphicon glyphicon-trash"></span> {{'files.remove' | translate}}
+              </button>
+            </td>
+          </tr>
+          <!-- new filesFVS -->
+          <tr *ngIf="loadfilepositiveFVS"><td><strong>{{filepositive.name}}</strong></td></tr>
+          <tr *ngFor="let item of filesFVS">
+            <td><strong>{{ item.filepositive.name }}</strong></td>
+            <td><strong>{{ item.filenegative.name }}</strong></td>
+            <td nowrap>
+              <button type="button" class="btn btn-success btn-xs" 
+                (click)="upload(item,'filesFVS')"  [disabled]="item.invalid" >
+                <span class="glyphicon glyphicon-upload"></span> {{'files.upload' | translate}}
+              </button>
+              <button type="button" class="btn btn-warning btn-xs"
+                (click)="clear(item,'filesFVS')" [disabled]="item.invalid">
+                <span class="glyphicon glyphicon-trash"></span> {{'files.remove' | translate}}
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    
+    <!-- filesFDS -->
+    <div>
+      <form [formGroup]="myForm">
+        <div class="form-group">
+          <caption class="row">{{'files.fds' | translate}}
+            <button type="button" class="btn btn-outline-danger btn-sm float-left  ml-3" data-toggle="modal" data-target="#deleteIndex" (click)="filetype('filesFDS')">
+              <span class="glyphicon glyphicon-trash"></span>{{ 'files.clearfds' | translate }}
+            </button>
+          </caption>
+          <label class="btn btn-dark btn-rounded waves-effect btn-sm float-left mr-1" >{{ 'files.selectpositive' | translate }}
+            <input formControlName="filepositive" id="file" type="file" class="form-control" (change)="onFileChange($event, 'filesFDS')"> 
+          </label>
+          <div>
+          <label class="btn btn-outline-dark btn-rounded waves-effect btn-sm float-left mr-1" data-toggle="tooltip" title="{{'files.messagenegative' | translate}}">{{ 'files.selectnegative' | translate }}
+            <input formControlName="filenegative" id="file" type="file" class="form-control" (change)="onFileChange($event, 'filesFDS')">
+          </label>
+          </div>
+        </div>
+      </form>
+    </div>
+ 
+    <div class="table-responsive-lg">
+      <table class="table">
+        <thead> 
+          <tr>
+            <th width="50%">{{ 'files.positive' | translate }}</th>
+            <th width="50%">{{ 'files.negative' | translate }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- database filesFDS -->
+          <tr *ngFor="let item of myfiles?.filesFDS">
+            <td><strong>{{ item.positive }}</strong></td>
+            <td><strong>{{ item.negative }}</strong></td>
+            <td nowrap>
+              <button type="button" class="btn btn-success btn-xs" 
+                (click)="upload(item,'filesFVS')"  disabled>
+                <span class="glyphicon glyphicon-upload"></span> {{'files.upload' | translate}}
+              </button>
+              <button type="button" class="btn btn-warning btn-xs"
+                (click)="clear(item,'filesFVS')" disabled>
+                <span class="glyphicon glyphicon-trash"></span> {{'files.remove' | translate}}
+              </button>
+            </td>
+          </tr>
+          <!-- new filesFDS -->
+          <tr *ngIf="loadfilepositiveFDS"><td><strong>{{filepositive.name}}</strong></td></tr>
+          <tr *ngFor="let item of filesFDS">
+            <td><strong>{{ item.filepositive.name }}</strong></td>
+            <td><strong>{{ item.filenegative.name }}</strong></td>
+            <td nowrap>
+              <button type="button" class="btn btn-success btn-xs" 
+                (click)="upload(item, 'filesFDS')" [disabled]="item.invalid" >
+                <span class="glyphicon glyphicon-upload"></span> {{'files.upload' | translate}}
+              </button>
+              <button type="button" class="btn btn-warning btn-xs"
+                (click)="clear(item, 'filesFDS')" [disabled]="item.invalid">
+                <span class="glyphicon glyphicon-trash"></span> {{'files.remove' | translate}}
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- filesTIS -->
+    <div>
+      <form [formGroup]="myForm">
+        <div class="form-group">
+          <caption class="row">{{'files.tis' | translate}}
+            <button type="button" class="btn btn-outline-danger btn-sm float-left  ml-3" data-toggle="modal" data-target="#deleteIndex" (click)="filetype('filesTIS')">
+              <span class="glyphicon glyphicon-trash"></span>{{ 'files.cleartis' | translate }}
+            </button>
+          </caption>
+          <label class="btn btn-dark btn-rounded waves-effect btn-sm float-left mr-1">{{ 'files.selectpositive' | translate }}
+            <input formControlName="filepositive" id="file" type="file" class="form-control" (change)="onFileChange($event, 'filesTIS')">
+          </label>
+          <label class="btn btn-outline-dark btn-rounded waves-effect btn-sm float-left mr-1" data-toggle="tooltip" title="{{'files.messagenegative' | translate}}">{{ 'files.selectnegative' | translate }}
+            <input formControlName="filenegative" id="file" type="file" class="form-control" (change)="onFileChange($event, 'filesTIS')">
+          </label>
+        </div>
+      </form>
+    </div>
+ 
+    <div class="table-responsive-lg">
+      <table class="table">
+        <thead>
+          <tr>
+            <th width="50%">{{ 'files.positive' | translate }}</th>
+            <th width="50%">{{ 'files.negative' | translate }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- database filesTIS -->
+          <tr *ngFor="let item of myfiles?.filesTIS">
+            <td><strong>{{ item.positive }}</strong></td>
+            <td><strong>{{ item.negative }}</strong></td>
+            <td nowrap>
+              <button type="button" class="btn btn-success btn-xs" 
+                (click)="upload(item,'filesFVS')"  disabled>
+                <span class="glyphicon glyphicon-upload"></span> {{'files.upload' | translate}}
+              </button>
+              <button type="button" class="btn btn-warning btn-xs"
+                (click)="clear(item,'filesFVS')" disabled>
+                <span class="glyphicon glyphicon-trash"></span> {{'files.remove' | translate}}
+              </button>
+            </td>
+          </tr>
+          <!-- new filesTIS -->
+          <tr *ngIf="loadfilepositiveTIS"><td><strong>{{filepositive.name}}</strong></td></tr>
+          <tr *ngFor="let item of filesTIS">
+            <td><strong>{{ item.filepositive.name }}</strong></td>
+            <td><strong>{{ item.filenegative.name }}</strong></td>
+            <td nowrap>
+              <button type="button" class="btn btn-success btn-xs" 
+                (click)="upload(item, 'filesTIS')" [disabled]="item.invalid" >
+                <span class="glyphicon glyphicon-upload"></span> {{'files.upload' | translate}}
+              </button>
+              <button type="button" class="btn btn-warning btn-xs"
+                (click)="clear(item, 'filesTIS')" [disabled]="item.invalid">
+                <span class="glyphicon glyphicon-trash"></span> {{'files.remove' | translate}}
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+</div>
+
+<!-- The Modal -->
+<div class="modal" id="deleteIndex">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">{{ 'files.removeindex' | translate }}</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        {{ 'files.removemessage' | translate }}
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" data-dismiss="modal">{{ 'files.cancel' | translate }}</button>
+        <button type="button" class="btn btn-danger" data-dismiss="modal" (click)="removeindex()">{{ 'files.remove' | translate }}</button>
+      </div>
+
+    </div>
+  </div>
+</div>
