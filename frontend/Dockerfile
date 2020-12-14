@@ -27,4 +27,5 @@ RUN npm install --global typedoc
 #COPY . .
 
 # start app
-CMD ng serve --host 0.0.0.0
+CMD ng serve --ssl true --host 0.0.0.0
+#CMD ng serve --host 0.0.0.0
