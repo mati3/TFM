@@ -48,7 +48,7 @@ h1 {
     border-radius: 4px;
   }
   nav a:visited, a:link {
-    color: #000203;
+    color: rgb(238, 238, 238);
   }
   nav a:hover {
     color: #039be5;
