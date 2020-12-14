@@ -35,6 +35,11 @@ export class AddEditComponent implements OnInit {
     /**
      * @ignore
      */
+    checked = false;
+
+    /**
+     * @ignore
+     */
     constructor(
         private formBuilder: FormBuilder,
         private route: ActivatedRoute,
@@ -51,7 +56,7 @@ export class AddEditComponent implements OnInit {
         this.isAddMode = !this.id;
         
         // password not required in edit mode
-        const passwordValidators = [Validators.minLength(6), Validators.maxLength(50)];
+        const passwordValidators = [Validators.minLength(6), Validators.maxLength(15)];
         if (this.isAddMode) {
             passwordValidators.push(Validators.required);
         }
@@ -59,10 +64,11 @@ export class AddEditComponent implements OnInit {
         this.form = this.formBuilder.group({
             first_name: ['', [Validators.required, Validators.maxLength(50)]],
             last_name: ['', [Validators.required, Validators.maxLength(50)]],
-            username: ['', [Validators.required, Validators.maxLength(25)]],
+            username: ['', [Validators.required, Validators.maxLength(50)]],
             email: ['', [Validators.required, Validators.maxLength(25), Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]],
             password: ['', passwordValidators],
-            role:['']
+            last_password: [''],
+            role:['User']
         });
 
         if (!this.isAddMode) {
@@ -74,9 +80,13 @@ export class AddEditComponent implements OnInit {
                         last_name: [x[0].last_name, [Validators.required, Validators.maxLength(50)]],
                         username: [x[0].username, [Validators.required, Validators.maxLength(50)]],
                         email: [x[0].email, [Validators.required, Validators.maxLength(25), Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]],
-                        password: [x[0].password, passwordValidators],
+                        password: [x[0].password, [Validators.minLength(6), Validators.maxLength(50)]],
+                        last_password: [x[0].password],
                         role: [x[0].role]
                     });
+                    if (this.form.value.role == "Admin"){
+                        this.checked = true;
+                    }
                 });
         }
     }
@@ -109,14 +119,22 @@ export class AddEditComponent implements OnInit {
     }
 
     /**
+     * Change user role
+     */
+    changeUser(event){
+        console.log(event.currentTarget.checked);
+        if(event.currentTarget.checked){
+            this.form.value.role = "Admin";
+        }else{
+            this.form.value.role = "User";
+        }
+        //this.form.value.role = event.target.value;
+    }
+
+    /**
      * Add an user
      */
     private createUser() {
-        if (this.form.value.role == ""){
-            this.form.value.role = "User"
-        }else if (this.form.value.role){
-            this.form.value.role = "Admin"
-        }
 
         this.accountService.register(this.form.value)
             .pipe(first())
@@ -134,19 +152,13 @@ export class AddEditComponent implements OnInit {
                     this.alertService.error(error.error);
                     this.loading = false;
                 });
-                this.form.value.role == 0;
     }
 
     /**
      * Edit an user
      */
     private updateUser() {
-        if (this.form.value.role == ""){
-            this.form.value.role = "User"
-        }else if (this.form.value.role){
-            this.form.value.role = "Admin"
-        }
-
+        console.log(this.form.value);
         this.accountService.update(this.id, this.form.value)
             .pipe(first())
             .subscribe(

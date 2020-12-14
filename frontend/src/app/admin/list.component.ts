@@ -52,9 +52,11 @@ export class ListComponent implements OnInit {
             error => {
                 this.alertService.error(error);
             }); 
-        this.filterService.deleteUser(user.email)
-            .pipe(first())
-            .subscribe();  
+        if(user.accept){
+            this.filterService.deleteUser(user.email)
+                .pipe(first())
+                .subscribe();
+        }  
     }
 
     /**
@@ -86,13 +88,11 @@ export class ListComponent implements OnInit {
                         this.router.navigate(['..', { relativeTo: this.route }]);
                         user.accept = true;
                         user.isSuccess = false;
-                    }else{
-                        this.alertService.error("Database error");
                     }
             },
-            error => {
-                this.alertService.error(error);
-                user.isSuccess = user.accept = false;
-            }); 
+                error => {
+                    this.alertService.error(error);
+                    user.isSuccess = user.accept = false;
+                }); 
     }
 }
