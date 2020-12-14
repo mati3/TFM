@@ -205,10 +205,13 @@ export class WorkspaceComponent {
   removeindex(){
     if (this.typefile === 'filesFVS'){
       this.filesFVS = [];
+      this.myfiles.filesFVS = null
     }else if (this.typefile === 'filesFDS'){
       this.filesFDS = [];
+      this.myfiles.filesFDS = null
     }else if(this.typefile === 'filesTIS'){
       this.filesTIS = [];
+      this.myfiles.filesTIS = null;
     }
     this.filterService.deleteIndex(this.user.email, this.typefile);
   }
