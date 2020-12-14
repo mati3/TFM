@@ -57,7 +57,8 @@ class Filtros():
                 totalTerm[k] = resultadopos[k] + resultadoneg[k]
             else:
                 totalTerm[k] = resultadoneg[k]
-
+        #print("totalTerm")
+        #print(totalTerm)
         p_Cpos_F = {}
         p_Cneg_F = {}
         p_F_Cpos = {}
@@ -84,7 +85,7 @@ class Filtros():
         del tabla['docCount']
         return tabla
 
-    def filterInfGain(self, resultadopos, resultadoneg, sum):
+    def filterInfGain(self, tabla, resultadopos, resultadoneg, sum):
         """
         Filtro InfGain.
 
@@ -107,10 +108,13 @@ class Filtros():
         >    lista de los mejores terminos encontrados con el filtro.
 
         """
-        p_Cpos = resultadopos['docCount']/(resultadopos['docCount']+resultadoneg['docCount'])
-        p_Cneg = resultadoneg['docCount']/(resultadoneg['docCount']+resultadopos['docCount'])
+        p_Cpos_IG = resultadopos['docCount']/(resultadopos['docCount']+resultadoneg['docCount'])
+        p_Cneg_IG = resultadoneg['docCount']/(resultadoneg['docCount']+resultadopos['docCount'])
 
-        tabla = self.tabla_Term(resultadopos, resultadoneg)
+        p_F = {}
+        p_Cpos_F = {}
+        p_Cneg_F = {}
+
         InfGain = {}
         for f in tabla:
             p_F = tabla[f]['prob']# P(F) 
@@ -118,26 +122,33 @@ class Filtros():
             p_Cpos_F = tabla[f]['p_Cpos_F'] # P(Ci|F)
             if f in resultadoneg: 
                 not_p_Cpos_F = resultadoneg[f]/not_p_F # P(Ci|F⁻)
-                not_logpos = math.log(not_p_Cpos_F/p_Cpos)
+                not_logpos = math.log(not_p_Cpos_F/p_Cpos_IG)
             else: 
                 not_p_Cpos_F = 0
                 not_logpos = 0
             p_Cneg_F = tabla[f]['p_Cneg_F'] # P(Ci|F)
             if f in resultadopos: 
                 not_p_Cneg_F = resultadopos[f]/not_p_F # P(Ci|F⁻)
-                not_logneg = math.log(not_p_Cneg_F/p_Cneg)
+                not_logneg = math.log(not_p_Cneg_F/p_Cneg_IG)
             else: 
                 not_p_Cneg_F = 0
                 not_logpos = 0
             # error cuando p_Cneg_F es 0
-            if p_Cpos_F==0: logpos=0
-            else: logpos = math.log(p_Cpos_F/p_Cpos)
-            if p_Cneg_F==0:logneg = 0
-            else: logneg = math.log(p_Cneg_F/p_Cneg)
+            if p_Cpos_F == 0: 
+                logpos=0
+            else: 
+                logpos = math.log(p_Cpos_F/p_Cpos_IG)
+            if p_Cneg_F == 0:
+                logneg = 0
+            else: 
+                logneg = math.log(p_Cneg_F/p_Cneg_IG)
 
             sumatoria = (p_Cpos_F * logpos) + (p_Cneg_F * logneg)
             not_sumatoria = (not_p_Cpos_F * not_logpos) + (not_p_Cneg_F * not_logneg)
-            InfGain[f]= (p_F * sumatoria)+(not_p_F * not_sumatoria)
+            InfGain[f] = (p_F * sumatoria)+(not_p_F * not_sumatoria) 
+
+            if math.isnan(InfGain[f]):
+                InfGain[f] = 0
         #print("InfGain")
         #print(InfGain)
         salida = sorted(InfGain, key=InfGain.get, reverse=True)
@@ -146,7 +157,7 @@ class Filtros():
         salida = salida[:int(sum)]
         return salida
 
-    def filterCrossEntropy(self, resultadopos, resultadoneg, sum):
+    def filterCrossEntropy(self, tabla, resultadopos, resultadoneg, sum):
         """
         Filtro CrossEntropy.
 
@@ -170,27 +181,34 @@ class Filtros():
         p_Cpos = resultadopos['docCount']/(resultadopos['docCount']+resultadoneg['docCount'])
         p_Cneg = resultadoneg['docCount']/(resultadoneg['docCount']+resultadopos['docCount'])
 
-        tabla = self.tabla_Term(resultadopos, resultadoneg)
         CrossEntropy = {}
         for f in tabla:
-            p_F = tabla[f]['prob'] # P(F)
-            p_Cpos_F = tabla[f]['p_Cpos_F'] # P(Ci|F)
-            p_Cneg_F = tabla[f]['p_Cneg_F'] # P(Ci|F)
+            p_F_CE = tabla[f]['prob'] # P(F)
+            p_Cpos_F_CE = tabla[f]['p_Cpos_F'] # P(Ci|F)
+            p_Cneg_F_CE = tabla[f]['p_Cneg_F'] # P(Ci|F)
             # error cuando p_Cneg_F es 0
-            if p_Cpos_F==0: logpos=0
-            else: logpos = math.log(p_Cpos_F/p_Cpos)
-            if p_Cneg_F==0:logneg = 0
-            else: logneg = math.log(p_Cneg_F/p_Cneg)
-            CrossEntropy[f]=p_F*( (p_Cpos_F*logpos)+(p_Cneg_F*logneg) )
+            if p_Cpos_F_CE == 0: 
+                logpos_CE = 0
+            else: 
+                logpos_CE = math.log(p_Cpos_F_CE/p_Cpos)
+
+            if p_Cneg_F_CE == 0:
+                logneg_CE = 0
+            else: 
+                logneg_CE = math.log(p_Cneg_F_CE/p_Cneg)
+
+            CrossEntropy[f] = p_F_CE*( (p_Cpos_F_CE*logpos_CE)+(p_Cneg_F_CE*logneg_CE) )
+            if math.isnan(CrossEntropy[f]):
+                    CrossEntropy[f] = 0
         #print("CrossEntropy")
         #print(CrossEntropy)
-        salida = sorted(CrossEntropy, key=CrossEntropy.get, reverse=True)
+        salida_CrossEntropy = sorted(CrossEntropy, key=CrossEntropy.get, reverse=True)
         #print('salida sorted')
-        #print(salida)
-        salida = salida[:int(sum)]
-        return salida
+        #print(salida_CrossEntropy)
+        salida_CrossEntropy = salida_CrossEntropy[:int(sum)]
+        return salida_CrossEntropy
 
-    def filterMutualInfo(self, resultadopos, resultadoneg, sum):
+    def filterMutualInfo(self, tabla, resultadopos, resultadoneg, sum):
         """
         Filtro MutualInfo.
 
@@ -212,30 +230,35 @@ class Filtros():
 
         """
         # prob de ci, la probabilidad de una clase, es el numero de documentos de esa clase entre el total de documentos.
-        p_Cpos = resultadopos['docCount']/(resultadopos['docCount']+resultadoneg['docCount'])
-        p_Cneg = resultadoneg['docCount']/(resultadoneg['docCount']+resultadopos['docCount'])
+        p_Cpos_MI = resultadopos['docCount']/(resultadopos['docCount']+resultadoneg['docCount'])
+        p_Cneg_MI = resultadoneg['docCount']/(resultadoneg['docCount']+resultadopos['docCount'])
 
-        tabla = self.tabla_Term(resultadopos, resultadoneg)
         mutualInfo = {}
         for f in tabla:
-            p_F = tabla[f]['prob'] # P(F)
-            p_F_Cpos = tabla[f]['p_F_Cpos'] # P(F|Ci)
-            p_F_Cneg =  tabla[f]['p_F_Cneg'] # P(F|Ci)
+            p_F_MI = tabla[f]['prob'] # P(F)
+            p_F_Cpos_MI = tabla[f]['p_F_Cpos'] # P(F|Ci)
+            p_F_Cneg_MI =  tabla[f]['p_F_Cneg'] # P(F|Ci)
             # error cuando p_Cneg_F es 0
-            if p_F_Cpos==0: logpos=0
-            else: logpos = math.log(p_F_Cpos/p_F)
-            if p_F_Cneg==0:logneg = 0
-            else: logneg = math.log(p_F_Cneg/p_F)
-            mutualInfo[f]=(p_Cpos*logpos)+(p_Cneg*logneg)
+            if p_F_Cpos_MI == 0: 
+                logpos_MI = 0
+            else: 
+                logpos_MI = math.log(p_F_Cpos_MI/p_F_MI)
+            if p_F_Cneg_MI == 0:
+                logneg_MI = 0
+            else: 
+                logneg_MI = math.log(p_F_Cneg_MI/p_F_MI)
+            mutualInfo[f] = (p_Cpos_MI*logpos_MI)+(p_Cneg_MI*logneg_MI)
+            if math.isnan(mutualInfo[f]):
+                    mutualInfo[f] = 0
         #print("mutualInfo")
         #print(mutualInfo)
-        salida = sorted(mutualInfo, key=mutualInfo.get, reverse=True)
+        salida_mutualInfo = sorted(mutualInfo, key=mutualInfo.get, reverse=True)
         #print('salida sorted')
-        #print(salida)
-        salida = salida[:int(sum)]
-        return salida
+        #print(salida_mutualInfo)
+        salida_mutualInfo = salida_mutualInfo[:int(sum)]
+        return salida_mutualInfo
 
-    def filterfreq(self, resultadopos, resultadoneg, sum):
+    def filterfreq(self, tabla, resultadopos, resultadoneg, sum):
         """
         Filtro Frecuencias.
 
@@ -256,17 +279,16 @@ class Filtros():
         >    lista de los mejores terminos encontrados con el filtro.
 
         """
-        totalTerms = resultadopos.copy()
+        freq = resultadopos.copy()
         for k in resultadoneg:
             if k in resultadopos:
-                del totalTerms[k]
-        #print(totalTerms)
-        salida = sorted(totalTerms, key=totalTerms.get, reverse=True)
-        #print(salida)
-        salida = salida[:int(sum)]
-        return salida
+                del freq[k]
+        #print(freq)
+        salida_freq = sorted(freq, key=freq.get, reverse=True)
+        salida_freq = salida_freq[:int(sum)]
+        return salida_freq
 
-    def filterOddsRatio(self, resultadopos, resultadoneg, sum):
+    def filterOddsRatio(self, tabla, resultadopos, resultadoneg, sum):
         """
         Filtro Odds Ratio.
 
@@ -287,7 +309,6 @@ class Filtros():
         >    lista de los mejores terminos encontrados con el filtro.
 
         """
-        tabla = self.tabla_Term(resultadopos, resultadoneg)
         OddsRatio = {}
         for f in tabla:
             # P(F|pos) = is the conditional probability of feature F occurring given the class value ‘positive’
@@ -305,15 +326,18 @@ class Filtros():
                 OddsRatio[f] = 0
             else:
                 OddsRatio[f]=math.log((condProbFpos*(1-condProbFneg))/((1-condProbFpos)*condProbFneg))
+
+            if math.isnan(OddsRatio[f]):
+                    OddsRatio[f] = 0
         #print("oddsRatio")
         #print(OddsRatio)
-        salida = sorted(OddsRatio, key=OddsRatio.get, reverse=True)
+        salida_OddsRatio = sorted(OddsRatio, key=OddsRatio.get, reverse=True)
         #print('salida sorted')
-        #print(salida)
-        salida = salida[:int(sum)]
-        return salida
+        #print(salida_OddsRatio)
+        salida_OddsRatio = salida_OddsRatio[:int(sum)]
+        return salida_OddsRatio
 
-    def filterNormalSeparation(self, resultadopos, resultadoneg, sum):
+    def filterNormalSeparation(self, tabla, resultadopos, resultadoneg, sum):
         """
         Filtro Normal Separation.
 
@@ -334,7 +358,6 @@ class Filtros():
         >    lista de los mejores terminos encontrados con el filtro.
 
         """
-        tabla = self.tabla_Term(resultadopos, resultadoneg)
         
         md = []
         for m in tabla:
@@ -342,7 +365,6 @@ class Filtros():
         
         distribucion_inversa = {}
         for d in tabla: 
-            #distribucion_inversa[d] = st.norm.ppf(tabla[d]['sum_F'],loc = np.mean(md), scale = st.sem(md))
             distribucion = st.norm.cdf(tabla[d]['sum_F'],loc = np.mean(md), scale = st.sem(md))
             distribucion_inversa[d] = ndtri(distribucion)
         #print("distribucion_inversa")
@@ -357,7 +379,16 @@ class Filtros():
                 condProbFneg = resultadoneg[f]/resultadoneg['sumTotalTermFreq']
             else:
                 condProbFneg = 0
-            NormalSeparation[f]=(distribucion_inversa[f]*condProbFpos)-(distribucion_inversa[f]*condProbFneg)
+
+            #if distribucion_inversa[f] == 'inf':
+            #    distribucion_inversa[f] = 9999;
+            #if math.isnan(distribucion_inversa[f]):
+            #        distribucion_inversa[f] = 0
+            x = (distribucion_inversa[f]*condProbFpos)
+            y = (distribucion_inversa[f]*condProbFneg)
+            NormalSeparation[f]=x-y
+            if math.isnan(NormalSeparation[f]):
+                    NormalSeparation[f] = 0
         #print("NormalSeparation")
         #print(NormalSeparation)
         salida = sorted(NormalSeparation, key=NormalSeparation.get, reverse=True)
@@ -366,7 +397,7 @@ class Filtros():
         salida = salida[:int(sum)]
         return salida
 
-    def filterDiferencia(self, resultadopos, resultadoneg, sum):
+    def filterDiferencia(self, tabla, resultadopos, resultadoneg, sum):
         """
         Filtro Diferencia.
 
@@ -387,7 +418,7 @@ class Filtros():
         >    lista de los mejores terminos encontrados con el filtro.
 
         """
-        tabla = self.tabla_Term(resultadopos, resultadoneg)
+        #tabla = self.tabla_Term(resultadopos, resultadoneg)
 
         # el peso de termino es mejor que otro si aparece muchas veces en los positivos y no aparece en los negativos
         Diferencia = {}
@@ -403,15 +434,17 @@ class Filtros():
                 Pesoneg = 0
             #resto negativo al positivo.
             Diferencia[f] = Pesopos - Pesoneg
+            if math.isnan(Diferencia[f]):
+                    Diferencia[f] = 0
         #print("Diferencia")
         #print(Diferencia)
-        salida = sorted(Diferencia, key=Diferencia.get, reverse=True)
+        salida_Diferencia = sorted(Diferencia, key=Diferencia.get, reverse=True)
         #print('salida sorted')
-        #print(salida)
-        salida = salida[:int(sum)]
-        return salida
+        #print(salida_Diferencia)
+        salida_Diferencia = salida_Diferencia[:int(sum)]
+        return salida_Diferencia
 
-    def filter(self, typefilter, terms_freqs_positive, terms_freqs_negative, sum, email):
+    def filter(self, typefilter, terms_freqs_positive, terms_freqs_negative, sum):
         """
         Filtro.
 
@@ -436,19 +469,25 @@ class Filtros():
         list or string
         >    lista de los mejores terminos encontrados con el filtro. En caso de no encontrar el filtro pasado devuelve mensaje de error.
         """
+
+        salida = "salida";
+        tabla = self.tabla_Term(terms_freqs_positive, terms_freqs_negative)
+
         if typefilter == "Freq":
-            return self.filterfreq(terms_freqs_positive,terms_freqs_negative, sum)
+            salida = self.filterfreq(tabla,terms_freqs_positive,terms_freqs_negative, sum)
         elif typefilter == "InfGain":
-            return self.filterInfGain(terms_freqs_positive,terms_freqs_negative, sum)
+            salida = self.filterInfGain(tabla, terms_freqs_positive,terms_freqs_negative, sum)
         elif typefilter == "CrossEntropy":
-            return self.filterCrossEntropy(terms_freqs_positive,terms_freqs_negative, sum)
+            salida = self.filterCrossEntropy(tabla, terms_freqs_positive,terms_freqs_negative, sum)
         elif typefilter == "MutualInfo":
-            return self.filterMutualInfo(terms_freqs_positive,terms_freqs_negative, sum)
+            salida = self.filterMutualInfo(tabla, terms_freqs_positive,terms_freqs_negative, sum)
         elif typefilter == "OddsRatio":
-            return self.filterOddsRatio(terms_freqs_positive,terms_freqs_negative, sum)
+            salida = self.filterOddsRatio(tabla, terms_freqs_positive,terms_freqs_negative, sum)
         elif typefilter == "NormalSeparation":
-            return self.filterNormalSeparation(terms_freqs_positive,terms_freqs_negative, sum)
+            salida = self.filterNormalSeparation(tabla, terms_freqs_positive,terms_freqs_negative, sum)
         elif typefilter == "Diferencia":
-            return self.filterDiferencia(terms_freqs_positive,terms_freqs_negative, sum)
+            salida = self.filterDiferencia(tabla, terms_freqs_positive,terms_freqs_negative, sum)
         else:
-            return "No existe el filtro seleccionado "
+            salida = "No existe el filtro seleccionado "
+        tabla = None;
+        return salida

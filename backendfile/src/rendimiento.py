@@ -43,6 +43,6 @@ class Rendimiento():
                     continue
                 if math.isnan(value):
                     value = 0
-                dicResult[measure] = value
+                dicResult[measure] = "{0:.4f}".format(value)
         
         return dicResult

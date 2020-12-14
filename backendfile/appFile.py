@@ -85,6 +85,7 @@ def newclient(correo_id):
 # remove client
 @app.route('/delete/<string:correo_id>', methods = ['DELETE'])
 def deleteClient(correo_id):
+    shutil.rmtree(app.config['UPLOAD_FOLDER']+'/'+correo_id)
     return  jsonify(client.deleteClient(correo_id)), 200 
 
 # devuelve los archivos de un cliente dado su id
@@ -261,12 +262,8 @@ def filter():
     #print(terms_freqs_positive)
     terms_freqs_negative = body['terms_freqs_negative']
     #print(terms_freqs_negative)
-    # números positivos
     sum = body['sum']
-    #print(sum)
-    email = body['email']
-    #print(email)
-    resultado = ft.filter(typefilter, terms_freqs_positive, terms_freqs_negative, sum, email)
+    resultado = ft.filter(typefilter, terms_freqs_positive, terms_freqs_negative, sum)
     # devuelvo la consulta ???
     return jsonify(resultado), 200
 
@@ -308,6 +305,12 @@ def applyFilter():
         setAllPos[filepos[:count]] = lc.positiveDocID(pathfile)
         pathfile = app.config['UPLOAD_FOLDER']+'/'+correo+'/'+typefile+'/lucene_'+fileneg[:count2]
         resultado[fileneg[:count2]] = lc.searchScore(pathfile,body['wanted'])
+
+        # si no hay resultados, provoca un error con jdk, le ponemos un resultado a 0
+        if (resultado[filepos[:count]] == {}):
+            resultado[filepos[:count]]= {filepos[:count]+'_0':0.0}
+        if (resultado[fileneg[:count2]] == {}):
+            resultado[fileneg[:count2]]= {fileneg[:count2]+'_0':0.0}
         
         salida[filepos[:count]] = md.medidas_de_rendimiento(setAllPos,resultado)    
 
@@ -330,11 +333,11 @@ def createDirectory(myfolder):
 
 @app.after_request
 def after_request(response):
-    response.headers.add('Access-Control-Allow-Origin', 'http://localhost:4201')
+    response.headers.add('Access-Control-Allow-Origin', 'https://localhost:4201')
     response.headers.add('Access-Control-Allow-Headers', 'X-Requested-With,content-type')
     response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
     response.headers.add('Access-Control-Allow-Credentials', 'true')
     return response
 
 if __name__ == '__main__':
-    app.run()
+    app.run(ssl_context='adhoc')

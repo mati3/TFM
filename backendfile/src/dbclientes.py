@@ -4,6 +4,7 @@
 #   2020 - Copyright (c) - GNU v3.0
 #
 #  Matilde Cabrera <mati331@correo.ugr.es>
+
 import json
 from pymongo import MongoClient
 
@@ -51,15 +52,12 @@ class dbClientes:
         if self.client.count_documents({'_id': correo_id })==0: 
             return "Usuario NO existe, operación no valida"
         else:
-            clientes = self.client.find({},{"_id":correo_id, typefile:1})
+            cliente = self.client.find_one({"_id":correo_id},{'filesFDS':1,'filesFVS':1,'filesTIS':1 })
             salida = []
-            for count,f in enumerate(clientes):
-                if f.get(typefile):
-                    for f2 in f.get(typefile):
-                        salida.append(f2)
+            for f in cliente.get(typefile):
+                salida.append(f)
             salida.append({'positive':filenamepos, 'negative':filenameneg})
             self.client.update({'_id':correo_id} , {'$set': {typefile:salida} }, True)
-            #salida = "archivo insertado : " + correo_id
         return  salida   
 
     def getFiles(self, correo_id):
