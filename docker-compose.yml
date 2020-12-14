@@ -23,6 +23,7 @@ services:
       dockerfile: Dockerfile
     ports:
       - "3000:3000" #specify ports forewarding
+      - "3001:3001" # port ssl
     container_name: backUser-container
     restart: always
     links:

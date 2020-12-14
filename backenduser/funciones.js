@@ -7,6 +7,7 @@ module.exports = function (app, mysql, AES) {
       mysql.query('SELECT * FROM users', (error, result) => {
           if (error) throw error;
           response.send(result);
+          console.log(result);
       });
     });
 
@@ -87,8 +88,9 @@ module.exports = function (app, mysql, AES) {
      */
     app.put("/api/user/:id", function (req, res) {
       var id = req.params.id; 
-      passwordDB = mysql.query('select password from users where id = ?', id)
-      if (req.body.password == passwordDB){
+      //passwordDB = mysql.query('select password from users where id = ?', id) // return object != string
+      //var pass = AES.decrypt(req.body.password, req.body.last_email)
+      if (req.body.password == req.body.last_password){
         var data = {
           email: req.body.email,
           password: req.body.password,
